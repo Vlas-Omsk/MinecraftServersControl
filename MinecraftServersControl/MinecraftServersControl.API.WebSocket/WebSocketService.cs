@@ -23,6 +23,7 @@ namespace MinecraftServersControl.API.WebSocket
         protected sealed override async void OnMessage(MessageEventArgs e)
         {
             Request request = null;
+            bool handled = true;
 
             await Task.Run(() =>
             {
@@ -36,22 +37,37 @@ namespace MinecraftServersControl.API.WebSocket
                 {
                     Logger.Warn(ex.ToString());
                     SendResponse(new Response(Response.BroadcastRequestId, ResponseCode.DataError, ex.Message, null));
+                    handled = false;
                     return;
                 }
 
-                request = (Request)TryDeserializeData(Response.BroadcastRequestId, json, typeof(Request));
-                if (request == null)
+                if (!TryDeserializeData(Response.BroadcastRequestId, json, typeof(Request), out object requestObj))
+                {
+                    handled = false;
                     return;
+                }
+
+                request = (Request)requestObj;
 
                 var dataType = Request.GetDataType(request.Code);
 
                 if (dataType != null)
-                    request.Data = TryDeserializeData(request.Id, (IJson)request.Data, dataType);
+                {
+                    if (!TryDeserializeData(request.Id, (IJson)request.Data, dataType, out object dataObject))
+                    {
+                        handled = false;
+                        return;
+                    }
+
+                    request.Data = dataObject;
+                }
                 else
+                {
                     request.Data = null;
+                }
             });
 
-            if (request == null)
+            if (!handled)
                 return;
 
             await ApiService.ProcessAsync(request);
@@ -64,6 +80,9 @@ namespace MinecraftServersControl.API.WebSocket
 
         private void SendResponse(Response response)
         {
+            if (ConnectionState != WebSocketState.Open &&
+                ConnectionState != WebSocketState.Connecting)
+                return;
             var json = response.Serialize();
             Send(json.ToString());
         }
@@ -75,9 +94,6 @@ namespace MinecraftServersControl.API.WebSocket
 
         Task IClient.SendResponseAsync(Response response)
         {
-            if (ConnectionState != WebSocketState.Open &&
-                ConnectionState != WebSocketState.Connecting)
-                return Task.CompletedTask;
             return Task.Run(() => SendResponse(response));
         }
 
@@ -86,20 +102,22 @@ namespace MinecraftServersControl.API.WebSocket
             return Task.Run(() => Close());
         }
 
-        private object TryDeserializeData(int requestId, IJson json, Type type)
+        private bool TryDeserializeData(int requestId, IJson json, Type type, out object obj)
         {
             try
             {
-                return json.Deserialize(type, new ObjectSerializerOptions()
+                obj = json.Deserialize(type, new ObjectSerializerOptions()
                 {
                     IgnoreMissingProperties = false
                 });
+                return true;
             }
             catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
                 SendResponse(new Response(requestId, ResponseCode.DataError, ex.Message, null));
-                return default;
+                obj = null;
+                return false;
             }
         }
     }
