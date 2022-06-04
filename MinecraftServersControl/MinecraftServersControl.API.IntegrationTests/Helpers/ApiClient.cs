@@ -114,6 +114,11 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
             return taskCompletionSource.Task;
         }
 
+        string IClient.GetInfo()
+        {
+            return $"ApiClient<{typeof(T).Name}>";
+        }
+
         Task IClient.SendResponseAsync(Response response)
         {
             _listeners?.Invoke(response);

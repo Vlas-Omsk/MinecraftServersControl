@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\PinkJson\PinkJson2\PinkJson2\PinkJson2.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.API.WebSocket.Schema\MinecraftServersControl.API.Schema.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.API.Schema\MinecraftServersControl.API.Schema.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Core\MinecraftServersControl.Core.csproj" />
   </ItemGroup>
 

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MinecraftServersControl.Application\MinecraftServersControl.API.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.API\MinecraftServersControl.API.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.DAL\MinecraftServersControl.DAL.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
   </ItemGroup>

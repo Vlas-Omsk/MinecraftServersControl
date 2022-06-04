@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MinecraftServersControl.Network\MinecraftServersControl.API.WebSocket.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.API.WebSocket\MinecraftServersControl.API.WebSocket.csproj" />
   </ItemGroup>
 
 </Project>
