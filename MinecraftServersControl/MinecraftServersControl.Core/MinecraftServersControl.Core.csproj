@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MinecraftServersControl.DAL\MinecraftServersControl.DAL.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Schema\MinecraftServersControl.Core.DTO.csproj" />
+  </ItemGroup>
+
+</Project>
