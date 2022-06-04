@@ -22,6 +22,24 @@ namespace MinecraftServersControl.API.IntegrationTests
         }
 
         [Fact]
+        public async Task Should_Return_AuthorizationFromAnotherPlace_If_Restore_Is_Made_On_The_Same_Token()
+        {
+            var client = _fixture.CreateClient<UserApiService>();
+            var result = await client.GetResult<SessionDTO>(RequestCode.SignIn, new UserDTO("Admin", "Admin".ToSha256Hash()));
+
+            var client2 = _fixture.CreateClient<ServerApiService>();
+            await client2.GetResult(RequestCode.Auth, result.Data.SessionId);
+
+            var task = client2.GetBroadcastResult<Guid>(ResultCode.AuthorizationFromAnotherPlace);
+
+            var client3 = _fixture.CreateClient<UserApiService>();
+            await client3.GetResult(RequestCode.Restore, result.Data.SessionId);
+
+            Assert.True(client2.Closed);
+            Assert.Equal(ResultCode.AuthorizationFromAnotherPlace, task.Result.Code);
+        }
+
+        [Fact]
         public async Task SignIn_Should_Add_Session_To_Database_And_Close_Client()
         {
             var client = _fixture.CreateClient<UserApiService>();

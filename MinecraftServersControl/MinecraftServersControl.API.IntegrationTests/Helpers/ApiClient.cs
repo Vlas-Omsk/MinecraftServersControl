@@ -91,7 +91,7 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
             return taskCompletionSource.Task;
         }
 
-        public Task<Result<TData>> GetBroadcastResult<TData>(ResponseCode code)
+        public Task<Result<TData>> GetBroadcastResult<TData>(ResultCode code)
         {
             var taskCompletionSource = new TaskCompletionSource<Result<TData>>();
             Action<Response> handler = null;
@@ -99,12 +99,10 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
             handler = (response) =>
             {
                 if (response.RequestId == Response.BroadcastRequestId &&
-                    response.Code == code)
+                    response.Code == ResponseCode.Success)
                 {
-                    if (response.Code == ResponseCode.Success)
+                    if (response.Result.Code == code)
                         taskCompletionSource.SetResult((Result<TData>)response.Result);
-                    else
-                        taskCompletionSource.SetException(new ApiException(response));
                     _listeners -= handler;
                 }
             };

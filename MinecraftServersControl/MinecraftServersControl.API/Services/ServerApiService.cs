@@ -52,11 +52,14 @@ namespace MinecraftServersControl.API.Services
 
             _sessionId = sessionId;
             _state = AuthState.Success;
-            Application.UserService.SessionRemoved += OnAuthServiceSessionRemoved;
+            Application.UserService.SessionRemoved += OnSessionRemoved;
         }
 
-        private async void OnAuthServiceSessionRemoved(object sender, Core.DTO.Result<Guid> e)
+        private async void OnSessionRemoved(object sender, Core.DTO.Result<Guid> e)
         {
+            if (_sessionId != e.Data)
+                return;
+
             await SendSuccessAsync(Response.BroadcastRequestId, e);
             await CloseAsync();
         }
@@ -70,7 +73,7 @@ namespace MinecraftServersControl.API.Services
 
         public override ValueTask DisposeAsync()
         {
-            Application.UserService.SessionRemoved -= OnAuthServiceSessionRemoved;
+            Application.UserService.SessionRemoved -= OnSessionRemoved;
 
             return base.DisposeAsync();
         }
