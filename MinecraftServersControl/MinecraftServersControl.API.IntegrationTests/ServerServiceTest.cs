@@ -23,7 +23,7 @@ namespace MinecraftServersControl.API.IntegrationTests
         [Fact]
         public async Task Should_Return_InvalidState_If_Authorization_Was_Not_Performed()
         {
-            var client = _fixture.CreateClient<ServerApiService>();
+            var client = _fixture.CreateClient<GatewayApiService>();
             var response = await client.GetResponse(RequestCode.GetServers, null);
 
             Assert.Equal(ResponseCode.InvalidState, response.Code);
@@ -35,7 +35,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client = _fixture.CreateClient<UserApiService>();
             var result = await client.GetResult<SessionDTO>(RequestCode.SignIn, new UserDTO("Admin", "Admin".ToSha256Hash()));
 
-            var client2 = _fixture.CreateClient<ServerApiService>();
+            var client2 = _fixture.CreateClient<GatewayApiService>();
             var result2 = await client2.GetResult(RequestCode.Auth, result.Data.SessionId);
 
             Assert.Equal(ResultCode.Success, result2.Code);
@@ -44,7 +44,7 @@ namespace MinecraftServersControl.API.IntegrationTests
         [Fact]
         public async Task Auth_Should_Return_SessionExpired_If_SessionId_Is_Expired()
         {
-            var client = _fixture.CreateClient<ServerApiService>();
+            var client = _fixture.CreateClient<GatewayApiService>();
             var result = await client.GetResult(RequestCode.Auth, Guid.NewGuid());
 
             Assert.Equal(ResultCode.SessionExpired, result.Code);
@@ -56,7 +56,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client = _fixture.CreateClient<UserApiService>();
             var result = await client.GetResult<SessionDTO>(RequestCode.SignIn, new UserDTO("Admin", "Admin".ToSha256Hash()));
 
-            var client2 = _fixture.CreateClient<ServerApiService>();
+            var client2 = _fixture.CreateClient<GatewayApiService>();
             await client2.GetResult(RequestCode.Auth, result.Data.SessionId);
 
             var result3 = await client2.GetResult<IEnumerable<ComputerDTO>>(RequestCode.GetServers, null);

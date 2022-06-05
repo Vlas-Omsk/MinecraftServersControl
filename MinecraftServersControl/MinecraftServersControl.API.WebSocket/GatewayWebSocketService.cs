@@ -10,19 +10,24 @@ using WebSocketSharp.Server;
 
 namespace MinecraftServersControl.API.WebSocket
 {
-    public sealed class WebSocketService : WebSocketBehavior, IClient
+    public sealed class GatewayWebSocketService : WebSocketBehavior, IClient
     {
-        internal ApiService ApiService { get; set; }
+        internal RealtimeApiService ApiService { get; set; }
         internal ILogger Logger { get; set; }
 
         protected override async void OnOpen()
         {
-            await ApiService.OnConnectedAsync();
+            await ApiService.OpenAsync();
+        }
+
+        protected override async void OnClose(CloseEventArgs e)
+        {
+            await ApiService.CloseAsync();
         }
 
         protected sealed override async void OnMessage(MessageEventArgs e)
         {
-            Request request = null;
+            WebSocketRequest request = null;
             bool handled = true;
 
             await Task.Run(() =>
@@ -36,18 +41,18 @@ namespace MinecraftServersControl.API.WebSocket
                 catch (Exception ex)
                 {
                     Logger.Warn(ex.ToString());
-                    SendResponse(new Response(Response.BroadcastRequestId, ResponseCode.DataError, ex.Message, null));
+                    SendResponse(new WebSocketResponse(WebSocketResponse.BroadcastRequestId, ResponseCode.DataError, ex.Message, null));
                     handled = false;
                     return;
                 }
 
-                if (!TryDeserializeData(Response.BroadcastRequestId, json, typeof(Request), out object requestObj))
+                if (!TryDeserializeData(WebSocketResponse.BroadcastRequestId, json, typeof(WebSocketRequest), out object requestObj))
                 {
                     handled = false;
                     return;
                 }
 
-                request = (Request)requestObj;
+                request = (WebSocketRequest)requestObj;
 
                 var dataType = Request.GetDataType(request.Code);
 
@@ -73,12 +78,7 @@ namespace MinecraftServersControl.API.WebSocket
             await ApiService.ProcessAsync(request);
         }
 
-        protected override async void OnClose(CloseEventArgs e)
-        {
-            await ApiService.DisposeAsync();
-        }
-
-        private void SendResponse(Response response)
+        private void SendResponse(WebSocketResponse response)
         {
             if (ConnectionState != WebSocketState.Open &&
                 ConnectionState != WebSocketState.Connecting)
@@ -92,14 +92,18 @@ namespace MinecraftServersControl.API.WebSocket
             return Context.UserEndPoint.ToString();
         }
 
-        Task IClient.SendResponseAsync(Response response)
+        Task IClient.SendResponseAsync(Request request, Response response)
         {
-            return Task.Run(() => SendResponse(response));
+            return Task.Run(() => 
+                SendResponse(new WebSocketResponse(((WebSocketRequest)request).Id, response))
+            );
         }
 
         Task IClient.CloseAsync()
         {
-            return Task.Run(() => Close());
+            return Task.Run(() => 
+                Close()
+            );
         }
 
         private bool TryDeserializeData(int requestId, IJson json, Type type, out object obj)
@@ -115,7 +119,7 @@ namespace MinecraftServersControl.API.WebSocket
             catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
-                SendResponse(new Response(requestId, ResponseCode.DataError, ex.Message, null));
+                SendResponse(new WebSocketResponse(requestId, ResponseCode.DataError, ex.Message, null));
                 obj = null;
                 return false;
             }

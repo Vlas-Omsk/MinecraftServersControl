@@ -17,10 +17,17 @@ namespace MinecraftServersControl.API
             _logger = logger;
         }
 
-        public T CreateApiService<T>(IClient client) where T : ApiService, new()
+        public T CreateApiService<T>(IClient client) where T : RealtimeApiService, new()
         {
             var service = new T();
             service.Init(client, _logger, _application);
+            return service;
+        }
+
+        public T CreateApiService<T>() where T : ApiService, new()
+        {
+            var service = new T();
+            service.Init(_logger, _application);
             return service;
         }
     }

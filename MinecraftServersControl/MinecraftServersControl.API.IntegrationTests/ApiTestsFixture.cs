@@ -20,7 +20,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             ApiContextFactory = new ApiContextFactory(DatabaseContextFactory, logger);
         }
 
-        public ApiClient<T> CreateClient<T>() where T : ApiService, new()
+        public ApiClient<T> CreateClient<T>() where T : RealtimeApiService, new()
         {
             return new ApiClient<T>(ApiContextFactory);
         }

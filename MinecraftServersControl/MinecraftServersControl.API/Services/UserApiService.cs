@@ -7,50 +7,45 @@ namespace MinecraftServersControl.API.Services
 {
     public sealed class UserApiService : ApiService
     {
-        private AuthState _state;
-
-        protected override async Task<bool> ProcessAsyncOverride(Request request)
+        public override bool IsSupport(RequestCode requestCode)
         {
-            if (_state != AuthState.Unauthorized)
+            switch (requestCode)
             {
-                await SendErrorAsync(request.Id, ResponseCode.InvalidState, null);
-                return true;
+                case RequestCode.SignIn:
+                case RequestCode.Restore:
+                    return true;
+                default:
+                    return false;
             }
+        }
 
+        protected override async Task<Response> ProcessOverrideAsync(Request request)
+        {
             switch (request.Code)
             {
                 case RequestCode.SignIn:
-                    await SignIn(request);
-                    return true;
+                    return await SignIn(request);
                 case RequestCode.Restore:
-                    await Restore(request);
-                    return true;
+                    return await Restore(request);
             }
 
-            return false;
+            return null;
         }
 
-        private async Task SignIn(Request request)
+        private async Task<Response> SignIn(Request request)
         {
             var user = request.GetData<UserDTO>();
             var session = await Application.UserService.SignIn(user);
 
-            await ProcessSession(request, session);
+            return Response.CreateSuccess(session);
         }
 
-        private async Task Restore(Request request)
+        private async Task<Response> Restore(Request request)
         {
             var sessionId = request.GetData<Guid>();
             var session = await Application.UserService.Restore(sessionId);
 
-            await ProcessSession(request, session);
-        }
-
-        private async Task ProcessSession(Request request, Result<SessionDTO> session)
-        {
-            _state = AuthState.Success;
-            await SendSuccessAsync(request.Id, session);
-            await CloseAsync();
+            return Response.CreateSuccess(session);
         }
     }
 }

@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace MinecraftServersControl.API.Services
 {
-    public sealed class ServerApiService : ApiService
+    public sealed class GatewayApiService : RealtimeApiService
     {
         private AuthState _state;
         private Guid _sessionId;
 
-        protected override async Task<bool> ProcessAsyncOverride(Request request)
+        protected override async Task<bool> ProcessOverrideAsync(Request request)
         {
             switch (request.Code)
             {
@@ -20,7 +20,7 @@ namespace MinecraftServersControl.API.Services
 
             if (_state == AuthState.Unauthorized)
             {
-                await SendErrorAsync(request.Id, ResponseCode.InvalidState, null);
+                await SendResponse(request, Response.CreateError(ResponseCode.InvalidState, null));
                 return true;
             }
 
@@ -38,14 +38,14 @@ namespace MinecraftServersControl.API.Services
         {
             if (_state != AuthState.Unauthorized)
             {
-                await SendErrorAsync(request.Id, ResponseCode.InvalidState, null);
+                await SendResponse(request, Response.CreateError(ResponseCode.InvalidState, null));
                 return;
             }
 
             var sessionId = request.GetData<Guid>();
             var result = await Application.UserService.VerifySession(sessionId);
 
-            await SendSuccessAsync(request.Id, result);
+            await SendResponse(request, Response.CreateSuccess(result));
 
             if (result.HasErrors())
                 return;
@@ -60,7 +60,7 @@ namespace MinecraftServersControl.API.Services
             if (_sessionId != e.Data)
                 return;
 
-            await SendSuccessAsync(Response.BroadcastRequestId, e);
+            await SendResponse(null, Response.CreateSuccess(e));
             await CloseAsync();
         }
 
@@ -68,14 +68,14 @@ namespace MinecraftServersControl.API.Services
         {
             var result = await Application.ServerService.GetServers(_sessionId);
 
-            await SendSuccessAsync(request.Id, result);
+            await SendResponse(request, Response.CreateSuccess(result));
         }
 
-        public override ValueTask DisposeAsync()
+        protected override Task CloseOverrideAsync()
         {
             Application.UserService.SessionRemoved -= OnSessionRemoved;
 
-            return base.DisposeAsync();
+            return base.CloseOverrideAsync();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MinecraftServersControl.API.IntegrationTests.Helpers
 {
-    public sealed class ApiClient<T> : IClient where T : ApiService, new()
+    public sealed class ApiClient<T> : IClient where T : RealtimeApiService, new()
     {
         public bool Closed { get; private set; }
 

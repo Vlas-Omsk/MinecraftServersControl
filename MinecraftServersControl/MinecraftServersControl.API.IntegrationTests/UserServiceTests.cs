@@ -27,7 +27,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client = _fixture.CreateClient<UserApiService>();
             var result = await client.GetResult<SessionDTO>(RequestCode.SignIn, new UserDTO("Admin", "Admin".ToSha256Hash()));
 
-            var client2 = _fixture.CreateClient<ServerApiService>();
+            var client2 = _fixture.CreateClient<GatewayApiService>();
             await client2.GetResult(RequestCode.Auth, result.Data.SessionId);
 
             var task = client2.GetBroadcastResult<Guid>(ResultCode.AuthorizationFromAnotherPlace);

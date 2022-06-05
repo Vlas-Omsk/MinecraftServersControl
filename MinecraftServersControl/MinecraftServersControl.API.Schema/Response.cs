@@ -4,21 +4,27 @@ using System;
 namespace MinecraftServersControl.API.Schema
 {
     [Serializable]
-    public sealed class Response
+    public class Response
     {
-        public int RequestId { get; }
         public ResponseCode Code { get; }
         public string ErrorMessage { get; }
         public Result Result { get; }
 
-        public const int BroadcastRequestId = -1;
-
-        public Response(int requestId, ResponseCode code, string errorMessage, Result result)
+        public Response(ResponseCode code, string errorMessage, Result result)
         {
-            RequestId = requestId;
             Code = code;
             ErrorMessage = errorMessage;
             Result = result;
+        }
+
+        public static Response CreateError(ResponseCode code, string message)
+        {
+            return new Response(code, message, null);
+        }
+
+        public static Response CreateSuccess(Result result)
+        {
+            return new Response(ResponseCode.Success, null, result);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace MinecraftServersControl.API.WebSocket
 {
     public sealed class MainServer
     {
-        private readonly WebSocketServer _server;
+        private readonly HttpServer _server;
         private readonly ApiContextFactory _apiContextFactory;
         private readonly ILogger _logger;
 
@@ -37,17 +37,12 @@ namespace MinecraftServersControl.API.WebSocket
             _logger = new ConsoleLogger();
             _apiContextFactory = new ApiContextFactory(new DatabaseContextFactory(), _logger);
 
-            _server = new WebSocketServer(url);
+            _server = new MainHttpServer(_apiContextFactory, _logger, url);
             _server.Log.Output = OnServerLogOutput;
-            _server.AddWebSocketService<WebSocketService>("/user", x =>
+            _server.AddWebSocketService<GatewayWebSocketService>("/gateway", x =>
             {
                 x.Logger = _logger;
-                x.ApiService = _apiContextFactory.CreateApiService<UserApiService>(x);
-            });
-            _server.AddWebSocketService<WebSocketService>("/server", x =>
-            {
-                x.Logger = _logger;
-                x.ApiService = _apiContextFactory.CreateApiService<ServerApiService>(x);
+                x.ApiService = _apiContextFactory.CreateApiService<GatewayApiService>(x);
             });
         }
 

@@ -7,7 +7,7 @@ namespace MinecraftServersControl.API
     public interface IClient
     {
         string GetInfo();
-        Task SendResponseAsync(Response response);
+        Task SendResponseAsync(Request targetRequest, Response response);
         Task CloseAsync();
     }
 }

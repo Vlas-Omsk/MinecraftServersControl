@@ -5,9 +5,8 @@ using System.Reflection;
 namespace MinecraftServersControl.API.Schema
 {
     [Serializable]
-    public sealed class Request
+    public class Request
     {
-        public int Id { get; set; }
         public RequestCode Code { get; set; }
         public object Data { get; set; }
 
@@ -15,9 +14,8 @@ namespace MinecraftServersControl.API.Schema
         {
         }
 
-        public Request(int id, RequestCode code, object data)
+        public Request(RequestCode code, object data)
         {
-            Id = id;
             Code = code;
             Data = data;
         }
