@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32526.322
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32407.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Tests", "MinecraftServersControl.Tests\MinecraftServersControl.Tests.csproj", "{9A294C87-62F3-4C77-9B91-83BE0E047374}"
 EndProject
@@ -19,13 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Log
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.ConsoleHost", "MinecraftServersControl.ConsoleHost\MinecraftServersControl.ConsoleHost.csproj", "{8B63609A-12F8-4DD0-AD58-74084619FE93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API", "MinecraftServersControl.API\MinecraftServersControl.API.csproj", "{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API.IntegrationTests", "MinecraftServersControl.API.IntegrationTests\MinecraftServersControl.API.IntegrationTests.csproj", "{7BD0FF57-801E-44A7-834E-479A551F4441}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API.Schema", "MinecraftServersControl.API.Schema\MinecraftServersControl.API.Schema.csproj", "{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API.WebSocket", "MinecraftServersControl.API.WebSocket\MinecraftServersControl.API.WebSocket.csproj", "{28D02EDE-8897-487E-98B3-89B198F2CD25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API", "MinecraftServersControl.API.WebSocket\MinecraftServersControl.API.csproj", "{28D02EDE-8897-487E-98B3-89B198F2CD25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.IO", "MinecraftServersControl.Core.IO\MinecraftServersControl.Core.IO.csproj", "{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}"
 EndProject
@@ -95,14 +91,6 @@ Global
 		{8B63609A-12F8-4DD0-AD58-74084619FE93}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
 		{8B63609A-12F8-4DD0-AD58-74084619FE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B63609A-12F8-4DD0-AD58-74084619FE93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
-		{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
-		{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
-		{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3CEECC7-3A76-4BE3-967B-BE3C792930A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BD0FF57-801E-44A7-834E-479A551F4441}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BD0FF57-801E-44A7-834E-479A551F4441}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
 		{7BD0FF57-801E-44A7-834E-479A551F4441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -111,14 +99,6 @@ Global
 		{7BD0FF57-801E-44A7-834E-479A551F4441}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
 		{7BD0FF57-801E-44A7-834E-479A551F4441}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BD0FF57-801E-44A7-834E-479A551F4441}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
-		{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
-		{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
-		{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F978D79-57BF-4FC2-83B6-6FFCFB7461B6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28D02EDE-8897-487E-98B3-89B198F2CD25}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
 		{28D02EDE-8897-487E-98B3-89B198F2CD25}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
 		{28D02EDE-8897-487E-98B3-89B198F2CD25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

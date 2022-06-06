@@ -3,7 +3,7 @@
 namespace MinecraftServersControl.API.Schema
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public sealed class DataTypeAttribute : Attribute
+    internal sealed class DataTypeAttribute : Attribute
     {
         public Type Type { get; }
 

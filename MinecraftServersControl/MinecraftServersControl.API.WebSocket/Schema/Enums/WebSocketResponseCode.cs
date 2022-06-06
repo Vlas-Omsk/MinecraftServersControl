@@ -2,7 +2,7 @@
 
 namespace MinecraftServersControl.API.Schema
 {
-    public enum ResponseCode : int
+    public enum WebSocketResponseCode : int
     {
         Success = 0,
         DataError = 1,

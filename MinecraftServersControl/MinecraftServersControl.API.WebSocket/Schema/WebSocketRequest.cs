@@ -4,28 +4,31 @@ using System.Reflection;
 
 namespace MinecraftServersControl.API.Schema
 {
+
     [Serializable]
-    public class Request
+    public class WebSocketRequest
     {
-        public RequestCode Code { get; set; }
+        public int Id { get; set; }
+        public WebSocketRequestCode Code { get; set; }
         public object Data { get; set; }
 
-        public Request()
+        public WebSocketRequest()
         {
         }
 
-        public Request(RequestCode code, object data)
+        public WebSocketRequest(int id, WebSocketRequestCode code, object data)
         {
+            Id = id;
             Code = code;
             Data = data;
         }
 
         public T GetData<T>() => (T)Data;
 
-        public static Type GetDataType(RequestCode code) =>
-            typeof(RequestCode)
+        public static Type GetDataType(WebSocketRequestCode code) =>
+            typeof(WebSocketRequestCode)
                 .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
-                .First(x => (RequestCode)x.GetValue(null) == code)
+                .First(x => (WebSocketRequestCode)x.GetValue(null) == code)
                 .GetCustomAttribute<DataTypeAttribute>(false)
                 .Type;
     }

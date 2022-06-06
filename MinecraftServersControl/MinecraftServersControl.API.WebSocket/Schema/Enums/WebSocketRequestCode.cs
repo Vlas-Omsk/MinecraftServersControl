@@ -3,7 +3,7 @@ using System;
 
 namespace MinecraftServersControl.API.Schema
 {
-    public enum RequestCode : int
+    public enum WebSocketRequestCode : int
     {
         // AuthApiService
         [DataType(typeof(UserDTO))]

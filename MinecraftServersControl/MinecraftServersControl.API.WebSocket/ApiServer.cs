@@ -1,4 +1,5 @@
-﻿using MinecraftServersControl.API.Services;
+﻿using MinecraftServersControl.API.WebSocket.HttpServices;
+using MinecraftServersControl.Core;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
 using PinkJson2;
@@ -8,13 +9,13 @@ using WebSocketSharp.Server;
 
 namespace MinecraftServersControl.API.WebSocket
 {
-    public sealed class MainServer
+    public sealed class ApiServer
     {
-        private readonly HttpServer _server;
-        private readonly ApiContextFactory _apiContextFactory;
+        private readonly ApiHttpServer _server;
+        private readonly Application _application;
         private readonly ILogger _logger;
 
-        static MainServer()
+        static ApiServer()
         {
             TypeConverter.Register(typeof(Enum), new TypeConversion((object obj, Type targetType, ref bool handled) =>
             {
@@ -32,21 +33,22 @@ namespace MinecraftServersControl.API.WebSocket
             }));
         }
 
-        public MainServer(string url)
+        public ApiServer(string url)
         {
             _logger = new ConsoleLogger();
-            _apiContextFactory = new ApiContextFactory(new DatabaseContextFactory(), _logger);
+            _application = new Application(new DatabaseContextFactory(), _logger);
 
-            _server = new MainHttpServer(_apiContextFactory, _logger, url);
-            _server.Log.Output = OnServerLogOutput;
+            _server = new ApiHttpServer(_application, _logger, url);
+            _server.Log.Output = OnLogOutput;
             _server.AddWebSocketService<GatewayWebSocketService>("/gateway", x =>
             {
                 x.Logger = _logger;
-                x.ApiService = _apiContextFactory.CreateApiService<GatewayApiService>(x);
+                x.Application = _application;
             });
+            _server.AddHttpService<UserHttpService>("/user");
         }
 
-        private void OnServerLogOutput(LogData data, string str)
+        private void OnLogOutput(LogData data, string str)
         {
             str = data.Message + " " + str;
 

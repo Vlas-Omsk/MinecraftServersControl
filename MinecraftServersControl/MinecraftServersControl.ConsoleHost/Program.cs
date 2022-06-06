@@ -7,7 +7,7 @@ namespace MinecraftServersControl.ConsoleHost
     {
         static void Main(string[] args)
         {
-            var mainServer = new MainServer("http://0.0.0.0:8888");
+            var mainServer = new ApiServer("http://0.0.0.0:8888");
 
             mainServer.Start();
 
