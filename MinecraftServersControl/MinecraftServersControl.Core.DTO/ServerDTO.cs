@@ -7,6 +7,10 @@ namespace MinecraftServersControl.Core.DTO
     {
         public string Name { get; private set; }
 
+        private ServerDTO()
+        {
+        }
+
         public ServerDTO(string name)
         {
             Name = name;

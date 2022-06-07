@@ -2,11 +2,38 @@
 
 namespace MinecraftServersControl.Core.DTO
 {
-    [Serializable]
-    public class Result
+    public interface IResult
     {
-        public ResultCode Code { get; }
-        public string ErrorMessage { get; }
+        ResultCode Code { get; }
+        string ErrorMessage { get; }
+        object Data { get; }
+    }
+
+    [Serializable]
+    public sealed class Result<T> : IResult
+    {
+        public ResultCode Code { get; private set; }
+        public string ErrorMessage { get; private set; }
+        public T Data { get; private set; }
+
+        private Result()
+        {
+        }
+
+        public Result(T data) : this(ResultCode.Success)
+        {
+            Data = data;
+        }
+
+        public Result(T data, ResultCode code) : this(code)
+        {
+            Data = data;
+        }
+
+        public Result(T data, ResultCode code, string errorMessage) : this(code, errorMessage)
+        {
+            Data = data;
+        }
 
         public Result(ResultCode code)
         {
@@ -19,48 +46,12 @@ namespace MinecraftServersControl.Core.DTO
             ErrorMessage = errorMessage;
         }
 
-        public bool HasErrors()
-        {
-            return Code != ResultCode.Success;
-        }
+        object IResult.Data => Data;
 
-        public Result<T> ToGeneric<T>()
-        {
-            return new Result<T>(Code, ErrorMessage);
-        }
-
-        public static implicit operator Result(ResultCode code) => new Result(code);
-    }
-
-    [Serializable]
-    public sealed class Result<T> : Result
-    {
-        public T Data { get; }
-
-        public Result(T data) : base(ResultCode.Success)
-        {
-            Data = data;
-        }
-
-        public Result(T data, ResultCode code) : base(code)
-        {
-            Data = data;
-        }
-
-        public Result(T data, ResultCode code, string errorMessage) : base(code, errorMessage)
-        {
-            Data = data;
-        }
-
-        public Result(ResultCode code) : base(code)
-        {
-        }
-
-        public Result(ResultCode code, string errorMessage) : base(code, errorMessage)
-        {
-        }
+        public bool HasErrors => Code != ResultCode.Success;
 
         public static implicit operator Result<T>(T data) => new Result<T>(data);
         public static implicit operator Result<T>(ResultCode code) => new Result<T>(code);
+        public static implicit operator Result<T>(Result<object> result) => new Result<T>((T)result.Data, result.Code, result.ErrorMessage);
     }
 }

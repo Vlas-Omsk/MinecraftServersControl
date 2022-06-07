@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using WebSocketSharp.Net;
 
-namespace MinecraftServersControl.API.WebSocket.HttpServices
+namespace MinecraftServersControl.API.HttpServices
 {
     public sealed class UserHttpService : HttpService
     {

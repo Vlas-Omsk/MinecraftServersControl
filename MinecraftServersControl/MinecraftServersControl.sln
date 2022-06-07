@@ -27,6 +27,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.DTO", "MinecraftServersControl.Core.DTO\MinecraftServersControl.Core.DTO.csproj", "{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLib", "..\..\WebLib\WebLib.csproj", "{C104D4FA-0949-4D74-95FE-BB98E14B1655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.API.Schema", "MinecraftServersControl.API.Schema\MinecraftServersControl.API.Schema.csproj", "{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Remote", "MinecraftServersControl.Remote\MinecraftServersControl.Remote.csproj", "{1D9C9E1A-413B-4FA9-B615-198A4215D846}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Net", "MinecraftServersControl.Net\MinecraftServersControl.Net.csproj", "{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_Ubuntu|Any CPU = Debug_Ubuntu|Any CPU
@@ -123,6 +131,38 @@ Global
 		{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
 		{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22A8FC19-3FF8-4CAE-90A2-846CB7FC1A34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +170,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B357BAC7-529E-4D81-A0D2-71041B19C8DE} = {950231D4-2DAB-43CE-BC13-300506B8C0EA}
 		{0218D1D7-F9E9-4065-B614-DC1EBFE96CBF} = {950231D4-2DAB-43CE-BC13-300506B8C0EA}
+		{C104D4FA-0949-4D74-95FE-BB98E14B1655} = {950231D4-2DAB-43CE-BC13-300506B8C0EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F59F4C2A-77AF-4EA2-8942-051E0241B101}

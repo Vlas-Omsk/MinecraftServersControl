@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServersControl.API.WebSocket
+namespace MinecraftServersControl.API
 {
     [AttributeUsage(AttributeTargets.Method)]
     internal sealed class HttpRequest : Attribute

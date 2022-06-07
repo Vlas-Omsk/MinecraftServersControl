@@ -15,9 +15,9 @@ namespace MinecraftServersControl.API
             self.Close();
         }
 
-        public static void SendSuccess(this HttpListenerResponse self, Result data)
+        public static void SendSuccess<T>(this HttpListenerResponse self, Result<T> data)
         {
-            Send(self, HttpStatusCode.OK, data.Serialize());
+            Send(self, HttpStatusCode.OK, new HttpResponse<T>(data));
         }
 
         public static void SendError(this HttpListenerResponse self, HttpStatusCode statusCode)
@@ -26,14 +26,14 @@ namespace MinecraftServersControl.API
             self.Close();
         }
 
-        public static void SendError(this HttpListenerResponse self, HttpStatusCode statusCode, HttpErrorResponse data)
+        public static void SendError(this HttpListenerResponse self, HttpStatusCode statusCode, string errorMessage)
         {
-            Send(self, statusCode, data.Serialize());
+            Send(self, statusCode, new HttpResponse<object>(errorMessage));
         }
 
-        public static void Send(this HttpListenerResponse self, HttpStatusCode statusCode, IJson data)
+        public static void Send<T>(this HttpListenerResponse self, HttpStatusCode statusCode, HttpResponse<T> response)
         {
-            var content = Encoding.UTF8.GetBytes(data.ToString());
+            var content = Encoding.UTF8.GetBytes(response.Serialize().ToString());
 
             self.StatusCode = (int)statusCode;
             self.ContentType = ContentTypeNames.ApplicationJson;

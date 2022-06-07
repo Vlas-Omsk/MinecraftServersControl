@@ -1,5 +1,5 @@
 ﻿using MinecraftServersControl.API.IntegrationTests.Helpers;
-using MinecraftServersControl.API.Services;
+using MinecraftServersControl.Core;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
 using System;
@@ -10,19 +10,26 @@ namespace MinecraftServersControl.API.IntegrationTests
     public sealed class ApiTestsFixture : IDisposable
     {
         public ITestOutputHelper Output { get; set; }
-        public ApiContextFactory ApiContextFactory { get; }
+        public Application Application { get; }
         public DevDatabaseContextFactory DatabaseContextFactory { get; }
 
         public ApiTestsFixture()
         {
-            var logger = new CallbackLogger(x => Output.WriteLine(x));
+            var logger = new CallbackLogger(x => Output?.WriteLine(x));
             DatabaseContextFactory = new DevDatabaseContextFactory();
-            ApiContextFactory = new ApiContextFactory(DatabaseContextFactory, logger);
+            Application = new Application(DatabaseContextFactory, logger);
+            var server = new ApiServer(Application, logger, "http://127.0.0.1:8888");
+            server.Start();
         }
 
-        public ApiClient<T> CreateClient<T>() where T : RealtimeApiService, new()
+        public WebSocketClient CreateWebSocketClient()
         {
-            return new ApiClient<T>(ApiContextFactory);
+            return new WebSocketClient("ws://127.0.0.1:8888/gateway");
+        }
+
+        public HttpClient CreateHttpClient()
+        {
+            return new HttpClient("http://127.0.0.1:8888/");
         }
 
         public void Dispose()

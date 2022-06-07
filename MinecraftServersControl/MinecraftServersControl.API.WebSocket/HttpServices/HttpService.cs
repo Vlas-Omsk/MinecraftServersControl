@@ -4,7 +4,7 @@ using MinecraftServersControl.Logging;
 using System;
 using WebSocketSharp.Net;
 
-namespace MinecraftServersControl.API.WebSocket.HttpServices
+namespace MinecraftServersControl.API.HttpServices
 {
     public abstract class HttpService
     {
@@ -28,9 +28,9 @@ namespace MinecraftServersControl.API.WebSocket.HttpServices
             HttpResponse.SendSuccess();
         }
 
-        protected void SendSuccess(Result data)
+        protected void SendSuccess<T>(Result<T> data)
         {
-            Logger.Info($"Response: {data.Code}, Url: {HttpRequest.Url}, Client: {HttpRequest.RemoteEndPoint}");
+            Logger.Info($"Response: OK, Result: {data.Code}, Url: {HttpRequest.Url}, Client: {HttpRequest.RemoteEndPoint}");
 
             HttpResponse.SendSuccess(data);
         }

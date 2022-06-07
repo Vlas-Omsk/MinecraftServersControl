@@ -1,5 +1,5 @@
-﻿using MinecraftServersControl.API.Schema;
-using MinecraftServersControl.API.WebSocket.HttpServices;
+﻿using MinecraftServersControl.API.HttpServices;
+using MinecraftServersControl.API.Schema;
 using MinecraftServersControl.Core;
 using MinecraftServersControl.Logging;
 using PinkJson2;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using WebSocketSharp.Net;
 using WebSocketSharp.Server;
 
-namespace MinecraftServersControl.API.WebSocket
+namespace MinecraftServersControl.API
 {
     public sealed class ApiHttpServer : HttpServer
     {
@@ -38,6 +38,15 @@ namespace MinecraftServersControl.API.WebSocket
                 return;
             }
 
+            e.Response.SetHeader("Access-Control-Allow-Origin", "*");
+            e.Response.SetHeader("Access-Control-Allow-Headers", "*");
+
+            if (httpMethod == HttpMethod.Options)
+            {
+                e.Response.Close();
+                return;
+            }
+
             if (httpMethod == HttpMethod.Post && e.Request.ContentType != ContentTypeNames.ApplicationJson)
             {
                 e.Response.SendError(HttpStatusCode.BadRequest);
@@ -54,13 +63,13 @@ namespace MinecraftServersControl.API.WebSocket
 
             _logger.Info($"Request: {result.ServiceType.Name}.{result.Method.Name}, HttpMethod: {httpMethod}, Url: {e.Request.Url}, Client: {e.Request.RemoteEndPoint}");
 
-            var parameters = MapParameters(result.Method, result.CurrentSegments, result.TargetSegments, e.Request.InputStream, e.Request.ContentEncoding);
-
-            var objCctor = result.ServiceType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, Type.EmptyTypes, null);
-            var obj = (HttpService)objCctor.Invoke(null);
-
             try
             {
+                var parameters = MapParameters(result.Method, result.CurrentSegments, result.TargetSegments, e.Request.InputStream, e.Request.ContentEncoding);
+
+                var objCctor = result.ServiceType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, Type.EmptyTypes, null);
+                var obj = (HttpService)objCctor.Invoke(null);
+
                 obj.Init(_application, _logger, e.Request, e.Response);
 
                 var methodResult = result.Method.Invoke(obj, parameters);
@@ -71,7 +80,7 @@ namespace MinecraftServersControl.API.WebSocket
             catch (Exception ex)
             {
                 _logger.Error(ex.ToString());
-                e.Response.SendError(HttpStatusCode.InternalServerError, new HttpErrorResponse(ex.Message));
+                e.Response.SendError(HttpStatusCode.InternalServerError, ex.Message);
                 return;
             }
 

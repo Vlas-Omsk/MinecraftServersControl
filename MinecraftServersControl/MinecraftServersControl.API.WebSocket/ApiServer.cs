@@ -1,18 +1,16 @@
-﻿using MinecraftServersControl.API.WebSocket.HttpServices;
+﻿using MinecraftServersControl.API.HttpServices;
+using MinecraftServersControl.API.WebSocketServices;
 using MinecraftServersControl.Core;
-using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
 using PinkJson2;
 using System;
 using WebSocketSharp;
-using WebSocketSharp.Server;
 
-namespace MinecraftServersControl.API.WebSocket
+namespace MinecraftServersControl.API
 {
     public sealed class ApiServer
     {
         private readonly ApiHttpServer _server;
-        private readonly Application _application;
         private readonly ILogger _logger;
 
         static ApiServer()
@@ -33,17 +31,16 @@ namespace MinecraftServersControl.API.WebSocket
             }));
         }
 
-        public ApiServer(string url)
+        public ApiServer(Application application, ILogger logger, string url)
         {
-            _logger = new ConsoleLogger();
-            _application = new Application(new DatabaseContextFactory(), _logger);
+            _logger = logger;
 
-            _server = new ApiHttpServer(_application, _logger, url);
+            _server = new ApiHttpServer(application, _logger, url);
             _server.Log.Output = OnLogOutput;
             _server.AddWebSocketService<GatewayWebSocketService>("/gateway", x =>
             {
                 x.Logger = _logger;
-                x.Application = _application;
+                x.Application = application;
             });
             _server.AddHttpService<UserHttpService>("/user");
         }

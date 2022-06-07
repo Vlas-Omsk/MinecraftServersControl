@@ -1,4 +1,7 @@
-﻿using MinecraftServersControl.API.WebSocket;
+﻿using MinecraftServersControl.API;
+using MinecraftServersControl.Core;
+using MinecraftServersControl.DAL;
+using MinecraftServersControl.Logging;
 using System;
 
 namespace MinecraftServersControl.ConsoleHost
@@ -7,7 +10,10 @@ namespace MinecraftServersControl.ConsoleHost
     {
         static void Main(string[] args)
         {
-            var mainServer = new ApiServer("http://0.0.0.0:8888");
+            var logger = new ConsoleLogger();
+            var databaseContextFactory = new DatabaseContextFactory();
+            var application = new Application(databaseContextFactory, logger);
+            var mainServer = new ApiServer(application, logger, "http://0.0.0.0:8888");
 
             mainServer.Start();
 

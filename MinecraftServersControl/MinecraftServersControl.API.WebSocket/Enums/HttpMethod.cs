@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace MinecraftServersControl.API.WebSocket
+namespace MinecraftServersControl.API
 {
     internal enum HttpMethod
     {
         Get,
-        Post
+        Post,
+        Options
     }
 }

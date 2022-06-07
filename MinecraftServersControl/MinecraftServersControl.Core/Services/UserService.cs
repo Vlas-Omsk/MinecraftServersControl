@@ -54,7 +54,7 @@ namespace MinecraftServersControl.Core.Services
             return await CreateSession(session.UserLogin);
         }
 
-        public async Task<Result> VerifySession(Guid sessionId)
+        public async Task<Result<object>> VerifySession(Guid sessionId)
         {
             var session = await GetSessionById(sessionId);
 
