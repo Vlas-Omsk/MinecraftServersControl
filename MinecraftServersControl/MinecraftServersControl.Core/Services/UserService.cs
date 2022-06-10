@@ -54,7 +54,7 @@ namespace MinecraftServersControl.Core.Services
             return await CreateSession(session.UserLogin);
         }
 
-        public async Task<Result<object>> VerifySession(Guid sessionId)
+        public async Task<Result> VerifySession(Guid sessionId)
         {
             var session = await GetSessionById(sessionId);
 
@@ -78,7 +78,7 @@ namespace MinecraftServersControl.Core.Services
                     );
         }
 
-        private async Task<SessionDTO> CreateSession(string login)
+        private async Task<Result<SessionDTO>> CreateSession(string login)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {

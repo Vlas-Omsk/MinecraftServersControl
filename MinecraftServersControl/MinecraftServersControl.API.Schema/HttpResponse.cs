@@ -4,13 +4,36 @@ using System;
 namespace MinecraftServersControl.API.Schema
 {
     [Serializable]
-    public sealed class HttpResponse<T>
+    public class HttpResponse<T> : HttpResponse where T : Result
     {
-        public bool HasErrors { get; private set; }
-        public string ErrorMessage { get; private set; }
-        public Result<T> Result { get; private set; }
+        public T Result { get; protected set; }
 
-        private HttpResponse()
+        protected HttpResponse()
+        {
+        }
+
+        public HttpResponse(string errorMessage) : base(errorMessage)
+        {
+        }
+
+        public HttpResponse(T result)
+        {
+            Result = result;
+        }
+
+        public override string ToString()
+        {
+            return $"(HasErrors: {HasErrors}, Result: {Result})";
+        }
+    }
+
+    [Serializable]
+    public class HttpResponse
+    {
+        public bool HasErrors { get; protected set; }
+        public string ErrorMessage { get; protected set; }
+
+        protected HttpResponse()
         {
         }
 
@@ -20,9 +43,9 @@ namespace MinecraftServersControl.API.Schema
             ErrorMessage = errorMessage;
         }
 
-        public HttpResponse(Result<T> result)
+        public override string ToString()
         {
-            Result = result;
+            return $"(HasErrors: {HasErrors})";
         }
     }
 }

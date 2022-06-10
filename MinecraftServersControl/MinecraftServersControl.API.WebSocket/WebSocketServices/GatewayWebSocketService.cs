@@ -21,23 +21,12 @@ namespace MinecraftServersControl.API.WebSocketServices
 
             SendSuccess(request.Id, result);
 
-            if (result.HasErrors)
+            if (result.HasErrors())
                 return;
 
             _sessionId = request.Data;
             _state = AuthState.Success;
             Application.UserService.SessionRemoved += OnSessionRemoved;
-        }
-
-        [WebSocketRequest(WebSocketRequestCode.GetServers)]
-        public async Task GetServersAsync(WebSocketRequest<object> request)
-        {
-            if (!VerifyState(request, AuthState.Success))
-                return;
-
-            var result = await Application.ServerService.GetServers(_sessionId);
-
-            SendSuccess(request.Id, result);
         }
 
         private async void OnSessionRemoved(object sender, Result<Guid> e)
@@ -52,7 +41,18 @@ namespace MinecraftServersControl.API.WebSocketServices
             });
         }
 
-        private bool VerifyState(IWebSocketRequest request, AuthState authState)
+        [WebSocketRequest(WebSocketRequestCode.GetServers)]
+        public async Task GetServersAsync(WebSocketRequest request)
+        {
+            if (!VerifyState(request, AuthState.Success))
+                return;
+
+            var result = await Application.ServerService.GetServers(_sessionId);
+
+            SendSuccess(request.Id, result);
+        }
+
+        private bool VerifyState(WebSocketRequest request, AuthState authState)
         {
             if (_state != authState)
             {

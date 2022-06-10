@@ -1,5 +1,4 @@
-﻿using MinecraftServersControl.API.Schema;
-using MinecraftServersControl.Core;
+﻿using MinecraftServersControl.Core;
 using MinecraftServersControl.Core.DTO;
 using System;
 using System.Linq;
@@ -20,84 +19,79 @@ namespace MinecraftServersControl.API.IntegrationTests
             _fixture.Output = output;
         }
 
-        //[Fact]
-        //public async Task SignIn_Should_Add_Session_To_Database_And_Close_Client()
-        //{
-        //    var client = _fixture.CreateClient();
-        //    var result = await client.GetResult<SessionDTO>(WebSocketRequestCode.SignIn, new UserDTO("Admin", "Admin".ToSha256Hash()));
+        [Fact]
+        public async Task SignIn_Should_Add_Session_To_Database()
+        {
+            var client = _fixture.CreateHttpClient();
+            var response = await client.GetResponse<Result<SessionDTO>>("/user/signin", new UserDTO("Admin", "Admin".ToSha256Hash()));
 
-        //    Assert.Equal(ResultCode.Success, result.Code);
-        //    using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
-        //        Assert.Contains(
-        //            databaseContext.Sessions.AsEnumerable(), 
-        //            x => new Guid(x.Id) == result.Data.SessionId && 
-        //            x.UserLogin == "Admin"
-        //        );
-        //    Assert.True(client.Closed);
-        //}
+            Assert.Equal(ResultCode.Success, response.Result.Code);
+            using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
+                Assert.Contains(
+                    databaseContext.Sessions.AsEnumerable(),
+                    x => new Guid(x.Id) == response.Result.Data.SessionId &&
+                    x.UserLogin == "Admin"
+                );
+        }
 
-        //[Fact]
-        //public async Task SignIn_Should_Return_UserNotFound_If_User_Is_Incorrect()
-        //{
-        //    var client = _fixture.CreateClient();
-        //    var result = await client.GetResult<SessionDTO>(WebSocketRequestCode.SignIn, new UserDTO("test", "test".ToSha256Hash()));
+        [Fact]
+        public async Task SignIn_Should_Return_UserNotFound_If_User_Is_Incorrect()
+        {
+            var client = _fixture.CreateHttpClient();
+            var response = await client.GetResponse<Result<SessionDTO>>("/user/signin", new UserDTO("test", "test".ToSha256Hash()));
 
-        //    Assert.Equal(ResultCode.UserNotFound, result.Code);
-        //}
+            Assert.Equal(ResultCode.UserNotFound, response.Result.Code);
+        }
 
-        //[Fact]
-        //public async Task Restore_Should_Add_Session_To_Database_And_Remove_Current_Session_And_Close_Client()
-        //{
-        //    var client = _fixture.CreateClient();
-        //    var result = await client.GetResult<SessionDTO>(WebSocketRequestCode.SignIn, new UserDTO("Admin", "Admin".ToSha256Hash()));
+        [Fact]
+        public async Task Restore_Should_Add_Session_To_Database_And_Remove_Current_Session_And_Close_Client()
+        {
+            var client = _fixture.CreateHttpClient();
+            var response = await client.GetResponse<Result<SessionDTO>>("/user/signin", new UserDTO("Admin", "Admin".ToSha256Hash()));
+            var response2 = await client.GetResponse<Result<SessionDTO>>("/user/restore", null, response.Result.Data.SessionId);
 
-        //    var client2 = _fixture.CreateClient();
-        //    var result2 = await client2.GetResult<SessionDTO>(WebSocketRequestCode.Restore, result.Data.SessionId);
+            Assert.Equal(ResultCode.Success, response2.Result.Code);
+            using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
+            {
+                Assert.DoesNotContain(
+                    databaseContext.Sessions.AsEnumerable(),
+                    x => new Guid(x.Id) == response.Result.Data.SessionId &&
+                    x.UserLogin == "Admin"
+                );
+                Assert.Contains(
+                    databaseContext.Sessions.AsEnumerable(),
+                    x => new Guid(x.Id) == response2.Result.Data.SessionId &&
+                    x.UserLogin == "Admin"
+                );
+            }
+        }
 
-        //    Assert.Equal(ResultCode.Success, result2.Code);
-        //    using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
-        //    {
-        //        Assert.DoesNotContain(
-        //            databaseContext.Sessions.AsEnumerable(),
-        //            x => new Guid(x.Id) == result.Data.SessionId &&
-        //            x.UserLogin == "Admin"
-        //        );
-        //        Assert.Contains(
-        //            databaseContext.Sessions.AsEnumerable(),
-        //            x => new Guid(x.Id) == result2.Data.SessionId &&
-        //            x.UserLogin == "Admin"
-        //        );
-        //    }
-        //    Assert.True(client.Closed);
-        //}
+        [Fact]
+        public async Task Restore_Should_Return_SessionExpired_If_SessionId_Is_Incorrect()
+        {
+            var client = _fixture.CreateHttpClient();
+            var response = await client.GetResponse<Result<SessionDTO>>("/user/restore", null, Guid.NewGuid());
 
-        //[Fact]
-        //public async Task Restore_Should_Return_SessionExpired_If_SessionId_Is_Incorrect()
-        //{
-        //    var client = _fixture.CreateClient();
-        //    var result = await client.GetResult<SessionDTO>(WebSocketRequestCode.Restore, Guid.NewGuid());
+            Assert.Equal(ResultCode.SessionExpired, response.Result.Code);
+        }
 
-        //    Assert.Equal(ResultCode.SessionExpired, result.Code);
-        //}
+        [Fact]
+        public async Task Restore_Should_Return_SessionExpired_If_Session_Is_Expired()
+        {
+            var client = _fixture.CreateHttpClient();
+            var response = await client.GetResponse<Result<SessionDTO>>("/user/signin", new UserDTO("Admin", "Admin".ToSha256Hash()));
 
-        //[Fact]
-        //public async Task Restore_Should_Return_SessionExpired_If_Session_Is_Expired()
-        //{
-        //    var client = _fixture.CreateClient();
-        //    var result = await client.GetResult<SessionDTO>(WebSocketRequestCode.SignIn, new UserDTO("Admin", "Admin".ToSha256Hash()));
+            using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
+            {
+                var session = await databaseContext.Sessions.FindAsync(response.Result.Data.SessionId.ToByteArray());
+                session.ExpiresAt = (int)(DateTime.Now - TimeSpan.FromMinutes(1)).ToUnixTime();
+                databaseContext.Sessions.Update(session);
+                await databaseContext.SaveChangesAsync();
+            }
 
-        //    using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
-        //    {
-        //        var session = await databaseContext.Sessions.FindAsync(result.Data.SessionId.ToByteArray());
-        //        session.ExpiresAt = (int)(DateTime.Now - TimeSpan.FromMinutes(1)).ToUnixTime();
-        //        databaseContext.Sessions.Update(session);
-        //        await databaseContext.SaveChangesAsync();
-        //    }
+            var response2 = await client.GetResponse<Result<SessionDTO>>("/user/restore", null, response.Result.Data.SessionId);
 
-        //    var client2 = _fixture.CreateClient();
-        //    var result2 = await client2.GetResult<SessionDTO>(WebSocketRequestCode.Restore, result.Data.SessionId);
-
-        //    Assert.Equal(ResultCode.SessionExpired, result2.Code);
-        //}
+            Assert.Equal(ResultCode.SessionExpired, response2.Result.Code);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MinecraftServersControl.Tests
 {
@@ -6,7 +7,6 @@ namespace MinecraftServersControl.Tests
     {
         static void Main(string[] args)
         {
-            
         }
     }
 }

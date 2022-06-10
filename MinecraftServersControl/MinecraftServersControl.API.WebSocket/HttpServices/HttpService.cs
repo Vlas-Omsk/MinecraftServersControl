@@ -13,33 +13,30 @@ namespace MinecraftServersControl.API.HttpServices
         protected HttpListenerRequest HttpRequest { get; private set; }
         protected HttpListenerResponse HttpResponse { get; private set; }
 
-        internal void Init(Application application, ILogger logger, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse)
+        private HttpRequestHandler _requestHandler;
+
+        internal void Init(Application application, ILogger logger, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, HttpRequestHandler requestHandler)
         {
             Application = application;
             Logger = logger;
             HttpRequest = httpRequest;
             HttpResponse = httpResponse;
+            _requestHandler = requestHandler;
         }
 
-        protected void SendSuccess()
+        public void SendSuccess<T>(Result<T> data)
         {
-            Logger.Info($"Response: OK, Url: {HttpRequest.Url}, Client: {HttpRequest.RemoteEndPoint}");
-
-            HttpResponse.SendSuccess();
+            _requestHandler.SendSuccess(data);
         }
 
-        protected void SendSuccess<T>(Result<T> data)
+        public void SendError(HttpStatusCode statusCode)
         {
-            Logger.Info($"Response: OK, Result: {data.Code}, Url: {HttpRequest.Url}, Client: {HttpRequest.RemoteEndPoint}");
-
-            HttpResponse.SendSuccess(data);
+            _requestHandler.SendError(statusCode);
         }
 
-        protected void SendError(HttpStatusCode statusCode)
+        public void SendError(HttpStatusCode statusCode, string errorMessage)
         {
-            Logger.Info($"Response: {statusCode}, Url: {HttpRequest.Url}, Client: {HttpRequest.RemoteEndPoint}");
-
-            HttpResponse.SendError(statusCode);
+            _requestHandler.SendError(statusCode, errorMessage);
         }
     }
 }

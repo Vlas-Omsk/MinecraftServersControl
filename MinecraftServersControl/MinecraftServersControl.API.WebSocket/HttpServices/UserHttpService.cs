@@ -20,7 +20,7 @@ namespace MinecraftServersControl.API.HttpServices
 
             if (authorization == null)
             {
-                SendError(HttpStatusCode.BadRequest);
+                SendError(HttpStatusCode.Unauthorized);
                 return;
             }
 

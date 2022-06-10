@@ -6,8 +6,9 @@ namespace MinecraftServersControl.API.Schema
     {
         Success = 0,
         DataError = 1,
-        InvalidState = 2,
-        InternalServerError = 3,
-        InvalidCode = 4,
+        InternalServerError = 2,
+        InvalidCode = 3,
+
+        InvalidState = 4,
     }
 }

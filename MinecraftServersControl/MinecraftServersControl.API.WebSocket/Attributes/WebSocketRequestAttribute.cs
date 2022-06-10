@@ -4,13 +4,13 @@ using System;
 namespace MinecraftServersControl.API
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public sealed class WebSocketRequestAttribute : Attribute
+    internal sealed class WebSocketRequestAttribute : Attribute
     {
-        public WebSocketRequestCode RequestCode { get; }
+        public WebSocketRequestCode Code { get; }
 
-        public WebSocketRequestAttribute(WebSocketRequestCode requestCode)
+        public WebSocketRequestAttribute(WebSocketRequestCode code)
         {
-            RequestCode = requestCode;
+            Code = code;
         }
     }
 }

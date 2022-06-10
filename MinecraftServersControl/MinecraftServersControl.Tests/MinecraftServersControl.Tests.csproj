@@ -6,8 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PinkJson\PinkJson2\PinkJson2\PinkJson2.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Core.IO\MinecraftServersControl.Core.IO.csproj" />
+    <Compile Remove="ProcessHostTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ProcessHostTest.cs" />
   </ItemGroup>
 
 </Project>

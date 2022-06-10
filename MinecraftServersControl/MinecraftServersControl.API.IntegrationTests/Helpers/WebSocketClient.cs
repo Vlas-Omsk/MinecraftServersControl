@@ -12,7 +12,9 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
     {
         private int _counter;
         private WebSocket _webSocket;
-        private Action<WebSocketResponseBase> _listeners;
+        private MessageReceived _listeners;
+
+        private delegate void MessageReceived(WebSocketResponse response, IJson json);
 
         public WebSocketClient(string url)
         {
@@ -26,36 +28,93 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
 
         private void OnWebSocketMessage(object sender, MessageEventArgs e)
         {
-            var responseBase = Json.Parse(e.Data).Deserialize<WebSocketResponseBase>();
-
             var json = Json.Parse(e.Data);
-            var response = json.Deserialize<WebSocketResponseBase>(new ObjectSerializerOptions()
+            var response = Deserialize<WebSocketResponse>(json);
+
+            _listeners.Invoke(response, json);
+        }
+
+        private static T Deserialize<T>(IJson json)
+        {
+            return json.Deserialize<T>(new ObjectSerializerOptions()
             {
                 IgnoreMissingProperties = false
             });
-
-            _listeners.Invoke(response);
         }
 
-        public Task<WebSocketResponse<TResponseData>> GetResponse<TRequestData, TResponseData>(WebSocketRequestCode code, TRequestData data)
+        public Task<WebSocketResponse<TResult>> GetResponse<TResult>(WebSocketRequestCode code)
+            where TResult : Result
         {
-            var id = _counter++;
-            var taskCompletionSource = new TaskCompletionSource<WebSocketResponse<TResponseData>>();
-            Action<WebSocketResponseBase> handler = null;
+            return GetResponse<WebSocketRequest, WebSocketResponse<TResult>>(new WebSocketRequest(_counter++, code));
+        }
 
-            handler = (responseBase) =>
+        public Task<WebSocketResponse<Result>> GetResponse<TRequestData>(WebSocketRequestCode code, TRequestData data)
+        {
+            return GetResponse<WebSocketRequest<TRequestData>, WebSocketResponse<Result>>(new WebSocketRequest<TRequestData>(_counter++, code, data));
+        }
+
+        public Task<WebSocketResponse<TResult>> GetResponse<TRequestData, TResult>(WebSocketRequestCode code, TRequestData data)
+            where TResult : Result
+        {
+            return GetResponse<WebSocketRequest<TRequestData>, WebSocketResponse<TResult>>(new WebSocketRequest<TRequestData>(_counter++, code, data));
+        }
+
+        private Task<TResponse> GetResponse<TRequest, TResponse>(TRequest request)
+            where TRequest : WebSocketRequest
+            where TResponse : WebSocketResponse
+        {
+            var taskCompletionSource = new TaskCompletionSource<TResponse>();
+            MessageReceived handler = null;
+
+            handler = (WebSocketResponse response, IJson json) =>
             {
-                if (responseBase.RequestId == id)
+                if (response.RequestId == request.Id)
                 {
                     try
                     {
-                        taskCompletionSource.SetResult(
-                            new WebSocketResponse<TResponseData>(
-                                responseBase.RequestId,
-                                responseBase.Code,
-                                responseBase.ErrorMessage,
-                                responseBase.Result.Deserialize<Result<TResponseData>>()
-                            ));
+                        taskCompletionSource.TrySetResult(json.Deserialize<TResponse>());
+                    }
+                    catch (Exception ex)
+                    {
+                        taskCompletionSource.TrySetException(ex);
+                    }
+                    finally
+                    {
+                        _listeners -= handler;
+                    }
+                }
+            };
+
+            _listeners += handler;
+
+            SendRequestAsync(request);
+
+            Task.Delay(5000)
+                .ContinueWith(x => taskCompletionSource.TrySetException(new Exception("Timeout")))
+                .ConfigureAwait(false);
+
+            return taskCompletionSource.Task;
+        }
+
+        public Task<WebSocketResponse<TResult>> GetBroadcastResult<TResult>(ResultCode code)
+            where TResult : Result
+        {
+            var taskCompletionSource = new TaskCompletionSource<WebSocketResponse<TResult>>();
+            MessageReceived handler = null;
+
+            handler = (WebSocketResponse response, IJson json) =>
+            {
+                if (response.RequestId == -1)
+                {
+                    try
+                    {
+                        var responseGeneric = json.Deserialize<WebSocketResponse<TResult>>();
+
+                        if (responseGeneric.Result.Code == code)
+                        {
+                            taskCompletionSource.SetResult(responseGeneric);
+                            _listeners -= handler;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -70,41 +129,10 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
 
             _listeners += handler;
 
-            SendRequestAsync(new WebSocketRequest<TRequestData>(id, code, data));
-
             return taskCompletionSource.Task;
         }
 
-        public Task<WebSocketResponse<TResponseData>> GetBroadcastResult<TResponseData>(ResultCode code)
-        {
-            var taskCompletionSource = new TaskCompletionSource<WebSocketResponse<TResponseData>>();
-            Action<WebSocketResponseBase> handler = null;
-
-            handler = (responseBase) =>
-            {
-                if (responseBase.RequestId == WebSocketResponse.BroadcastRequestId &&
-                    responseBase.Code == WebSocketResponseCode.Success)
-                {
-                    var response = 
-                        new WebSocketResponse<TResponseData>(
-                            responseBase.RequestId,
-                            responseBase.Code,
-                            responseBase.ErrorMessage,
-                            responseBase.Result.Deserialize<Result<TResponseData>>()
-                        );
-
-                    if (response.Result.Code == code)
-                        taskCompletionSource.SetResult(response);
-                    _listeners -= handler;
-                }
-            };
-
-            _listeners += handler;
-
-            return taskCompletionSource.Task;
-        }
-
-        public void SendRequestAsync(IWebSocketRequest webSocketRequest)
+        private void SendRequestAsync(WebSocketRequest webSocketRequest)
         {
             var json = webSocketRequest.Serialize();
             _webSocket.Send(json.ToString());

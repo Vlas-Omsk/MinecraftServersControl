@@ -3,19 +3,44 @@
 namespace MinecraftServersControl.API.Schema
 {
     [Serializable]
-    public class WebSocketRequest<T> : IWebSocketRequest
+    public class WebSocketRequest<T> : WebSocketRequest
     {
-        public int Id { get; }
-        public WebSocketRequestCode Code { get; }
-        public T Data { get; }
+        public T Data { get; protected set; }
 
-        public WebSocketRequest(int id, WebSocketRequestCode code, T data)
+        protected WebSocketRequest()
         {
-            Id = id;
-            Code = code;
+        }
+
+        public WebSocketRequest(int id, WebSocketRequestCode code, T data) : base(id, code)
+        {
             Data = data;
         }
 
-        object IWebSocketRequest.Data => Data;
+        public override string ToString()
+        {
+            return $"(Id: {Id}, Code: {Code}, Data: {Data})";
+        }
+    }
+
+    [Serializable]
+    public class WebSocketRequest
+    {
+        public int Id { get; protected set; }
+        public WebSocketRequestCode Code { get; protected set; }
+
+        protected WebSocketRequest()
+        {
+        }
+
+        public WebSocketRequest(int id, WebSocketRequestCode code)
+        {
+            Id = id;
+            Code = code;
+        }
+
+        public override string ToString()
+        {
+            return $"(Id: {Id}, Code: {Code})";
+        }
     }
 }

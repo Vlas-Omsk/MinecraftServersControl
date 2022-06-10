@@ -1,22 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MinecraftServersControl.Core.DTO
 {
-    public interface IResult
-    {
-        ResultCode Code { get; }
-        string ErrorMessage { get; }
-        object Data { get; }
-    }
-
     [Serializable]
-    public sealed class Result<T> : IResult
+    public class Result<T> : Result
     {
-        public ResultCode Code { get; private set; }
-        public string ErrorMessage { get; private set; }
-        public T Data { get; private set; }
+        public T Data { get; protected set; }
 
-        private Result()
+        protected Result()
         {
         }
 
@@ -35,6 +27,33 @@ namespace MinecraftServersControl.Core.DTO
             Data = data;
         }
 
+        public Result(ResultCode code) : base(code)
+        {
+        }
+
+        public Result(ResultCode code, string errorMessage) : base(code, errorMessage)
+        {
+        }
+
+        public override string ToString()
+        {
+            return $"(Code: {Code}, Data: {(EqualityComparer<T>.Default.Equals(Data, default) ? "null" : Data)})";
+        }
+
+        public static implicit operator Result<T>(ResultCode code) => new Result<T>(code);
+        public static implicit operator Result<T>(T data) => new Result<T>(data);
+    }
+
+    [Serializable]
+    public class Result
+    {
+        public ResultCode Code { get; protected set; }
+        public string ErrorMessage { get; protected set; }
+
+        protected Result()
+        {
+        }
+
         public Result(ResultCode code)
         {
             Code = code;
@@ -46,12 +65,21 @@ namespace MinecraftServersControl.Core.DTO
             ErrorMessage = errorMessage;
         }
 
-        object IResult.Data => Data;
+        public Result<T> ToResult<T>()
+        {
+            return new Result<T>(default, Code, ErrorMessage);
+        }
 
-        public bool HasErrors => Code != ResultCode.Success;
+        public bool HasErrors()
+        {
+            return Code != ResultCode.Success;
+        }
 
-        public static implicit operator Result<T>(T data) => new Result<T>(data);
-        public static implicit operator Result<T>(ResultCode code) => new Result<T>(code);
-        public static implicit operator Result<T>(Result<object> result) => new Result<T>((T)result.Data, result.Code, result.ErrorMessage);
+        public override string ToString()
+        {
+            return $"(Code: {Code})";
+        }
+
+        public static implicit operator Result(ResultCode code) => new Result(code);
     }
 }

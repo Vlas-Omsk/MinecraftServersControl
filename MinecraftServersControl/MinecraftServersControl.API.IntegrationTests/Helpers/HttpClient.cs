@@ -1,4 +1,5 @@
 ﻿using MinecraftServersControl.API.Schema;
+using MinecraftServersControl.Core.DTO;
 using PinkJson2;
 using System;
 using System.Text;
@@ -16,17 +17,17 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
             _url = url;
         }
 
-        public Task<HttpResponse<T>> GetResponse<T>(string path)
+        public Task<HttpResponse<T>> GetResponse<T>(string path) where T : Result
         {
             return GetResponse<T>(path, null, null);
         }
 
-        public Task<HttpResponse<T>> GetResponse<T>(string path, object data)
+        public Task<HttpResponse<T>> GetResponse<T>(string path, object data) where T : Result
         {
             return GetResponse<T>(path, data, null);
         }
 
-        public async Task<HttpResponse<T>> GetResponse<T>(string path, object data, Guid? sessionId)
+        public async Task<HttpResponse<T>> GetResponse<T>(string path, object data, Guid? sessionId) where T : Result
         {
             var request = data != null ?
                 HttpRequest.POST :

@@ -20,8 +20,8 @@ namespace MinecraftServersControl.Core.Services
         {
             var result = await Application.UserService.VerifySession(sessionId);
 
-            if (result.HasErrors)
-                return result;
+            if (result.HasErrors())
+                return result.ToResult<IEnumerable<ComputerDTO>>();
 
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
                 return new Result<IEnumerable<ComputerDTO>>(

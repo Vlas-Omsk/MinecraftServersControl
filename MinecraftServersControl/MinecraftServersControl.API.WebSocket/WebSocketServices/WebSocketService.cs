@@ -1,12 +1,11 @@
 ﻿using MinecraftServersControl.API.Schema;
+using MinecraftServersControl.Common;
 using MinecraftServersControl.Core;
 using MinecraftServersControl.Core.DTO;
 using MinecraftServersControl.Logging;
 using PinkJson2;
-using PinkJson2.Serializers;
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -15,8 +14,8 @@ namespace MinecraftServersControl.API.WebSocketServices
 {
     public abstract class WebSocketService : WebSocketBehavior
     {
-        internal ILogger Logger { get; set; }
         internal Application Application { get; set; }
+        internal ILogger Logger { get; set; }
 
         protected override void OnOpen()
         {
@@ -28,112 +27,96 @@ namespace MinecraftServersControl.API.WebSocketServices
             Logger.Info("Closed " + GetInfo());
         }
 
-        protected sealed override async void OnMessage(MessageEventArgs e)
+        protected override async void OnMessage(MessageEventArgs e)
         {
-            await Task.Run(() => ProcessMessage(e.Data));
-        }
-
-        private void ProcessMessage(string data)
-        {
-            IJson json;
-
-            try
-            {
-                json = Json.Parse(data);
-            }
-            catch (Exception ex)
+            if (!e.Data.TryParseJson(out IJson json, out Exception ex))
             {
                 Logger.Warn(ex.ToString());
                 SendError(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.DataError, ex.Message);
                 return;
             }
 
-            if (!TryDeserializeData(WebSocketResponse.BroadcastRequestId, json, typeof(WebSocketRequestBase), out object requestBaseObj))
+            if (!json.TryDeserialize(out WebSocketRequest request, out ex))
+            {
+                Logger.Warn(ex.ToString());
+                SendError(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.DataError, ex.Message);
                 return;
+            }
 
-            var requestBase = (WebSocketRequestBase)requestBaseObj;
-
-            Logger.Info($"Request: {requestBase.Code}, Client: {GetInfo()}");
+            Logger.Info($"Request: {request}, Client: {GetInfo()}");
 
             var method = GetType()
-                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .FirstOrDefault(x =>
-                {
-                    var webSocketRequestAttribute = x.GetCustomAttribute<WebSocketRequestAttribute>();
-                    return webSocketRequestAttribute != null && webSocketRequestAttribute.RequestCode == requestBase.Code;
-                });
+                .GetMethodsWithAttribute<WebSocketRequestAttribute>()
+                .FirstOrDefault(x => x.Attribute.Code == request.Code)?
+                .Method;
 
             if (method == null)
             {
-                SendError(requestBase.Id, WebSocketResponseCode.InvalidCode, null);
+                SendError(request.Id, WebSocketResponseCode.InvalidCode, null);
                 return;
             }
 
-            var requestType = method.GetParameters()[0].ParameterType;
-            var dataType = requestType.GetGenericArguments()[0];
-            object dataObject = null;
+            var methodParameter = method.GetParameters().ElementAtOrDefault(0);
 
-            if (!TryDeserializeData(requestBase.Id, requestBase.Data, dataType, out dataObject))
+            if (methodParameter == null)
+            {
+                Logger.Error("(" + method.ToString() + ").Parameters.Length != 1");
+                SendError(request.Id, WebSocketResponseCode.InternalServerError, null);
                 return;
+            }
 
-            var requestCctor = requestType
-                .GetConstructor(new Type[] { typeof(int), typeof(WebSocketRequestCode), dataType });
-
-            var request = (IWebSocketRequest)requestCctor.Invoke(new object[] { requestBase.Id, requestBase.Code, dataObject });
+            if (!json.TryDeserialize(methodParameter.ParameterType, out object requestGeneric, out ex))
+            {
+                Logger.Warn(ex.ToString());
+                SendError(request.Id, WebSocketResponseCode.DataError, ex.Message);
+                return;
+            }
 
             try
             {
-                var methodResult = method.Invoke(this, new object[] { request });
+                var methodResult = method.Invoke(this, new object[] { requestGeneric });
 
                 if (methodResult is Task task)
-                    task.ConfigureAwait(false).GetAwaiter().GetResult();
+                    await task.ConfigureAwait(false);
             }
-            catch (Exception ex)
+            catch (Exception exx)
             {
-                Logger.Error(ex.ToString());
+                Logger.Error(exx.ToString());
                 SendError(request.Id, WebSocketResponseCode.InternalServerError, null);
                 return;
             }
         }
 
-        private bool TryDeserializeData(int requestId, IJson json, Type type, out object obj)
-        {
-            try
-            {
-                obj = json.Deserialize(type, new ObjectSerializerOptions()
-                {
-                    IgnoreMissingProperties = false
-                });
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(ex.ToString());
-                SendError(requestId, WebSocketResponseCode.DataError, ex.Message);
-                obj = null;
-                return false;
-            }
-        }
-
         protected void SendError(int requestId, WebSocketResponseCode code, string message)
         {
-            SendResponse(new WebSocketResponse<object>(requestId, code, message, null));
+            SendResponse(new WebSocketResponse(requestId, code, message));
+        }
+
+        protected void SendSuccess(int requestId, Result result)
+        {
+            SendResponse(new WebSocketResponse<Result>(requestId, WebSocketResponseCode.Success, null, result));
         }
 
         protected void SendSuccess<T>(int requestId, Result<T> result)
         {
-            SendResponse(new WebSocketResponse<T>(requestId, WebSocketResponseCode.Success, null, result));
+            SendResponse(new WebSocketResponse<Result<T>>(requestId, WebSocketResponseCode.Success, null, result));
         }
 
-        private void SendResponse(IWebSocketResponse response)
+        private void SendResponse(WebSocketResponse response)
         {
-            Logger.Info($"Response: {response.Code}, Result: {response?.Result?.Code}, Client: {GetInfo()}");
+            Logger.Info($"Response: {response}, Client: {GetInfo()}");
 
             if (ConnectionState != WebSocketState.Open)
                 return;
 
-            var json = response.Serialize();
-            Send(json.ToString());
+            try
+            {
+                Send(response.Serialize().ToString());
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.ToString());
+            }
         }
 
         private string GetInfo()
