@@ -21,11 +21,11 @@ namespace MinecraftServersControl.API
         private HttpListenerRequest _httpRequest;
         private HttpListenerResponse _httpResponse;
         private readonly Application _application;
-        private readonly ILogger _logger;
+        private readonly Logger _logger;
         private readonly Dictionary<Uri, Type> _httpServices = new Dictionary<Uri, Type>();
         private bool _handled;
 
-        internal HttpRequestHandler(HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, Application application, ILogger logger, Dictionary<Uri, Type> httpServices)
+        internal HttpRequestHandler(HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, Application application, Logger logger, Dictionary<Uri, Type> httpServices)
         {
             _httpRequest = httpRequest;
             _httpResponse = httpResponse;

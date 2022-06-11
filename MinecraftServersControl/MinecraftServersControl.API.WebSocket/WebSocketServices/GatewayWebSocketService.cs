@@ -47,7 +47,7 @@ namespace MinecraftServersControl.API.WebSocketServices
             if (!VerifyState(request, AuthState.Success))
                 return;
 
-            var result = await Application.ServerService.GetServers(_sessionId);
+            var result = await Application.ServerService.GetServers();
 
             SendSuccess(request.Id, result);
         }

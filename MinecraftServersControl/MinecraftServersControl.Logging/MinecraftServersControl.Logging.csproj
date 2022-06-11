@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\websocket-sharp\websocket-sharp\websocket-sharp.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,11 @@
+﻿{
+  "Id": "e789493c-b7fb-4e89-9417-89f0b97faac1",
+  "Url": "ws://127.0.0.1:8889",
+  "ReconnectDelaySeconds": 10,
+  "Servers": [
+    {
+      "Id": "a964133a-d1a9-469d-bdef-768805612025",
+      "Path": "cmd"
+    }
+  ]
+}

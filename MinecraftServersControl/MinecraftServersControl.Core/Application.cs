@@ -12,11 +12,14 @@ namespace MinecraftServersControl.Core
     {
         public UserService UserService { get; }
         public ServerService ServerService { get; }
+        public ComputerService ComputerService { get; }
+        public INetworkServer NetworkServer { get; set; }
 
-        public Application(DatabaseContextFactoryBase databaseContextFactory, ILogger logger)
+        public Application(DatabaseContextFactoryBase databaseContextFactory, Logger logger)
         {
             UserService = new UserService(this, databaseContextFactory, logger);
             ServerService = new ServerService(this, databaseContextFactory, logger);
+            ComputerService = new ComputerService(this, databaseContextFactory, logger);
         }
     }
 }

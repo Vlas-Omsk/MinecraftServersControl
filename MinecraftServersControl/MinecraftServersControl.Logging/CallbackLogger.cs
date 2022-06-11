@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace MinecraftServersControl.Logging
 {
-    public sealed class CallbackLogger : ILogger
+    public sealed class CallbackLogger : Logger
     {
         private Action<string> _callback;
 
@@ -11,26 +12,11 @@ namespace MinecraftServersControl.Logging
             _callback = callback;
         }
 
-        public void Info(string message)
+        public override void Log(LogLevel level, StackFrame frame, string message)
         {
-            Write("info", message);
-        }
-
-        public void Warn(string message)
-        {
-            Write("warn", message);
-        }
-
-        public void Error(string message)
-        {
-            Write("error", message);
-        }
-
-        private void Write(string header, string message)
-        {
-            header = $"[{header.ToUpper()}] ";
+            var header = $"[{level.ToString().ToUpper()}] ";
             _callback(
-                header + 
+                header +
                 message.Replace(Environment.NewLine, Environment.NewLine + new string(' ', header.Length))
             );
         }

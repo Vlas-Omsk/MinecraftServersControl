@@ -2,6 +2,7 @@
 using MinecraftServersControl.Core;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
+using MinecraftServersControl.Remote.Server;
 using System;
 
 namespace MinecraftServersControl.ConsoleHost
@@ -13,9 +14,12 @@ namespace MinecraftServersControl.ConsoleHost
             var logger = new ConsoleLogger();
             var databaseContextFactory = new DatabaseContextFactory();
             var application = new Application(databaseContextFactory, logger);
-            var mainServer = new ApiServer(application, logger, "http://0.0.0.0:8888");
+            var networkServer = new NetworkWebsocketServer("ws://0.0.0.0:8889", logger, application);
+            application.NetworkServer = networkServer;
+            var server = new ApiServer(application, logger, "http://0.0.0.0:8888");
 
-            mainServer.Start();
+            networkServer.Start();
+            server.Start();
 
             while (true)
             {

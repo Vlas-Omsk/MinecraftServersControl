@@ -7,11 +7,11 @@ namespace MinecraftServersControl.Common
 {
     public static class TypeExtensions
     {
-        public static IEnumerable<MethodAttribute<T>> GetMethodsWithAttribute<T>(this Type self) where T : Attribute
+        public static IEnumerable<MethodAttributePair<T>> GetMethodsWithAttribute<T>(this Type self) where T : Attribute
         {
             return self
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .Select(x => new MethodAttribute<T>(x, x.GetCustomAttribute<T>()))
+                .Select(x => new MethodAttributePair<T>(x, x.GetCustomAttribute<T>()))
                 .Where(x => x.Attribute != null);
         }
     }

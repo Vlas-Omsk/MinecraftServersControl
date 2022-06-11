@@ -13,7 +13,7 @@ namespace MinecraftServersControl.Core.Services
     {
         private static readonly TimeSpan _sessionLifeTime = TimeSpan.FromDays(1);
 
-        internal UserService(Application application, DatabaseContextFactoryBase databaseContextFactory, ILogger logger) : 
+        internal UserService(Application application, DatabaseContextFactoryBase databaseContextFactory, Logger logger) : 
             base(application, databaseContextFactory, logger)
         {
         }

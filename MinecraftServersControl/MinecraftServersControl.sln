@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API", "MinecraftServersControl.API.WebSocket\MinecraftServersControl.API.csproj", "{28D02EDE-8897-487E-98B3-89B198F2CD25}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.IO", "MinecraftServersControl.Core.IO\MinecraftServersControl.Core.IO.csproj", "{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.DTO", "MinecraftServersControl.Core.DTO\MinecraftServersControl.Core.DTO.csproj", "{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLib", "..\..\WebLib\WebLib.csproj", "{C104D4FA-0949-4D74-95FE-BB98E14B1655}"
@@ -33,7 +31,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote", "MinecraftServersControl.Remote\MinecraftServersControl.Remote.csproj", "{1D9C9E1A-413B-4FA9-B615-198A4215D846}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Common", "MinecraftServersControl.Common\MinecraftServersControl.Common.csproj", "{CD12E855-78A2-4A1D-894C-56E77E436B74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Common", "MinecraftServersControl.Common\MinecraftServersControl.Common.csproj", "{CD12E855-78A2-4A1D-894C-56E77E436B74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Remote", "Remote", "{5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.ConsoleHost", "MinecraftServersControl.Remote.ConsoleHost\MinecraftServersControl.Remote.ConsoleHost.csproj", "{913F587A-1D4C-4405-8376-CC845095940D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Client", "MinecraftServersControl.Remote.Network\MinecraftServersControl.Remote.Client.csproj", "{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.DTO", "MinecraftServersControl.Remote.DTO\MinecraftServersControl.Remote.DTO.csproj", "{7331C735-013F-4ADA-9605-44AA436B3822}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Remote.Schema", "MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Schema.csproj", "{661D667A-377B-4322-9425-14A510C8118A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Remote.Server", "MinecraftServersControl.Remote.Server\MinecraftServersControl.Remote.Server.csproj", "{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,14 +125,6 @@ Global
 		{28D02EDE-8897-487E-98B3-89B198F2CD25}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
 		{28D02EDE-8897-487E-98B3-89B198F2CD25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28D02EDE-8897-487E-98B3-89B198F2CD25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
-		{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
-		{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
-		{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4FE09AA-90D5-4423-8816-75BEE3C27F6D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
 		{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
 		{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -163,6 +165,46 @@ Global
 		{CD12E855-78A2-4A1D-894C-56E77E436B74}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
 		{CD12E855-78A2-4A1D-894C-56E77E436B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD12E855-78A2-4A1D-894C-56E77E436B74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{913F587A-1D4C-4405-8376-CC845095940D}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{913F587A-1D4C-4405-8376-CC845095940D}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{913F587A-1D4C-4405-8376-CC845095940D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{913F587A-1D4C-4405-8376-CC845095940D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{913F587A-1D4C-4405-8376-CC845095940D}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{913F587A-1D4C-4405-8376-CC845095940D}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{913F587A-1D4C-4405-8376-CC845095940D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{913F587A-1D4C-4405-8376-CC845095940D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7331C735-013F-4ADA-9605-44AA436B3822}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{7331C735-013F-4ADA-9605-44AA436B3822}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{7331C735-013F-4ADA-9605-44AA436B3822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7331C735-013F-4ADA-9605-44AA436B3822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7331C735-013F-4ADA-9605-44AA436B3822}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{7331C735-013F-4ADA-9605-44AA436B3822}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{7331C735-013F-4ADA-9605-44AA436B3822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7331C735-013F-4ADA-9605-44AA436B3822}.Release|Any CPU.Build.0 = Release|Any CPU
+		{661D667A-377B-4322-9425-14A510C8118A}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{661D667A-377B-4322-9425-14A510C8118A}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{661D667A-377B-4322-9425-14A510C8118A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{661D667A-377B-4322-9425-14A510C8118A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{661D667A-377B-4322-9425-14A510C8118A}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{661D667A-377B-4322-9425-14A510C8118A}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{661D667A-377B-4322-9425-14A510C8118A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{661D667A-377B-4322-9425-14A510C8118A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,6 +213,12 @@ Global
 		{B357BAC7-529E-4D81-A0D2-71041B19C8DE} = {950231D4-2DAB-43CE-BC13-300506B8C0EA}
 		{0218D1D7-F9E9-4065-B614-DC1EBFE96CBF} = {950231D4-2DAB-43CE-BC13-300506B8C0EA}
 		{C104D4FA-0949-4D74-95FE-BB98E14B1655} = {950231D4-2DAB-43CE-BC13-300506B8C0EA}
+		{1D9C9E1A-413B-4FA9-B615-198A4215D846} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
+		{913F587A-1D4C-4405-8376-CC845095940D} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
+		{2DBBD944-0DBC-4AB5-9EE6-9974074756D8} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
+		{7331C735-013F-4ADA-9605-44AA436B3822} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
+		{661D667A-377B-4322-9425-14A510C8118A} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
+		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F59F4C2A-77AF-4EA2-8942-051E0241B101}

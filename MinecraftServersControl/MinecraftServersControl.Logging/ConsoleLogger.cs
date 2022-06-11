@@ -1,29 +1,31 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace MinecraftServersControl.Logging
 {
-    public sealed class ConsoleLogger : ILogger
+    public sealed class ConsoleLogger : Logger
     {
-        public void Info(string message)
-        {
-            Write(null, "info", message);
-        }
+        private int _maxHeaderLength;
 
-        public void Warn(string message)
+        public override void Log(LogLevel level, StackFrame frame, string message)
         {
-            Write(ConsoleColor.Yellow, "warn", message);
-        }
+            var method = frame.GetMethod();
+            ConsoleColor? color = level switch
+            {
+                LogLevel.Info => null,
+                LogLevel.Warn => ConsoleColor.Yellow,
+                LogLevel.Error => ConsoleColor.Red,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            var header = level.ToString();
 
-        public void Error(string message)
-        {
-            Write(ConsoleColor.Red, "error", message);
-        }
-
-        private static void Write(ConsoleColor? color, string header, string message)
-        {
             if (color.HasValue)
                 Console.ForegroundColor = color.Value;
-            Console.Write(header = $"[{header.ToUpper()}] ");
+            Console.Write(header = $"[{method.DeclaringType.Name}.{method.Name} {header.ToUpper()}] ");
+            if (header.Length > _maxHeaderLength)
+                _maxHeaderLength = header.Length;
+            else
+                Console.Write(new string(' ', _maxHeaderLength - header.Length));
             if (color.HasValue)
                 Console.ResetColor();
             Console.WriteLine(message

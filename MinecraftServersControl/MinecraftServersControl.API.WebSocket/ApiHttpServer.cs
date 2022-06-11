@@ -10,10 +10,10 @@ namespace MinecraftServersControl.API
     public sealed class ApiHttpServer : HttpServer
     {
         private readonly Application _application;
-        private readonly ILogger _logger;
+        private readonly Logger _logger;
         private readonly Dictionary<Uri, Type> _httpServices = new Dictionary<Uri, Type>();
 
-        public ApiHttpServer(Application application, ILogger logger, string url) : base(url)
+        public ApiHttpServer(Application application, Logger logger, string url) : base(url)
         {
             _application = application;
             _logger = logger;

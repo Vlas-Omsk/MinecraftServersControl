@@ -9,13 +9,13 @@ namespace MinecraftServersControl.API.HttpServices
     public abstract class HttpService
     {
         protected Application Application { get; private set; }
-        protected ILogger Logger { get; private set; }
+        protected Logger Logger { get; private set; }
         protected HttpListenerRequest HttpRequest { get; private set; }
         protected HttpListenerResponse HttpResponse { get; private set; }
 
         private HttpRequestHandler _requestHandler;
 
-        internal void Init(Application application, ILogger logger, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, HttpRequestHandler requestHandler)
+        internal void Init(Application application, Logger logger, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, HttpRequestHandler requestHandler)
         {
             Application = application;
             Logger = logger;

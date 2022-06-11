@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Core.IO
+namespace MinecraftServersControl.Remote
 {
     public sealed class DataReceivedEventArgs : EventArgs
     {

@@ -11,30 +11,53 @@ namespace MinecraftServersControl.Core.Services
 {
     public sealed class ServerService : Service
     {
-        internal ServerService(Application application, DatabaseContextFactoryBase databaseContextFactory, ILogger logger) :
+        internal ServerService(Application application, DatabaseContextFactoryBase databaseContextFactory, Logger logger) :
             base(application, databaseContextFactory, logger)
         {
         }
 
-        public async Task<Result<IEnumerable<ComputerDTO>>> GetServers(Guid sessionId)
+        public async Task<Result<IEnumerable<ComputerDTO>>> GetServers()
         {
-            var result = await Application.UserService.VerifySession(sessionId);
+            using var databaseContext = DatabaseContextFactory.CreateDbContext();
+            var computers = await databaseContext.Computers.ToArrayAsync();
+            var computersDto = new List<ComputerDTO>();
 
-            if (result.HasErrors())
-                return result.ToResult<IEnumerable<ComputerDTO>>();
+            foreach (var computer in computers)
+            {
+                var id = new Guid(computer.Id);
+                var session = Application.NetworkServer.GetComputer(id);
+                var serversInfo = session == null ? null : (await session.GetInfo(id)).Data;
+                var serversDto = new List<ServerDTO>();
 
-            using (var databaseContext = DatabaseContextFactory.CreateDbContext())
-                return new Result<IEnumerable<ComputerDTO>>(
-                    await databaseContext.Computers
-                        .Select(x => new ComputerDTO(
-                            x.Name,
-                            databaseContext.Servers
-                                .Where(c => c.ComputerId == x.Id)
-                                .Select(c => new ServerDTO(c.Name))
-                                .ToArray()
-                        ))
-                        .ToArrayAsync()
-                    );
+                foreach (var server in databaseContext.Servers.Where(x => x.Computer == computer))
+                {
+                    var serverId = new Guid(server.Id);
+                    var serverInfo = serversInfo?.FirstOrDefault(x => x.Id == serverId);
+
+                    serversDto.Add(new ServerDTO(serverId, server.Name, serverInfo?.Running ?? false));
+                }
+
+                computersDto.Add(new ComputerDTO(id, computer.Name, session != null, serversDto.ToArray()));
+            }
+
+            return new Result<IEnumerable<ComputerDTO>>(computersDto.ToArray());
         }
+
+        public Task RaiseServerStarted(Guid computerKey, Guid serverKey)
+        {
+            return Task.Run(() =>
+                ServerStarted?.Invoke(this, new Result<ServerStateDTO>(new ServerStateDTO(computerKey, serverKey), ResultCode.ServerStarted))
+            );
+        }
+
+        public Task RaiseServerStopped(Guid computerKey, Guid serverKey)
+        {
+            return Task.Run(() =>
+                ServerStopped?.Invoke(this, new Result<ServerStateDTO>(new ServerStateDTO(computerKey, serverKey), ResultCode.ServerStopped))
+            );
+        }
+
+        public event ResultEventHandler<ServerStateDTO> ServerStarted;
+        public event ResultEventHandler<ServerStateDTO> ServerStopped;
     }
 }

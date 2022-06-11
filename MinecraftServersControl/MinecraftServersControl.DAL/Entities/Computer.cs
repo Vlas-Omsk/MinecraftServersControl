@@ -8,7 +8,7 @@ namespace MinecraftServersControl.DAL.Entities
     public sealed class Computer
     {
         [Key]
-        public int Id { get; set; }
+        public byte[] Id { get; set; }
         public string Name { get; set; }
         public byte[] IpAddress { get; set; }
         public byte[] MacAddress { get; set; }

@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Threading;
 using System.Timers;
 
-namespace MinecraftServersControl.Core.IO
+namespace MinecraftServersControl.Remote
 {
     public sealed class ProcessHost
     {
+        public bool Running { get; private set; }
+
         private Process _process;
         private System.Timers.Timer _checkForDataTimer;
         private string _readBuffer = string.Empty;
@@ -15,6 +17,7 @@ namespace MinecraftServersControl.Core.IO
         private Thread _readDataThread;
         private CancellationTokenSource _readDataCancellationTokenSource;
         private Queue<char> _buffer = new Queue<char>();
+        private bool _stopIsExpected = false;
 
         private const int _bufferMaxLength = 100;
         private const int _timerInterval = 100;
@@ -27,8 +30,10 @@ namespace MinecraftServersControl.Core.IO
 
         public void Start(string command)
         {
-            if (_process != null)
+            if (Running)
                 throw new InvalidOperationException("The process has already started");
+
+            Running = true;
 
             _process = new Process()
             {
@@ -42,7 +47,15 @@ namespace MinecraftServersControl.Core.IO
                 }
             };
 
-            _process.Start();
+            try
+            {
+                _process.Start();
+            }
+            catch
+            {
+                Running = false;
+                throw;
+            }
 
             _checkForDataTimer = new System.Timers.Timer(_timerInterval);
             _checkForDataTimer.Elapsed += OnTimerElapsed;
@@ -52,15 +65,33 @@ namespace MinecraftServersControl.Core.IO
 
             _readDataThread = new Thread(ReadDataHandler);
             _readDataThread.Start(_readDataCancellationTokenSource.Token);
+
+            RaiseStarted();
         }
 
         public void Stop()
         {
+            if (!Running)
+                throw new InvalidOperationException("The process has already stopped");
+
+            _stopIsExpected = true;
+
+            OnStop();
+
+            _stopIsExpected = false;
+        }
+
+        private void OnStop()
+        {
+            Running = false;
+
             _readDataCancellationTokenSource.Cancel();
             _process.Close();
             _process.WaitForExit();
             _readDataThread.Join();
             _readDataCancellationTokenSource.Dispose();
+
+            RaiseStopped();
         }
 
         public void Write(string str)
@@ -113,6 +144,9 @@ namespace MinecraftServersControl.Core.IO
                     }
                 }
             }
+
+            if (!_stopIsExpected)
+                OnStop();
         }
 
         private void RaiseDataReceived(string data)
@@ -120,6 +154,18 @@ namespace MinecraftServersControl.Core.IO
             DataReceived?.Invoke(this, new DataReceivedEventArgs(data));
         }
 
+        private void RaiseStarted()
+        {
+            Started?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RaiseStopped()
+        {
+            Stopped?.Invoke(this, EventArgs.Empty);
+        }
+
         public event EventHandler<DataReceivedEventArgs> DataReceived;
+        public event EventHandler Started;
+        public event EventHandler Stopped;
     }
 }

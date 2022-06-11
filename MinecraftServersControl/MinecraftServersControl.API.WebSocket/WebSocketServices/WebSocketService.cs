@@ -15,7 +15,7 @@ namespace MinecraftServersControl.API.WebSocketServices
     public abstract class WebSocketService : WebSocketBehavior
     {
         internal Application Application { get; set; }
-        internal ILogger Logger { get; set; }
+        internal Logging.Logger Logger { get; set; }
 
         protected override void OnOpen()
         {
@@ -60,7 +60,7 @@ namespace MinecraftServersControl.API.WebSocketServices
 
             if (methodParameter == null)
             {
-                Logger.Error("(" + method.ToString() + ").Parameters.Length != 1");
+                Logger.Error("(" + method.ToString() + $").Parameters.Length != 1, Method: {method}");
                 SendError(request.Id, WebSocketResponseCode.InternalServerError, null);
                 return;
             }

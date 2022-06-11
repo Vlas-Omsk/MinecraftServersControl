@@ -8,9 +8,9 @@ namespace MinecraftServersControl.DAL.Entities
     public sealed class Server
     {
         [Key]
-        public int Id { get; set; }
+        public byte[] Id { get; set; }
         public string Name { get; set; }
-        public int ComputerId { get; set; }
+        public byte[] ComputerId { get; set; }
         [ForeignKey("ComputerId")]
         public Computer Computer { get; set; }
     }

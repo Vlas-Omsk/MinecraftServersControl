@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Network\MinecraftServersControl.Remote.Client.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote\MinecraftServersControl.Remote.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

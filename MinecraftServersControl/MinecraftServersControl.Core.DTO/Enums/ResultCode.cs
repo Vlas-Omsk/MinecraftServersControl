@@ -9,5 +9,9 @@ namespace MinecraftServersControl.Core.DTO
         UserNotFound = 1,
         SessionExpired = 2,
         AuthorizationFromAnotherPlace = 3,
+        ComputerNotFound = 4,
+        ServerStarted = 5,
+        ServerStopped = 6,
+
     }
 }
