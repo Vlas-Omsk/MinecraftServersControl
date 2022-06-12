@@ -11,7 +11,7 @@ using WebSocketSharp;
 
 namespace MinecraftServersControl.Remote.Client
 {
-    public abstract class NetworkWebSocketClientBase
+    public abstract class RemoteWebSocketClientBase
     {
         protected Logging.Logger Logger { get; }
         protected Application Application { get; }
@@ -19,7 +19,7 @@ namespace MinecraftServersControl.Remote.Client
         private WebSocket _webSocket;
         private TimeSpan _reconnectDelay;
 
-        public NetworkWebSocketClientBase(string url, TimeSpan reconnectDelay, Logging.Logger logger, Application application)
+        public RemoteWebSocketClientBase(string url, TimeSpan reconnectDelay, Logging.Logger logger, Application application)
         {
             _webSocket = new WebSocket(url);
             _webSocket.Log.Output = new WebSocketLoggerAdapter(logger).Output;
@@ -66,7 +66,7 @@ namespace MinecraftServersControl.Remote.Client
                 return;
             }
 
-            if (!json.TryDeserialize(out WebSocketRequest request, out ex))
+            if (!json.TryDeserialize(out RemoteWebSocketRequest request, out ex))
             {
                 Logger.Error(ex.ToString());
                 return;
@@ -113,17 +113,17 @@ namespace MinecraftServersControl.Remote.Client
             }
         }
 
-        protected void SendResponse(int requestId, Result result)
+        protected void SendResponse(int requestId, RemoteResult result)
         {
-            SendResponse(new WebSocketResponse<Result>(requestId, result));
+            SendResponse(new RemoteWebSocketResponse<RemoteResult>(requestId, result));
         }
 
-        protected void SendResponse<T>(int requestId, Result<T> result)
+        protected void SendResponse<T>(int requestId, RemoteResult<T> result)
         {
-            SendResponse(new WebSocketResponse<Result<T>>(requestId, result));
+            SendResponse(new RemoteWebSocketResponse<RemoteResult<T>>(requestId, result));
         }
 
-        private void SendResponse(WebSocketResponse response)
+        private void SendResponse(RemoteWebSocketResponse response)
         {
             Logger.Info($"Response: {response}");
 

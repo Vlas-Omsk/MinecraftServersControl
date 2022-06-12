@@ -1,7 +1,7 @@
 ﻿using MinecraftServersControl.API.HttpServices;
 using MinecraftServersControl.API.Schema;
-using MinecraftServersControl.Core;
 using MinecraftServersControl.Core.DTO;
+using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
 using PinkJson2;
 using PinkJson2.Serializers;
@@ -20,12 +20,12 @@ namespace MinecraftServersControl.API
     {
         private HttpListenerRequest _httpRequest;
         private HttpListenerResponse _httpResponse;
-        private readonly Application _application;
+        private readonly IApplication _application;
         private readonly Logger _logger;
         private readonly Dictionary<Uri, Type> _httpServices = new Dictionary<Uri, Type>();
         private bool _handled;
 
-        internal HttpRequestHandler(HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, Application application, Logger logger, Dictionary<Uri, Type> httpServices)
+        internal HttpRequestHandler(HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, IApplication application, Logger logger, Dictionary<Uri, Type> httpServices)
         {
             _httpRequest = httpRequest;
             _httpResponse = httpResponse;
@@ -127,13 +127,13 @@ namespace MinecraftServersControl.API
 
         private ResolvedUrl TryResolveUrl(HttpMethod httpMethod, Uri url)
         {
-            var currentSegments = GetSegments(url).ToArray();
+            var currentSegments = UrlHelper.GetSegments(url).ToArray();
 
             foreach (var httpService in _httpServices)
             {
-                var targetSegments = GetTargetSegments(httpService.Key).ToArray();
+                var targetSegments = UrlHelper.GetTargetSegments(httpService.Key).ToArray();
 
-                if (!CompareUrls(currentSegments, targetSegments))
+                if (!UrlHelper.CompareUrlSegments(currentSegments, targetSegments))
                     continue;
 
                 var methods = httpService.Value
@@ -143,7 +143,7 @@ namespace MinecraftServersControl.API
 
                 foreach (var method in methods)
                 {
-                    targetSegments = GetTargetSegments(new Uri(httpService.Key + method.httpRequestAttribute.Path, UriKind.RelativeOrAbsolute)).ToArray();
+                    targetSegments = UrlHelper.GetTargetSegments(new Uri(httpService.Key + method.httpRequestAttribute.Path, UriKind.RelativeOrAbsolute)).ToArray();
 
                     if (!TryResolveUrlForMethod(currentSegments, targetSegments))
                         continue;
@@ -160,7 +160,7 @@ namespace MinecraftServersControl.API
             if (targetSegments.Length != currentSegments.Length)
                 return false;
 
-            if (!CompareUrls(currentSegments, targetSegments))
+            if (!UrlHelper.CompareUrlSegments(currentSegments, targetSegments))
                 return false;
 
             return true;
@@ -205,47 +205,6 @@ namespace MinecraftServersControl.API
             }
 
             return parameters;
-        }
-
-        private static bool CompareUrls(string[] currentSegments, UrlSegment[] targetSegments)
-        {
-            var segmentsCount = Math.Min(currentSegments.Length, targetSegments.Length);
-
-            if (targetSegments.Length > currentSegments.Length)
-                return false;
-
-            for (var i = 0; i < segmentsCount; i++)
-            {
-                var targetSegment = targetSegments[i];
-
-                if (targetSegment.IsParameter)
-                    continue;
-
-                var currentSegment = currentSegments[i];
-
-                if (targetSegment.Name != currentSegment)
-                    return false;
-            }
-
-            return true;
-        }
-
-        private static IEnumerable<UrlSegment> GetTargetSegments(Uri uri)
-        {
-            return GetSegments(uri)
-                .Select(x => new UrlSegment(x));
-        }
-
-        private static IEnumerable<string> GetSegments(Uri uri)
-        {
-            if (!uri.IsAbsoluteUri)
-                return uri.OriginalString
-                    .Split('/', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => x.ToLower());
-            else
-                return uri.Segments
-                    .Where(x => x != "/")
-                    .Select(x => x.TrimEnd('/').ToLower());
         }
     }
 }

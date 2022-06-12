@@ -23,14 +23,14 @@ namespace MinecraftServersControl.Logging.Adapters
                 case WebSocketSharp.LogLevel.Trace:
                 case WebSocketSharp.LogLevel.Debug:
                 case WebSocketSharp.LogLevel.Info:
-                    _logger.Info(msg);
+                    _logger.Log(LogLevel.Info, data.Caller, msg);
                     break;
                 case WebSocketSharp.LogLevel.Warn:
-                    _logger.Warn(msg);
+                    _logger.Log(LogLevel.Warn, data.Caller, msg);
                     break;
                 case WebSocketSharp.LogLevel.Error:
                 case WebSocketSharp.LogLevel.Fatal:
-                    _logger.Error(msg);
+                    _logger.Log(LogLevel.Error, data.Caller, msg);
                     break;
             }
         }

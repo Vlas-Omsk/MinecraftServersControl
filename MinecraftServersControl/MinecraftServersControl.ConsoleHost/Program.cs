@@ -13,12 +13,11 @@ namespace MinecraftServersControl.ConsoleHost
         {
             var logger = new ConsoleLogger();
             var databaseContextFactory = new DatabaseContextFactory();
-            var application = new Application(databaseContextFactory, logger);
-            var networkServer = new NetworkWebsocketServer("ws://0.0.0.0:8889", logger, application);
-            application.NetworkServer = networkServer;
+            var remoteServer = new RemoteWebsocketServer("ws://0.0.0.0:8889", logger);
+            var application = new Application(databaseContextFactory, logger, remoteServer);
             var server = new ApiServer(application, logger, "http://0.0.0.0:8888");
 
-            networkServer.Start();
+            remoteServer.Start(application);
             server.Start();
 
             while (true)

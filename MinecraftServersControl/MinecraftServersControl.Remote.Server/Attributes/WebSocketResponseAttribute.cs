@@ -6,9 +6,9 @@ namespace MinecraftServersControl.Remote.Server
     [AttributeUsage(AttributeTargets.Method)]
     internal sealed class WebSocketResponseAttribute : Attribute
     {
-        public ResultCode Code { get; }
+        public RemoteResultCode Code { get; }
 
-        public WebSocketResponseAttribute(ResultCode code)
+        public WebSocketResponseAttribute(RemoteResultCode code)
         {
             Code = code;
         }

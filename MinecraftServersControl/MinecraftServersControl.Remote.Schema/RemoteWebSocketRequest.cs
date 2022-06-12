@@ -3,15 +3,15 @@
 namespace MinecraftServersControl.Remote.Schema
 {
     [Serializable]
-    public class WebSocketRequest<T> : WebSocketRequest
+    public class RemoteWebSocketRequest<T> : RemoteWebSocketRequest
     {
         public T Data { get; protected set; }
 
-        protected WebSocketRequest()
+        protected RemoteWebSocketRequest()
         {
         }
 
-        public WebSocketRequest(int id, WebSocketRequestCode code, T data) : base(id, code)
+        public RemoteWebSocketRequest(int id, RemoteWebSocketRequestCode code, T data) : base(id, code)
         {
             Data = data;
         }
@@ -23,16 +23,16 @@ namespace MinecraftServersControl.Remote.Schema
     }
 
     [Serializable]
-    public class WebSocketRequest
+    public class RemoteWebSocketRequest
     {
         public int Id { get; protected set; }
-        public WebSocketRequestCode Code { get; protected set; }
+        public RemoteWebSocketRequestCode Code { get; protected set; }
 
-        protected WebSocketRequest()
+        protected RemoteWebSocketRequest()
         {
         }
 
-        public WebSocketRequest(int id, WebSocketRequestCode code)
+        public RemoteWebSocketRequest(int id, RemoteWebSocketRequestCode code)
         {
             Id = id;
             Code = code;

@@ -4,15 +4,15 @@ using System;
 namespace MinecraftServersControl.Remote.Schema
 {
     [Serializable]
-    public class WebSocketResponse<T> : WebSocketResponse where T : Result
+    public class RemoteWebSocketResponse<T> : RemoteWebSocketResponse where T : RemoteResult
     {
         public T Result { get; protected set; }
 
-        protected WebSocketResponse()
+        protected RemoteWebSocketResponse()
         {
         }
 
-        public WebSocketResponse(int requestId, T result) : base(requestId)
+        public RemoteWebSocketResponse(int requestId, T result) : base(requestId)
         {
             Result = result;
         }
@@ -24,15 +24,15 @@ namespace MinecraftServersControl.Remote.Schema
     }
 
     [Serializable]
-    public class WebSocketResponse
+    public class RemoteWebSocketResponse
     {
         public int RequestId { get; protected set; }
 
-        protected WebSocketResponse()
+        protected RemoteWebSocketResponse()
         {
         }
 
-        public WebSocketResponse(int requestId)
+        public RemoteWebSocketResponse(int requestId)
         {
             RequestId = requestId;
         }

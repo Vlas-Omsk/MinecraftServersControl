@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinecraftServersControl.Core.DTO;
+using MinecraftServersControl.Core.Interface;
+using MinecraftServersControl.Core.Interface.Services;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.DAL.Entities;
 using MinecraftServersControl.Logging;
@@ -9,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace MinecraftServersControl.Core.Services
 {
-    public sealed class UserService : Service
+    public sealed class UserService : Service, IUserService
     {
         private static readonly TimeSpan _sessionLifeTime = TimeSpan.FromDays(1);
 
-        internal UserService(Application application, DatabaseContextFactoryBase databaseContextFactory, Logger logger) : 
-            base(application, databaseContextFactory, logger)
+        internal UserService(Application application, DatabaseContextFactoryBase databaseContextFactory, Logger logger, IRemoteServer remoteServer) : 
+            base(application, databaseContextFactory, logger, remoteServer)
         {
         }
 

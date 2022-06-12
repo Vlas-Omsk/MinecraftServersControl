@@ -5,15 +5,15 @@ using System;
 
 namespace MinecraftServersControl.Remote
 {
-    public delegate void ResultEventHandler<T>(object sender, Result<T> e);
+    public delegate void ResultEventHandler<T>(object sender, RemoteResult<T> e);
 
     public sealed class Application
     {
-        public ServersService ServersService { get; }
+        public ServerService ServerService { get; }
 
         public Application(Config config, Logger logger)
         {
-            ServersService = new ServersService(config, logger);
+            ServerService = new ServerService(config, logger);
         }
     }
 }

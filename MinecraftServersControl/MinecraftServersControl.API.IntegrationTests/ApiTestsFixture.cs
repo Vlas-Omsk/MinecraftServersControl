@@ -1,5 +1,6 @@
 ﻿using MinecraftServersControl.API.IntegrationTests.Helpers;
 using MinecraftServersControl.Core;
+using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
 using System;
@@ -10,7 +11,7 @@ namespace MinecraftServersControl.API.IntegrationTests
     public sealed class ApiTestsFixture : IDisposable
     {
         public ITestOutputHelper Output { get; set; }
-        public Application Application { get; }
+        public IApplication Application { get; }
         public DevDatabaseContextFactory DatabaseContextFactory { get; }
 
         public ApiTestsFixture()

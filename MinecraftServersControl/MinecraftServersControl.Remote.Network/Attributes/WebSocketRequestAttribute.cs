@@ -6,9 +6,9 @@ namespace MinecraftServersControl.Remote.Client
     [AttributeUsage(AttributeTargets.Method)]
     internal sealed class WebSocketRequestAttribute : Attribute
     {
-        public WebSocketRequestCode Code { get; }
+        public RemoteWebSocketRequestCode Code { get; }
 
-        public WebSocketRequestAttribute(WebSocketRequestCode code)
+        public WebSocketRequestAttribute(RemoteWebSocketRequestCode code)
         {
             Code = code;
         }

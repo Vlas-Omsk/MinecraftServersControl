@@ -1,5 +1,5 @@
-﻿using MinecraftServersControl.Core;
-using MinecraftServersControl.Core.DTO;
+﻿using MinecraftServersControl.Core.DTO;
+using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
 using System;
 using WebSocketSharp.Net;
@@ -8,14 +8,14 @@ namespace MinecraftServersControl.API.HttpServices
 {
     public abstract class HttpService
     {
-        protected Application Application { get; private set; }
+        protected IApplication Application { get; private set; }
         protected Logger Logger { get; private set; }
         protected HttpListenerRequest HttpRequest { get; private set; }
         protected HttpListenerResponse HttpResponse { get; private set; }
 
         private HttpRequestHandler _requestHandler;
 
-        internal void Init(Application application, Logger logger, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, HttpRequestHandler requestHandler)
+        internal void Init(IApplication application, Logger logger, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, HttpRequestHandler requestHandler)
         {
             Application = application;
             Logger = logger;

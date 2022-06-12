@@ -1,5 +1,5 @@
 ﻿using MinecraftServersControl.Common;
-using MinecraftServersControl.Core;
+using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
 using MinecraftServersControl.Remote.DTO;
 using MinecraftServersControl.Remote.Schema;
@@ -15,7 +15,7 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
 {
     public abstract class WebSocketService : WebSocketBehavior
     {
-        internal Application Application { get; set; }
+        internal IApplication Application { get; set; }
         internal Logging.Logger Logger { get; set; }
 
         private List<(int requestId, Type responseType, Action<object> listener)> _listeners = new List<(int, Type, Action<object>)>();
@@ -38,7 +38,7 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
                 return;
             }
 
-            if (!json.TryDeserialize(out WebSocketResponse<Result> response, out ex))
+            if (!json.TryDeserialize(out RemoteWebSocketResponse<RemoteResult> response, out ex))
             {
                 Logger.Warn(ex.ToString());
                 return;
@@ -108,8 +108,8 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
         }
 
         public Task<TResponse> GetResponse<TResponse, TRequest>(TRequest request)
-            where TRequest : WebSocketRequest
-            where TResponse : WebSocketResponse
+            where TRequest : RemoteWebSocketRequest
+            where TResponse : RemoteWebSocketResponse
         {
             var taskCompletionSource = new TaskCompletionSource<TResponse>();
 
@@ -125,7 +125,7 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
             return taskCompletionSource.Task;
         }
 
-        protected void SendRequest(WebSocketRequest request)
+        protected void SendRequest(RemoteWebSocketRequest request)
         {
             Logger.Info($"Request: {request}, Client: {GetInfo()}");
 

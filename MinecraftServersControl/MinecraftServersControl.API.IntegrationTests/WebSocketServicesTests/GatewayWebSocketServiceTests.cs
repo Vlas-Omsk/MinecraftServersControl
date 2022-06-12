@@ -82,6 +82,7 @@ namespace MinecraftServersControl.API.IntegrationTests
         }
 
         [Fact]
+        // FIXME: remote server
         public async Task GetServers_Should_Return_ComputerDTO_Array()
         {
             var client = _fixture.CreateHttpClient();

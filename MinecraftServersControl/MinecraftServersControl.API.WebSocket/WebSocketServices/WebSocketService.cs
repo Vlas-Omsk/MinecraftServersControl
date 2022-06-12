@@ -1,7 +1,7 @@
 ﻿using MinecraftServersControl.API.Schema;
 using MinecraftServersControl.Common;
-using MinecraftServersControl.Core;
 using MinecraftServersControl.Core.DTO;
+using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
 using PinkJson2;
 using System;
@@ -14,7 +14,7 @@ namespace MinecraftServersControl.API.WebSocketServices
 {
     public abstract class WebSocketService : WebSocketBehavior
     {
-        internal Application Application { get; set; }
+        internal IApplication Application { get; set; }
         internal Logging.Logger Logger { get; set; }
 
         protected override void OnOpen()

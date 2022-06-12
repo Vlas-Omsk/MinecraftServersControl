@@ -11,7 +11,7 @@ namespace MinecraftServersControl.Remote.ConsoleHost
             var config = Config.Load("config.json");
             var logger = new ConsoleLogger();
             var application = new Application(config, logger);
-            var client = new NetworkWebSocketClient(config.Url, TimeSpan.FromSeconds(config.ReconnectDelaySeconds), logger, application);
+            var client = new RemoteWebSocketClient(config.Url, TimeSpan.FromSeconds(config.ReconnectDelaySeconds), logger, application);
 
             client.Connect();
 

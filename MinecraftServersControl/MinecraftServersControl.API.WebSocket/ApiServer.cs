@@ -2,6 +2,7 @@
 using MinecraftServersControl.API.WebSocketServices;
 using MinecraftServersControl.Common;
 using MinecraftServersControl.Core;
+using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
 using MinecraftServersControl.Logging.Adapters;
 using System;
@@ -18,7 +19,7 @@ namespace MinecraftServersControl.API
             JsonTypeConversions.Register();
         }
 
-        public ApiServer(Application application, Logger logger, string url)
+        public ApiServer(IApplication application, Logger logger, string url)
         {
             _logger = logger;
 
