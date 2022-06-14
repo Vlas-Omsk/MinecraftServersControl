@@ -55,6 +55,7 @@ namespace MinecraftServersControl.Remote.Client
             catch (Exception ex)
             {
                 Logger.Error(ex.ToString());
+                OnCloseOverride(sender, e);
             }
         }
 

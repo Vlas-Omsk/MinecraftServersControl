@@ -8,40 +8,6 @@ namespace MinecraftServersControl.API.Vk
 {
     public static class ServiceHelper
     {
-        public static string FormatCommandShort(MethodInfo method)
-        {
-            var service = FormatCommand(method);
-            var parameters = string.Join(' ', method.GetParameters().Select(x => $"[{FormatParameterShort(x)}]"));
-
-            return $"{service} {parameters}";
-        }
-
-        public static string FormatCommandLong(MethodInfo method)
-        {
-            var service = FormatCommand(method);
-            var description = Description.Get(method);
-            var parameters = string.Join("\r\n", method.GetParameters().Select(x => $"{FormatParameterShort(x)}"));
-
-            return $"{service}{(description == null ? "" : " - ")}\r\n{parameters}";
-        }
-
-        public static string FormatCommand(MethodInfo method)
-        {
-            var result = "";
-
-            var serviceAttribute = method.DeclaringType.GetCustomAttribute<VkServiceAttribute>();
-            if (serviceAttribute != null)
-                result += string.Join(' ', serviceAttribute.Segments) + ' ';
-            result += string.Join(' ', method.GetCustomAttribute<VkCommandAttribute>().Segments);
-
-            return result;
-        }
-
-        public static string FormatParameterShort(ParameterInfo parameter)
-        {
-            return $"{(parameter.GetCustomAttribute<ParamArrayAttribute>() == null ? null : "много ")}{parameter.ParameterType.Name}: {parameter.GetCustomAttribute<VkCommandParameterAttribute>().Name}";
-        }
-
         public static object[] MapParameters(MethodInfo method, string[] segments)
         {
             var parameters = method.GetParameters();
@@ -99,7 +65,7 @@ namespace MinecraftServersControl.API.Vk
 
             foreach (var serviceType in serviceTypes)
             {
-                var serviceAttribute = serviceType.GetCustomAttribute<VkServiceAttribute>();
+                var serviceAttribute = serviceType.GetCustomAttribute<ServiceAttribute>();
                 string[] methodSegments;
 
                 if (serviceAttribute != null)
@@ -152,9 +118,9 @@ namespace MinecraftServersControl.API.Vk
             return new CommandFromStringResult(null, null, matchesList.ToArray());
         }
 
-        private static IEnumerable<MethodAttributePair<VkCommandAttribute>> GetCommands(Type serviceType)
+        private static IEnumerable<MethodAttributePair<CommandAttribute>> GetCommands(Type serviceType)
         {
-            return serviceType.GetMethodsWithAttribute<VkCommandAttribute>();
+            return serviceType.GetMethodsWithAttribute<CommandAttribute>();
         }
 
         private static bool CompareSegments(string[] currentSerments, string[] targetSegments)

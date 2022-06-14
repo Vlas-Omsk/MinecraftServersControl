@@ -3,12 +3,11 @@
 namespace MinecraftServersControl.API.Vk
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public sealed class VkCommandAttribute : Attribute
+    internal sealed class CommandAttribute : Attribute
     {
         public string[] Segments { get; }
-        public string Description { get; }
 
-        public VkCommandAttribute(string path)
+        public CommandAttribute(string path)
         {
             Segments = ServiceHelper.ParseSegments(path);
         }

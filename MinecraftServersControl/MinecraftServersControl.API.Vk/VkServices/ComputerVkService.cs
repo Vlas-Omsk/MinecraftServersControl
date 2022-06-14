@@ -3,42 +3,35 @@ using System.Threading.Tasks;
 
 namespace MinecraftServersControl.API.Vk.VkServices
 {
-    [VkService("пк")]
+    [Service("пк")]
     public sealed class ComputerVkService : VkService
     {
-        [VkCommand("инфо")]
+        [Command("инфо")]
+        [AuthorizedOnly]
         public async Task Info()
         {
-            var result = await Application.VkUserService.CheckAccess(Message.FromId);
+            var result = await Handler.Application.ServerService.GetServers();
 
             if (result.HasErrors())
             {
-                await SendResultCode(result);
-                return;
-            }
-
-            var result2 = await Application.ServerService.GetServers();
-
-            if (result.HasErrors())
-            {
-                await SendResultCode(result);
+                await Handler.MessageResponse.SendResultCode(result.Code);
                 return;
             }
 
             var str = string.Empty;
 
-            foreach (var computer in result2.Data)
+            foreach (var computer in result.Data)
             {
-                str += $"Компьютер {computer.Alias} ({computer.Name}): {(computer.Running ? "включен" : "отключен")}\r\n" +
+                str += $"Компьютер {computer.Alias} ({computer.Name}): {FormatHelper.ToStringOnOff(computer.Running)}\r\n" +
                     $"Сервера:\r\n";
 
                 foreach (var server in computer.Servers)
-                    str += $"{server.Alias} ({server.Name}): {(server.Running ? "включен" : "отключен")}\r\n";
+                    str += $"{server.Alias} ({server.Name}): {FormatHelper.ToStringOnOff(server.Running)}\r\n";
 
                 str += "\r\n";
             }
 
-            await Send(str);
+            await Handler.MessageResponse.Send(str);
         }
     }
 }

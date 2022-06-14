@@ -3,30 +3,38 @@ using System.Threading.Tasks;
 
 namespace MinecraftServersControl.API.Vk.VkServices
 {
-    [VkService("пользователь")]
+    [Service("пользователь")]
     public sealed class UserVkService : VkService
     {
-        [VkCommand("войти")]
+        [Command("войти")]
         public async Task SignIn(
-            [VkCommandParameter("логин")] string login,
-            [VkCommandParameter("пароль")] string password
+            [CommandParameter("логин")] string login,
+            [CommandParameter("пароль")] string password
         )
         {
-            await SendResultCode(await Application.VkUserService.SignIn(Message.FromId, login, password));
+            await Handler.MessageResponse.SendResultCode((await Handler.Application.VkUserService.SignIn(Handler.Message.FromId, login, password)).Code);
         }
 
-        [VkCommand("инфо")]
+        [Command("выйти")]
+        [AuthorizedOnly]
+        public async Task SignOut()
+        {
+            await Handler.MessageResponse.SendResultCode((await Handler.Application.VkUserService.SignOut(Handler.Message.FromId)).Code);
+        }
+
+        [Command("инфо")]
+        [AuthorizedOnly]
         public async Task Info()
         {
-            var result = await Application.VkUserService.GetUserInfo(Message.FromId);
+            var result = await Handler.Application.VkUserService.GetUserInfo(Handler.Message.FromId);
 
             if (result.HasErrors())
             {
-                await SendResultCode(result);
+                await Handler.MessageResponse.SendResultCode(result.Code);
                 return;
             }
 
-            await Send($"Логин: {result.Data.Login}");
+            await Handler.MessageResponse.Send($"Логин: {result.Data.Login}");
         }
     }
 }

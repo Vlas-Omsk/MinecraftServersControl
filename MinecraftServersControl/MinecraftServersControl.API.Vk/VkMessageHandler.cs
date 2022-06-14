@@ -11,49 +11,64 @@ namespace MinecraftServersControl.API.Vk
 {
     public sealed class VkMessageHandler
     {
-        private readonly Message _message;
-        private readonly VkClient _vkClient;
-        private readonly IApplication _application;
-        private readonly Logger _logger;
-        private readonly Type[] _serviceTypes;
-        private readonly VkSessionStorage _sessionStorage;
+        public Message Message { get; }
+        public VkClient VkClient { get; }
+        public IApplication Application { get; }
+        public Logger Logger { get; }
+        public Type[] ServiceTypes { get; }
+        public VkSessionStorage SessionStorage { get; }
+        public CommandAccessVerifier CommandAccessVerifier { get; }
+        public MessageResponse MessageResponse { get; }
+        public VkSession Session { get; }
 
         public VkMessageHandler(Type[] serviceTypes, Message message, VkSessionStorage sessionStorage, VkClient vkClient, IApplication application, Logger logger)
         {
-            _serviceTypes = serviceTypes;
-            _message = message;
-            _sessionStorage = sessionStorage;
-            _vkClient = vkClient;
-            _application = application;
-            _logger = logger;
+            ServiceTypes = serviceTypes;
+            Message = message;
+            SessionStorage = sessionStorage;
+            VkClient = vkClient;
+            Application = application;
+            Logger = logger;
+            MessageResponse = new MessageResponse(message, vkClient);
+            CommandAccessVerifier = new CommandAccessVerifier(application, message);
+            Session = SessionStorage.GetOrCreate(Message.FromId);
         }
 
         public async Task ProcessMessage()
         {
-            _logger.Info($"PeerId: {_message.PeerId}, FromId: {_message.FromId}, Message: {_message.Text}");
+            Logger.Info($"PeerId: {Message.PeerId}, FromId: {Message.FromId}, Message: {Message.Text}");
 
-            var session = _sessionStorage.GetOrCreate(_message.FromId);
+            if (string.IsNullOrEmpty(Message.Text))
+                return;
 
-            if (session.HandlerOverride != null)
+            if (Session.HandlerOverride != null)
             {
                 try
                 {
-                    await session.HandlerOverride.Invoke(_message);
+                    await Session.HandlerOverride.Invoke(Message);
                 }
                 catch (Exception ex)
                 {
                     await SendInternalServerError(ex);
-                    _logger.Error(ex.ToString());
+                    Logger.Error(ex.ToString());
                 }
 
                 return;
             }
 
-            var result = ServiceHelper.GetCommandFromString(_serviceTypes, ServiceHelper.ParseSegments(_message.Text));
+            var result = ServiceHelper.GetCommandFromString(ServiceTypes, ServiceHelper.ParseSegments(Message.Text));
 
             if (result.Method == null)
             {
                 await SendCommandNotFound(result.Matches);
+                return;
+            }
+
+            var verifyResult = await CommandAccessVerifier.Verify(result.Method);
+
+            if (verifyResult != null)
+            {
+                await MessageResponse.Send(verifyResult.Message);
                 return;
             }
 
@@ -74,7 +89,7 @@ namespace MinecraftServersControl.API.Vk
                 var objCctor = result.Method.DeclaringType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, Type.EmptyTypes, null);
                 var obj = (VkService)objCctor.Invoke(null);
 
-                obj.Init(_application, _logger, _message, _vkClient, session, _serviceTypes);
+                obj.Init(this);
 
                 var methodResult = result.Method.Invoke(obj, parameters);
 
@@ -83,7 +98,7 @@ namespace MinecraftServersControl.API.Vk
             }
             catch (Exception ex)
             {
-                _logger.Error(ex.ToString());
+                Logger.Error(ex.ToString());
                 await SendInternalServerError(ex);
                 return;
             }
@@ -96,15 +111,15 @@ namespace MinecraftServersControl.API.Vk
 
         private async Task SendParameterError(ParameterException parameterException)
         {
-            if (_message.IsFromChat())
+            if (Message.IsFromChat())
                 return;
 
-            await Send($"Ошибка в параметре [{ServiceHelper.FormatParameterShort(parameterException.Parameter)}]: {parameterException.InnerException.Message}");
+            await Send($"Ошибка в параметре [{FormatHelper.ToStringParameterShort(parameterException.Parameter)}]: {parameterException.InnerException.Message}");
         }
 
         private async Task SendCommandNotFound(MethodInfo[] possibleMatches)
         {
-            if (_message.IsFromChat())
+            if (Message.IsFromChat())
                 return;
 
             string result = "Команда не распознана";
@@ -114,7 +129,8 @@ namespace MinecraftServersControl.API.Vk
                 result += "\r\nВозможные совпадения:";
 
                 foreach (var method in possibleMatches)
-                    result += "\r\n" + ServiceHelper.FormatCommandShort(method);
+                    if (await CommandAccessVerifier.Verify(method) == null)
+                        result += "\r\n" + FormatHelper.ToStringCommandShort(method);
             }
 
             result += "\r\nДля отображения всех команд - 'команды'";
@@ -124,7 +140,7 @@ namespace MinecraftServersControl.API.Vk
 
         private async Task Send(string message)
         {
-            await _vkClient.Messages.Send(peerId: _message.PeerId, message: message, randomId: 0);
+            await VkClient.Messages.Send(peerId: Message.PeerId, message: message, randomId: 0);
         }
     }
 }

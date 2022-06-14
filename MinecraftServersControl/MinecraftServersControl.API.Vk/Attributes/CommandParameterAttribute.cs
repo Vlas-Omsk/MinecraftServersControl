@@ -3,12 +3,12 @@
 namespace MinecraftServersControl.API.Vk
 {
     [AttributeUsage(AttributeTargets.Parameter)]
-    public sealed class VkCommandParameterAttribute : Attribute
+    internal sealed class CommandParameterAttribute : Attribute
     {
         public string Name { get; }
         public string Description { get; set; }
 
-        public VkCommandParameterAttribute(string name)
+        public CommandParameterAttribute(string name)
         {
             Name = name;
         }

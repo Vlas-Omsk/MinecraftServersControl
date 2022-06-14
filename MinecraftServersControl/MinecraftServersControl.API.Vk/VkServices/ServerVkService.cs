@@ -5,109 +5,69 @@ using System.Threading.Tasks;
 
 namespace MinecraftServersControl.API.Vk.VkServices
 {
-    [VkService("сервер")]
+    [Service("сервер")]
     public sealed class ServerVkService : VkService
     {
-        [VkCommand("запустить")]
+        [Command("запустить")]
+        [AuthorizedOnly]
         public async Task Start(
-            [VkCommandParameter("компьютер")] string computerAlias,
-            [VkCommandParameter("сервер")] string serverAlias
+            [CommandParameter("компьютер")] string computerAlias,
+            [CommandParameter("сервер")] string serverAlias
         )
         {
-            var result = await Application.VkUserService.CheckAccess(Message.FromId);
+            var result2 = await Handler.Application.ServerService.Start(new TargetServerDTO(computerAlias, serverAlias));
 
-            if (result.HasErrors())
-            {
-                await SendResultCode(result);
-                return;
-            }
-
-            var result2 = await Application.ServerService.Start(new TargetServerDTO(computerAlias, serverAlias));
-
-            await SendResultCode(result2);
+            await Handler.MessageResponse.SendResultCode(result2.Code);
         }
 
-        [VkCommand("остановить")]
+        [Command("остановить")]
+        [AuthorizedOnly]
         public async Task Terminate(
-            [VkCommandParameter("компьютер")] string computerAlias,
-            [VkCommandParameter("сервер")] string serverAlias
+            [CommandParameter("компьютер")] string computerAlias,
+            [CommandParameter("сервер")] string serverAlias
         )
         {
-            var result = await Application.VkUserService.CheckAccess(Message.FromId);
+            var result2 = await Handler.Application.ServerService.Terminate(new TargetServerDTO(computerAlias, serverAlias));
 
-            if (result.HasErrors())
-            {
-                await SendResultCode(result);
-                return;
-            }
-
-            var result2 = await Application.ServerService.Terminate(new TargetServerDTO(computerAlias, serverAlias));
-
-            await SendResultCode(result2);
+            await Handler.MessageResponse.SendResultCode(result2.Code);
         }
 
-        [VkCommand("команда")]
+        [Command("команда")]
+        [AuthorizedOnly]
         public async Task Command(
-            [VkCommandParameter("компьютер")] string computerAlias,
-            [VkCommandParameter("сервер")] string serverAlias,
-            [VkCommandParameter("команда")] params string[] command
+            [CommandParameter("компьютер")] string computerAlias,
+            [CommandParameter("сервер")] string serverAlias,
+            [CommandParameter("команда")] params string[] command
         )
         {
-            var result = await Application.VkUserService.CheckAccess(Message.FromId);
+            var result2 = await Handler.Application.ServerService.Input(new ServerInputDTO(computerAlias, serverAlias, string.Join(' ', command)));
 
-            if (result.HasErrors())
-            {
-                await SendResultCode(result);
-                return;
-            }
-
-            var result2 = await Application.ServerService.Input(new ServerInputDTO(computerAlias, serverAlias, string.Join(' ', command)));
-
-            await SendResultCode(result2);
+            await Handler.MessageResponse.SendResultCode(result2.Code);
         }
 
-        [VkCommand("лог")]
+        [Command("лог")]
+        [AuthorizedOnly]
         public async Task Log(
-            [VkCommandParameter("компьютер")] string computerAlias,
-            [VkCommandParameter("сервер")] string serverAlias
+            [CommandParameter("компьютер")] string computerAlias,
+            [CommandParameter("сервер")] string serverAlias
         )
         {
-            var result = await Application.VkUserService.CheckAccess(Message.FromId);
+            var result2 = await Handler.Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
 
-            if (result.HasErrors())
-            {
-                await SendResultCode(result);
-                return;
-            }
-
-            var result2 = await Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
-
-            await Send(result2.Data);
+            await Handler.MessageResponse.Send(result2.Data);
         }
 
-        [VkCommand("консоль")]
+        [Command("консоль")]
+        [AuthorizedOnly]
+        [NonChat]
         public async Task Console(
-            [VkCommandParameter("компьютер")] string computerAlias,
-            [VkCommandParameter("сервер")] string serverAlias
+            [CommandParameter("компьютер")] string computerAlias,
+            [CommandParameter("сервер")] string serverAlias
         )
         {
-            if (Message.IsFromChat())
-            {
-                await SendMethodUnavailableFromChat();
-                return;
-            }
+            var result2 = await Handler.Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
 
-            var result = await Application.VkUserService.CheckAccess(Message.FromId);
-
-            if (result.HasErrors())
-            {
-                await SendResultCode(result);
-                return;
-            }
-
-            var result2 = await Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
-
-            await Send("Для выходя используйте '&выход'\r\n\r\n" + result2.Data);
+            await Handler.MessageResponse.Send("Для выходя используйте '&выход'\r\n\r\n" + result2.Data);
 
             ResultEventHandler<ServerOutputDTO> handler = async (sender, result) =>
             {
@@ -115,22 +75,22 @@ namespace MinecraftServersControl.API.Vk.VkServices
                     result.Data.ServerAlias != serverAlias)
                     return;
 
-                await Send(result.Data.Output);
+                await Handler.MessageResponse.Send(result.Data.Output);
             };
 
-            Application.ServerService.ServerOutput += handler;
+            Handler.Application.ServerService.ServerOutput += handler;
 
-            Session.HandlerOverride = async (message) =>
+            Handler.Session.HandlerOverride = async (message) =>
             {
                 if (message.Text.Equals("&выход"))
                 {
-                    Application.ServerService.ServerOutput -= handler;
-                    Session.HandlerOverride = null;
-                    await Send("Успешно");
+                    Handler.Application.ServerService.ServerOutput -= handler;
+                    Handler.Session.HandlerOverride = null;
+                    await Handler.MessageResponse.Send("Успешно");
                     return;
                 }
 
-                await Application.ServerService.Input(new ServerInputDTO(computerAlias, serverAlias, message.Text));
+                await Handler.Application.ServerService.Input(new ServerInputDTO(computerAlias, serverAlias, message.Text));
             };
         }
     }

@@ -27,7 +27,5 @@ namespace MinecraftServersControl.Core.DTO
         ServerNotFound = 10,
         [Description("Не удалось запустить сервер")]
         CantStartServer = 11,
-        [Description("Недостаточно прав")]
-        AccessDenied = 12,
     }
 }

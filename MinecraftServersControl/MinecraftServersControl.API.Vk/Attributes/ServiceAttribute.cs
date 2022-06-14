@@ -2,11 +2,11 @@
 
 namespace MinecraftServersControl.API.Vk
 {
-    public sealed class VkServiceAttribute : Attribute
+    internal sealed class ServiceAttribute : Attribute
     {
         public string[] Segments { get; }
 
-        public VkServiceAttribute(string path)
+        public ServiceAttribute(string path)
         {
             Segments = ServiceHelper.ParseSegments(path);
         }

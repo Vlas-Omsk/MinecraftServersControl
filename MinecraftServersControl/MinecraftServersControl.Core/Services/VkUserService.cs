@@ -41,6 +41,22 @@ namespace MinecraftServersControl.Core.Services
             return ResultCode.UserNotFound;
         }
 
+        public async Task<Result> SignOut(int vkUserId)
+        {
+            using (var databaseContext = DatabaseContextFactory.CreateDbContext())
+            {
+                var vkUser = await databaseContext.VkUsers
+                    .FirstOrDefaultAsync(x => x.Id == vkUserId);
+                if (vkUser == null)
+                    return ResultCode.UserNotFound;
+
+                databaseContext.VkUsers.Remove(vkUser);
+                await databaseContext.SaveChangesAsync();
+
+                return ResultCode.Success;
+            }
+        }
+
         public async Task<Result<UserInfoDTO>> GetUserInfo(int vkUserId)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
@@ -49,20 +65,20 @@ namespace MinecraftServersControl.Core.Services
                     .FirstOrDefaultAsync(x => x.Id == vkUserId);
 
                 if (vkUser == null)
-                    return ResultCode.AccessDenied;
+                    return ResultCode.UserNotFound;
 
                 return new UserInfoDTO(vkUser.UserLogin);
             }
         }
 
-        public async Task<Result> CheckAccess(int vkUserId)
+        public async Task<Result<bool>> IsAuthorized(int vkUserId)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {
                 var vkUser = await databaseContext.VkUsers
                     .AnyAsync(x => x.Id == vkUserId);
 
-                return vkUser ? ResultCode.Success : ResultCode.AccessDenied;
+                return vkUser;
             }
         }
     }

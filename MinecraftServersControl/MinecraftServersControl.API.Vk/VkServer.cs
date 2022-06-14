@@ -38,7 +38,7 @@ namespace MinecraftServersControl.API.Vk
             {
                 if (update.Type == LongPollUpdateType.MessageNew)
                 {
-                    var messageNew = ((LongPollMessageNew)update.Object);
+                    var messageNew = (LongPollMessageNew)update.Object;
                     var handler = new VkMessageHandler(_serviceTypes, messageNew.Message, _sessionStorage, _vkClient, _application, _logger);
                     await handler.ProcessMessage();
                 }
