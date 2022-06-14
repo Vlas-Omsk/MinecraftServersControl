@@ -19,7 +19,7 @@ namespace MinecraftServersControl.Remote
         private Queue<char> _buffer = new Queue<char>();
         private bool _stopIsExpected = false;
 
-        private const int _bufferMaxLength = 100;
+        private const int _bufferMaxLength = 500;
         private const int _timerInterval = 100;
 
         public ProcessHost()
@@ -86,9 +86,8 @@ namespace MinecraftServersControl.Remote
             Running = false;
 
             _readDataCancellationTokenSource.Cancel();
-            _process.Close();
-            _process.WaitForExit();
             _readDataThread.Join();
+            _process.Close();
             _readDataCancellationTokenSource.Dispose();
 
             RaiseStopped();
@@ -127,19 +126,20 @@ namespace MinecraftServersControl.Remote
             }
         }
 
-        private void ReadDataHandler(object obj)
+        private async void ReadDataHandler(object obj)
         {
             var cancellationToken = (CancellationToken)obj;
+            var buffer = new char[1];
 
-            while (!_process.HasExited && !cancellationToken.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                var ch = _process.StandardOutput.Read();
+                var count = await _process.StandardOutput.ReadAsync(buffer, cancellationToken);
 
-                if (ch != -1)
+                if (count > 0)
                 {
                     lock (_readBuffer)
                     {
-                        _readBuffer += (char)ch;
+                        _readBuffer += buffer[0];
                         _readBufferChanged = true;
                     }
                 }

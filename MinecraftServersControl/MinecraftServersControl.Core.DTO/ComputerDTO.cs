@@ -6,8 +6,8 @@ namespace MinecraftServersControl.Core.DTO
     [Serializable]
     public sealed class ComputerDTO
     {
-        public Guid Id { get; private set; }
         public string Name { get; private set; }
+        public string Alias { get; private set; }
         public bool Running { get; private set; }
         public IEnumerable<ServerDTO> Servers { get; private set; }
 
@@ -15,10 +15,10 @@ namespace MinecraftServersControl.Core.DTO
         {
         }
 
-        public ComputerDTO(Guid id, string name, bool running, IEnumerable<ServerDTO> servers)
+        public ComputerDTO(string name, string alias, bool running, IEnumerable<ServerDTO> servers)
         {
-            Id = id;
             Name = name;
+            Alias = alias;
             Running = running;
             Servers = servers;
         }

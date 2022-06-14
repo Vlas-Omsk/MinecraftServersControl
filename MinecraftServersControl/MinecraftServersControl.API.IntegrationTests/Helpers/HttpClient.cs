@@ -36,11 +36,11 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
             request.SetPath(path);
 
             if (sessionId.HasValue)
-                request.AddHeader("Authorization", sessionId.Value.ToString());
+                request.SetHeader("Authorization", sessionId.Value.ToString());
 
             if (data != null)
             {
-                request.AddHeader("Content-Type", "application/json");
+                request.SetHeader("Content-Type", "application/json");
                 request.SetData(data.Serialize().ToString(), Encoding.UTF8);
             }
 

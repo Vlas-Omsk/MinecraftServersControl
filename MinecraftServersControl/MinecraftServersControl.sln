@@ -41,13 +41,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Rem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.DTO", "MinecraftServersControl.Remote.DTO\MinecraftServersControl.Remote.DTO.csproj", "{7331C735-013F-4ADA-9605-44AA436B3822}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Remote.Schema", "MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Schema.csproj", "{661D667A-377B-4322-9425-14A510C8118A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Schema", "MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Schema.csproj", "{661D667A-377B-4322-9425-14A510C8118A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Remote.Server", "MinecraftServersControl.Remote.Server\MinecraftServersControl.Remote.Server.csproj", "{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server", "MinecraftServersControl.Remote.Server\MinecraftServersControl.Remote.Server.csproj", "{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Remote.Server.Interface", "MinecraftServersControl.Remote.Server.Interface\MinecraftServersControl.Remote.Server.Interface.csproj", "{37B71797-01C6-4DF9-9BFE-1B5DDEB249C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server.Interface", "MinecraftServersControl.Remote.Server.Interface\MinecraftServersControl.Remote.Server.Interface.csproj", "{37B71797-01C6-4DF9-9BFE-1B5DDEB249C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.Core.Interface", "MinecraftServersControl.Core.Interface\MinecraftServersControl.Core.Interface.csproj", "{AE771C76-25BF-4F3C-AADC-9535FC33B776}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.Interface", "MinecraftServersControl.Core.Interface\MinecraftServersControl.Core.Interface.csproj", "{AE771C76-25BF-4F3C-AADC-9535FC33B776}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.API.Vk", "MinecraftServersControl.API.Vk\MinecraftServersControl.API.Vk.csproj", "{C61D019D-4107-4262-AF83-53B41A1CF7C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VkApi", "VkApi\VkApi.csproj", "{D84E28B6-3307-4C23-95B1-BE72DF57106B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -225,6 +229,22 @@ Global
 		{AE771C76-25BF-4F3C-AADC-9535FC33B776}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
 		{AE771C76-25BF-4F3C-AADC-9535FC33B776}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE771C76-25BF-4F3C-AADC-9535FC33B776}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C61D019D-4107-4262-AF83-53B41A1CF7C9}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{C61D019D-4107-4262-AF83-53B41A1CF7C9}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{C61D019D-4107-4262-AF83-53B41A1CF7C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C61D019D-4107-4262-AF83-53B41A1CF7C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C61D019D-4107-4262-AF83-53B41A1CF7C9}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{C61D019D-4107-4262-AF83-53B41A1CF7C9}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{C61D019D-4107-4262-AF83-53B41A1CF7C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C61D019D-4107-4262-AF83-53B41A1CF7C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B}.Debug_Ubuntu|Any CPU.ActiveCfg = Debug|Any CPU
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B}.Debug_Ubuntu|Any CPU.Build.0 = Debug|Any CPU
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B}.Release_Ubuntu|Any CPU.ActiveCfg = Release|Any CPU
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B}.Release_Ubuntu|Any CPU.Build.0 = Release|Any CPU
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -240,6 +260,7 @@ Global
 		{661D667A-377B-4322-9425-14A510C8118A} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
 		{E7E856B0-3CED-4030-BBC5-3B5457F18ADE} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
 		{37B71797-01C6-4DF9-9BFE-1B5DDEB249C8} = {5ADAF5ED-1F5E-4B5C-B754-9C9E29F92437}
+		{D84E28B6-3307-4C23-95B1-BE72DF57106B} = {950231D4-2DAB-43CE-BC13-300506B8C0EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F59F4C2A-77AF-4EA2-8942-051E0241B101}

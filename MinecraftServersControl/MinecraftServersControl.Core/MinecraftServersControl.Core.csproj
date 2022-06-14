@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MinecraftServersControl.Common\MinecraftServersControl.Common.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Core.DTO\MinecraftServersControl.Core.DTO.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Core.Interface\MinecraftServersControl.Core.Interface.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.DAL\MinecraftServersControl.DAL.csproj" />

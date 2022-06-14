@@ -5,6 +5,7 @@ using WebSocketSharp.Net;
 
 namespace MinecraftServersControl.API.HttpServices
 {
+    
     public sealed class UserHttpService : HttpService
     {
         [HttpRequest(HttpMethod.Post, "/signin")]

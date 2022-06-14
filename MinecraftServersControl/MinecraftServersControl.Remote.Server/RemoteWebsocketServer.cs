@@ -14,6 +14,7 @@ namespace MinecraftServersControl.Remote.Server
     {
         private readonly WebSocketServer _server;
         private IApplication _application;
+        private Logger _logger;
 
         static RemoteWebsocketServer()
         {
@@ -22,6 +23,7 @@ namespace MinecraftServersControl.Remote.Server
 
         public RemoteWebsocketServer(string url, Logger logger)
         {
+            _logger = logger;
             _server = new WebSocketServer(url);
             _server.Log.Output = new WebSocketLoggerAdapter(logger).Output;
             _server.AddWebSocketService<ComputerWebSocketService>("/", (x) =>
@@ -36,6 +38,8 @@ namespace MinecraftServersControl.Remote.Server
         {
             _application = application;
             _server.Start();
+
+            _logger.Info("Server started");
         }
 
         public IRemoteComputer GetComputer(Guid computerId)

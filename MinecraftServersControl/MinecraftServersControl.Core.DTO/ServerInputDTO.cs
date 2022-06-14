@@ -4,18 +4,18 @@ namespace MinecraftServersControl.Core.DTO
 {
     public sealed class ServerInputDTO
     {
-        public Guid ComputerId { get; private set; }
-        public Guid ServerId { get; private set; }
+        public string ComputerAlias { get; private set; }
+        public string ServerAlias { get; private set; }
         public string Message { get; private set; }
 
         private ServerInputDTO()
         {
         }
 
-        public ServerInputDTO(Guid computerId, Guid serverId, string message)
+        public ServerInputDTO(string computerAlias, string serverAlias, string message)
         {
-            ComputerId = computerId;
-            ServerId = serverId;
+            ComputerAlias = computerAlias;
+            ServerAlias = serverAlias;
             Message = message;
         }
     }

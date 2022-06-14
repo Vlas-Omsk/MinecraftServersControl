@@ -14,7 +14,7 @@ namespace MinecraftServersControl.Common
 
             _registered = true;
 
-            TypeConverter.Register(typeof(Enum), new TypeConversion((object obj, Type targetType, ref bool handled) =>
+            TypeConverter.Default.Register(typeof(Enum), new TypeConversion((object obj, Type targetType, ref bool handled) =>
             {
                 if (obj is int value)
                 {

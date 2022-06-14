@@ -10,6 +10,7 @@ namespace MinecraftServersControl.DAL.Entities
         [Key]
         public byte[] Id { get; set; }
         public string Name { get; set; }
+        public string Alias { get; set; }
         public byte[] IpAddress { get; set; }
         public byte[] MacAddress { get; set; }
     }

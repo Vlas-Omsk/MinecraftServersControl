@@ -1,7 +1,6 @@
 ﻿using MinecraftServersControl.Core.DTO;
 using MinecraftServersControl.DAL.Entities;
 using System;
-using System.Linq;
 
 namespace MinecraftServersControl.Core
 {

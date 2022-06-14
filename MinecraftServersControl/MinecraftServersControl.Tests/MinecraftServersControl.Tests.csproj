@@ -13,4 +13,9 @@
     <None Include="ProcessHostTest.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MinecraftServersControl.API.Vk\MinecraftServersControl.API.Vk.csproj" />
+    <ProjectReference Include="..\VkApi\VkApi.csproj" />
+  </ItemGroup>
+
 </Project>

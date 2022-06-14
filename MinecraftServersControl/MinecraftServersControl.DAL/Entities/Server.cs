@@ -10,6 +10,7 @@ namespace MinecraftServersControl.DAL.Entities
         [Key]
         public byte[] Id { get; set; }
         public string Name { get; set; }
+        public string Alias { get; set; }
         public byte[] ComputerId { get; set; }
         [ForeignKey("ComputerId")]
         public Computer Computer { get; set; }

@@ -5,7 +5,7 @@ namespace MinecraftServersControl.Core.DTO
     [Serializable]
     public sealed class ServerDTO
     {
-        public Guid Id { get; private set; }
+        public string Alias { get; private set; }
         public string Name { get; private set; }
         public bool Running { get; private set; }
 
@@ -13,9 +13,9 @@ namespace MinecraftServersControl.Core.DTO
         {
         }
 
-        public ServerDTO(Guid id, string name, bool running)
+        public ServerDTO(string alias, string name, bool running)
         {
-            Id = id;
+            Alias = alias;
             Name = name;
             Running = running;
         }

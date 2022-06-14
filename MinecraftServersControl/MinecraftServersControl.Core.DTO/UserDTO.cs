@@ -3,7 +3,7 @@
 namespace MinecraftServersControl.Core.DTO
 {
     [Serializable]
-    public sealed class UserDTO
+    public sealed class UserDTO 
     {
         public string Login { get; private set; }
         public string PasswordHash { get; private set; }

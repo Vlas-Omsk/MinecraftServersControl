@@ -22,7 +22,7 @@ namespace MinecraftServersControl.API
         private HttpListenerResponse _httpResponse;
         private readonly IApplication _application;
         private readonly Logger _logger;
-        private readonly Dictionary<Uri, Type> _httpServices = new Dictionary<Uri, Type>();
+        private readonly Dictionary<Uri, Type> _httpServices;
         private bool _handled;
 
         internal HttpRequestHandler(HttpListenerRequest httpRequest, HttpListenerResponse httpResponse, IApplication application, Logger logger, Dictionary<Uri, Type> httpServices)
@@ -67,7 +67,7 @@ namespace MinecraftServersControl.API
             _httpResponse.Close(content, true);
         }
 
-        internal void ProcessRequest()
+        public void ProcessRequest()
         {
             if (!Enum.TryParse(_httpRequest.HttpMethod, true, out HttpMethod httpMethod))
             {

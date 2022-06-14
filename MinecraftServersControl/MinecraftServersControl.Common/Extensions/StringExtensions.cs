@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
-namespace MinecraftServersControl.Core
+namespace MinecraftServersControl.Common
 {
-    internal static class StringExtensions
+    public static class StringExtensions
     {
         public static byte[] ToByteArray(this string hexString)
         {
@@ -19,6 +22,16 @@ namespace MinecraftServersControl.Core
             }
 
             return bytes;
+        }
+
+        public static string ToSha256Hash(this string password)
+        {
+            return string.Join("", password.ToSha256HashBytes().Select(x => x.ToString("X2")));
+        }
+
+        public static byte[] ToSha256HashBytes(this string password)
+        {
+            return SHA256.HashData(Encoding.UTF8.GetBytes(password));
         }
     }
 }

@@ -65,6 +65,11 @@ namespace MinecraftServersControl.Core.DTO
             ErrorMessage = errorMessage;
         }
 
+        public Result ToResult()
+        {
+            return new Result(Code, ErrorMessage);
+        }
+
         public Result<T> ToResult<T>()
         {
             return new Result<T>(default, Code, ErrorMessage);

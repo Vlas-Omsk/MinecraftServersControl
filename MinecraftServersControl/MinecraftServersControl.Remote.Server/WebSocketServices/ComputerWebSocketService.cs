@@ -75,35 +75,35 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
             await Task.Run(() => RemoteServer.RaiseServerOutput(ComputerKey, response.Result.Data.ServerId, response.Result.Data.Output));
         }
 
-        public async Task<RemoteResult<IEnumerable<ServerInfoDTO>>> GetInfo(Guid computerKey)
+        public async Task<RemoteResult<IEnumerable<ServerInfoDTO>>> GetInfo()
         {
             return (await GetResponse<RemoteWebSocketResponse<RemoteResult<IEnumerable<ServerInfoDTO>>>, RemoteWebSocketRequest>(
                 new RemoteWebSocketRequest(_counter++, RemoteWebSocketRequestCode.GetInfo)
             )).Result;
         }
 
-        public async Task<RemoteResult<string>> GetOutput(Guid computerKey, Guid serverKey)
+        public async Task<RemoteResult<string>> GetOutput(Guid serverKey)
         {
             return (await GetResponse<RemoteWebSocketResponse<RemoteResult<string>>, RemoteWebSocketRequest>(
                 new RemoteWebSocketRequest<Guid>(_counter++, RemoteWebSocketRequestCode.GetOutput, serverKey)
             )).Result;
         }
 
-        public async Task<RemoteResult> Input(Guid computerId, ServerInputDTO serverInput)
+        public async Task<RemoteResult> Input(ServerInputDTO serverInput)
         {
             return (await GetResponse<RemoteWebSocketResponse<RemoteResult>, RemoteWebSocketRequest>(
                new RemoteWebSocketRequest<ServerInputDTO>(_counter++, RemoteWebSocketRequestCode.Input, serverInput)
            )).Result;
         }
 
-        public async Task<RemoteResult> Start(Guid computerKey, Guid serverKey)
+        public async Task<RemoteResult> Start(Guid serverKey)
         {
             return (await GetResponse<RemoteWebSocketResponse<RemoteResult>, RemoteWebSocketRequest>(
                 new RemoteWebSocketRequest<Guid>(_counter++, RemoteWebSocketRequestCode.Start, serverKey)
             )).Result;
         }
 
-        public async Task<RemoteResult> Terminate(Guid computerKey, Guid serverKey)
+        public async Task<RemoteResult> Terminate(Guid serverKey)
         {
             return (await GetResponse<RemoteWebSocketResponse<RemoteResult>, RemoteWebSocketRequest>(
                 new RemoteWebSocketRequest<Guid>(_counter++, RemoteWebSocketRequestCode.Terminate, serverKey)
