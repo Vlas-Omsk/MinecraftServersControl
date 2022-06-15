@@ -6,14 +6,10 @@ namespace VkApi.Models
     public sealed class Image
     {
         [JsonProperty("height")]
-        public int Height { get; private set; }
+        public int Height { get; set; }
         [JsonProperty("url")]
-        public string Url { get; private set; }
+        public string Url { get; set; }
         [JsonProperty("width")]
-        public int Width { get; private set; }
-
-        private Image()
-        {
-        }
+        public int Width { get; set; }
     }
 }

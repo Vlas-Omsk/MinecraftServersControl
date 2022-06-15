@@ -6,56 +6,52 @@ namespace VkApi.Models
     public sealed class Message
     {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("date")]
-        public int Date { get; private set; }
+        public int Date { get; set; }
         [JsonProperty("peer_id")]
-        public int PeerId { get; private set; }
+        public int PeerId { get; set; }
         [JsonProperty("from_id")]
-        public int FromId { get; private set; }
+        public int FromId { get; set; }
         [JsonProperty("text")]
-        public string Text { get; private set; }
+        public string Text { get; set; }
         [JsonProperty("random_id")]
-        public int RandomId { get; private set; }
+        public int RandomId { get; set; }
         [JsonProperty("ref")]
-        public string Reference { get; private set; }
+        public string Reference { get; set; }
         [JsonProperty("ref_source")]
-        public string ReferenceSource { get; private set; }
+        public string ReferenceSource { get; set; }
         [JsonProperty("attachments")]
-        public Attachment[] Attachments { get; private set; }
+        public Attachment[] Attachments { get; set; }
         [JsonProperty("important")]
-        public bool Important { get; private set; }
+        public bool Important { get; set; }
         [JsonProperty("geo")]
-        public Geo Geo { get; private set; }
+        public Geo Geo { get; set; }
         [JsonProperty("payload")]
-        public string Payload { get; private set; }
+        public string Payload { get; set; }
         [JsonProperty("keyboard")]
-        public Keyboard Keyboard { get; private set; }
+        public Keyboard Keyboard { get; set; }
         [JsonProperty("fwd_messages")]
-        public Message[] ForwardedMessages { get; private set; }
+        public Message[] ForwardedMessages { get; set; }
         [JsonProperty("reply_message")]
-        public Message ReplyMessage { get; private set; }
+        public Message ReplyMessage { get; set; }
         [JsonProperty("action")]
-        public MessageAction Action { get; private set; }
+        public MessageAction Action { get; set; }
         [JsonProperty("admin_author_id")]
-        public int AdminAuthorId { get; private set; }
+        public int AdminAuthorId { get; set; }
         [JsonProperty("conversation_message_id")]
-        public int ConversationMessageId { get; private set; }
+        public int ConversationMessageId { get; set; }
         [JsonProperty("is_cropped")]
-        public bool IsCropped { get; private set; }
+        public bool IsCropped { get; set; }
         [JsonProperty("members_count")]
-        public int MembersCount { get; private set; }
+        public int MembersCount { get; set; }
         [JsonProperty("update_time")]
-        public int UpdateTime { get; private set; }
+        public int UpdateTime { get; set; }
         [JsonProperty("was_listened")]
-        public bool WasListened { get; private set; }
+        public bool WasListened { get; set; }
         [JsonProperty("pinned_at")]
-        public int PinnedAt { get; private set; }
+        public int PinnedAt { get; set; }
         [JsonProperty("message_tag")]
-        public string MessageTag { get; private set; }
-
-        private Message()
-        {
-        }
+        public string MessageTag { get; set; }
     }
 }

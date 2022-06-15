@@ -6,12 +6,8 @@ namespace VkApi.Models
     public sealed class Section
     {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("name")]
-        public string Name { get; private set; }
-
-        private Section()
-        {
-        }
+        public string Name { get; set; }
     }
 }

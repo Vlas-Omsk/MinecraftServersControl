@@ -6,12 +6,8 @@ namespace VkApi.Models
     public sealed class Likes
     {
         [JsonProperty("count")]
-        public int Count { get; private set; }
+        public int Count { get; set; }
         [JsonProperty("user_likes")]
-        public bool UserLikes { get; private set; }
-
-        private Likes()
-        {
-        }
+        public bool UserLikes { get; set; }
     }
 }

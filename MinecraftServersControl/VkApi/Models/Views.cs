@@ -6,10 +6,6 @@ namespace VkApi.Models
     public sealed class Views
     {
         [JsonProperty("count")]
-        public int Count { get; private set; }
-
-        private Views()
-        {
-        }
+        public int Count { get; set; }
     }
 }

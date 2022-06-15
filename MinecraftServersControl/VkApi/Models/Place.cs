@@ -6,32 +6,28 @@ namespace VkApi.Models
     public sealed class Place
     {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("title")]
-        public string Title { get; private set; }
+        public string Title { get; set; }
         [JsonProperty("latitude")]
-        public int Latitude { get; private set; }
+        public int Latitude { get; set; }
         [JsonProperty("longitude")]
-        public int Longitude { get; private set; }
+        public int Longitude { get; set; }
         [JsonProperty("created")]
-        public int Created { get; private set; }
+        public int Created { get; set; }
         [JsonProperty("icon")]
-        public string Icon { get; private set; }
+        public string Icon { get; set; }
         [JsonProperty("checkins")]
-        public int Checkins { get; private set; }
+        public int Checkins { get; set; }
         [JsonProperty("updated")]
-        public int Updated { get; private set; }
+        public int Updated { get; set; }
         [JsonProperty("type")]
-        public int Type { get; private set; }
+        public int Type { get; set; }
         [JsonProperty("country")]
-        public string Country { get; private set; }
+        public string Country { get; set; }
         [JsonProperty("city")]
-        public string City { get; private set; }
+        public string City { get; set; }
         [JsonProperty("address")]
-        public string Address { get; private set; }
-
-        private Place()
-        {
-        }
+        public string Address { get; set; }
     }
 }

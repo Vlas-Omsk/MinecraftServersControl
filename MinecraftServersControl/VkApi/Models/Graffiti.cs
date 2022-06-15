@@ -6,14 +6,10 @@ namespace VkApi.Models
     public sealed class Graffiti
     {
         [JsonProperty("src")]
-        public string Source { get; private set; }
+        public string Source { get; set; }
         [JsonProperty("width")]
-        public int Width { get; private set; }
+        public int Width { get; set; }
         [JsonProperty("height")]
-        public int Height { get; private set; }
-
-        private Graffiti()
-        {
-        }
+        public int Height { get; set; }
     }
 }

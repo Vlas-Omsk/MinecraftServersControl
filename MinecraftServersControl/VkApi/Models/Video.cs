@@ -6,90 +6,86 @@ namespace VkApi.Models
     public sealed class Video
     {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("owner_id")]
-        public int OwnerId { get; private set; }
+        public int OwnerId { get; set; }
         [JsonProperty("title")]
-        public string Title { get; private set; }
+        public string Title { get; set; }
         [JsonProperty("description")]
-        public string Description { get; private set; }
+        public string Description { get; set; }
         [JsonProperty("duration")]
-        public int Duration { get; private set; }
+        public int Duration { get; set; }
         [JsonProperty("image")]
-        public VideoImage[] Image { get; private set; }
+        public VideoImage[] Image { get; set; }
         [JsonProperty("first_frame")]
-        public Image[] FirstFrame { get; private set; }
+        public Image[] FirstFrame { get; set; }
         [JsonProperty("date")]
-        public int Date { get; private set; }
+        public int Date { get; set; }
         [JsonProperty("adding_date")]
-        public int AddingDate { get; private set; }
+        public int AddingDate { get; set; }
         [JsonProperty("views")]
-        public int Views { get; private set; }
+        public int Views { get; set; }
         [JsonProperty("local_views")]
-        public int LocalViews { get; private set; }
+        public int LocalViews { get; set; }
         [JsonProperty("comments")]
-        public int Comments { get; private set; }
+        public int Comments { get; set; }
         [JsonProperty("player")]
-        public string Player { get; private set; }
+        public string Player { get; set; }
         [JsonProperty("platform")]
-        public string Platform { get; private set; }
+        public string Platform { get; set; }
         [JsonProperty("can_add")]
-        public bool CanAdd { get; private set; }
+        public bool CanAdd { get; set; }
         [JsonProperty("is_private")]
-        public bool IsPrivate { get; private set; }
+        public bool IsPrivate { get; set; }
         [JsonProperty("access_key")]
-        public string AccessKey { get; private set; }
+        public string AccessKey { get; set; }
         [JsonProperty("processing")]
-        public bool Processing { get; private set; }
+        public bool Processing { get; set; }
         [JsonProperty("is_favorite")]
-        public bool IsFavorite { get; private set; }
+        public bool IsFavorite { get; set; }
         [JsonProperty("can_comment")]
-        public bool CanComment { get; private set; }
+        public bool CanComment { get; set; }
         [JsonProperty("can_edit")]
-        public bool CanEdit { get; private set; }
+        public bool CanEdit { get; set; }
         [JsonProperty("can_like")]
-        public bool CanLike { get; private set; }
+        public bool CanLike { get; set; }
         [JsonProperty("can_repost")]
-        public bool CanRepost { get; private set; }
+        public bool CanRepost { get; set; }
         [JsonProperty("can_subscribe")]
-        public bool CanSubscribe { get; private set; }
+        public bool CanSubscribe { get; set; }
         [JsonProperty("can_add_to_faves")]
-        public bool CanAddToFaves { get; private set; }
+        public bool CanAddToFaves { get; set; }
         [JsonProperty("can_attach_link")]
-        public bool CanAttachLink { get; private set; }
+        public bool CanAttachLink { get; set; }
         [JsonProperty("width")]
-        public int Width { get; private set; }
+        public int Width { get; set; }
         [JsonProperty("height")]
-        public int Height { get; private set; }
+        public int Height { get; set; }
         [JsonProperty("user_id")]
-        public int UserId { get; private set; }
+        public int UserId { get; set; }
         [JsonProperty("converting")]
-        public bool Converting { get; private set; }
+        public bool Converting { get; set; }
         [JsonProperty("added")]
-        public bool Added { get; private set; }
+        public bool Added { get; set; }
         [JsonProperty("is_subscribed")]
-        public bool IsSubscribed { get; private set; }
+        public bool IsSubscribed { get; set; }
         [JsonProperty("repeat")]
-        public bool Repeat { get; private set; }
+        public bool Repeat { get; set; }
         [JsonProperty("type")]
-        public VideoType Type { get; private set; }
+        public VideoType Type { get; set; }
         [JsonProperty("balance")]
-        public int Balance { get; private set; }
+        public int Balance { get; set; }
         [JsonProperty("live_status")]
-        public VideoLiveStatus LiveStatus { get; private set; }
+        public VideoLiveStatus LiveStatus { get; set; }
         [JsonProperty("live")]
-        public bool Live { get; private set; }
+        public bool Live { get; set; }
         [JsonProperty("upcoming")]
-        public bool Upcoming { get; private set; }
+        public bool Upcoming { get; set; }
         [JsonProperty("spectators")]
-        public int Spectators { get; private set; }
+        public int Spectators { get; set; }
         [JsonProperty("likes")]
-        public Likes Likes { get; private set; }
+        public Likes Likes { get; set; }
         [JsonProperty("reposts")]
-        public VideoReposts Reposts { get; private set; }
-
-        private Video()
-        {
-        }
+        public VideoReposts Reposts { get; set; }
     }
 }

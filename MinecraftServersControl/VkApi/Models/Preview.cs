@@ -6,14 +6,10 @@ namespace VkApi.Models
     public sealed class Preview
     {
         [JsonProperty("photo")]
-        public Photo Photo { get; private set; }
+        public Photo Photo { get; set; }
         [JsonProperty("graffiti")]
-        public Graffiti Graffiti { get; private set; }
+        public Graffiti Graffiti { get; set; }
         [JsonProperty("audio_message")]
-        public AudioMessage AudioMessage { get; private set; }
-
-        private Preview()
-        {
-        }
+        public AudioMessage AudioMessage { get; set; }
     }
 }

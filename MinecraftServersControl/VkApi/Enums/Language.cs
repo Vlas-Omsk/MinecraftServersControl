@@ -3,7 +3,7 @@
 namespace VkApi
 {
     [EnumDeserializerType(typeof(int))]
-    public enum Lang
+    public enum Language
     {
         Russian = 0,
         Ukrainian = 1,

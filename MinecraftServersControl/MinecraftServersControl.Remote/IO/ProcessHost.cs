@@ -61,6 +61,8 @@ namespace MinecraftServersControl.Remote
             _checkForDataTimer.Elapsed += OnTimerElapsed;
             _checkForDataTimer.Start();
 
+            if (_readDataCancellationTokenSource != null)
+                _readDataCancellationTokenSource.Dispose();
             _readDataCancellationTokenSource = new CancellationTokenSource();
 
             _readDataThread = new Thread(ReadDataHandler);
@@ -88,7 +90,6 @@ namespace MinecraftServersControl.Remote
             _readDataCancellationTokenSource.Cancel();
             _readDataThread.Join();
             _process.Close();
-            _readDataCancellationTokenSource.Dispose();
 
             RaiseStopped();
         }

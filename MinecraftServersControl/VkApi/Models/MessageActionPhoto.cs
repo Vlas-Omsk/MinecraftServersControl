@@ -6,14 +6,10 @@ namespace VkApi.Models
     public sealed class MessageActionPhoto
     {
         [JsonProperty("photo_50")]
-        public string Photo50 { get; private set; }
+        public string Photo50 { get; set; }
         [JsonProperty("photo_100")]
-        public string Photo100 { get; private set; }
+        public string Photo100 { get; set; }
         [JsonProperty("photo_200")]
-        public string Photo200 { get; private set; }
-
-        private MessageActionPhoto()
-        {
-        }
+        public string Photo200 { get; set; }
     }
 }

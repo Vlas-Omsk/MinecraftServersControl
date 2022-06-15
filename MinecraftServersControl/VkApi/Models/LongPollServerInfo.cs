@@ -7,14 +7,10 @@ namespace VkApi.Models
     public sealed class LongPollServerInfo
     {
         [JsonProperty("key")]
-        public string Key { get; private set; }
+        public string Key { get; set; }
         [JsonProperty("server")]
-        public string Server { get; private set; }
+        public string Server { get; set; }
         [JsonProperty("ts")]
-        public string Ts { get; private set; }
-
-        private LongPollServerInfo()
-        {
-        }
+        public string Ts { get; set; }
     }
 }

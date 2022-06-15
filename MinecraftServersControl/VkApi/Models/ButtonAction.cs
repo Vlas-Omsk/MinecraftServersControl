@@ -6,36 +6,20 @@ namespace VkApi.Models
     public sealed class ButtonAction
     {
         [JsonProperty("type")]
-        public ButtonActionType Type { get; private set; }
+        public ButtonActionType Type { get; set; }
         [JsonProperty("url")]
-        public string Url { get; private set; }
+        public string Url { get; set; }
         [JsonProperty("label")]
-        public string Label { get; private set; }
+        public string Label { get; set; }
         [JsonProperty("payload")]
-        public string Payload { get; private set; }
+        public string Payload { get; set; }
         [JsonProperty("link")]
-        public string Link { get; private set; }
+        public string Link { get; set; }
         [JsonProperty("hash")]
-        public string Hash { get; private set; }
+        public string Hash { get; set; }
         [JsonProperty("app_id")]
-        public int AppId { get; private set; }
+        public int AppId { get; set; }
         [JsonProperty("owner_id")]
-        public int OwnerId { get; private set; }
-
-        public ButtonAction()
-        {
-        }
-
-        public ButtonAction(ButtonActionType type, string url, string label, string payload, string link, string hash, int appId, int ownerId)
-        {
-            Type = type;
-            Url = url;
-            Label = label;
-            Payload = payload;
-            Link = link;
-            Hash = hash;
-            AppId = appId;
-            OwnerId = ownerId;
-        }
+        public int OwnerId { get; set; }
     }
 }

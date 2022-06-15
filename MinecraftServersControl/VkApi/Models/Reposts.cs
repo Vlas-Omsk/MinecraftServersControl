@@ -6,12 +6,8 @@ namespace VkApi.Models
     public sealed class Reposts
     {
         [JsonProperty("count")]
-        public int Count { get; private set; }
+        public int Count { get; set; }
         [JsonProperty("user_reposted")]
-        public bool UserReposted { get; private set; }
-
-        private Reposts()
-        {
-        }
+        public bool UserReposted { get; set; }
     }
 }

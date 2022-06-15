@@ -6,14 +6,10 @@ namespace VkApi.Models
     public sealed class Dimensions
     {
         [JsonProperty("width")]
-        public int Width { get; private set; }
+        public int Width { get; set; }
         [JsonProperty("height")]
-        public int Height { get; private set; }
+        public int Height { get; set; }
         [JsonProperty("length")]
-        public int Length { get; private set; }
-
-        private Dimensions()
-        {
-        }
+        public int Length { get; set; }
     }
 }

@@ -6,46 +6,42 @@ namespace VkApi.Models
     public sealed class Market
     {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("owner_id")]
-        public int OwnerId { get; private set; }
+        public int OwnerId { get; set; }
         [JsonProperty("title")]
-        public string Title { get; private set; }
+        public string Title { get; set; }
         [JsonProperty("description")]
-        public string Description { get; private set; }
+        public string Description { get; set; }
         [JsonProperty("price")]
-        public MarketPrice Price { get; private set; }
+        public MarketPrice Price { get; set; }
         [JsonProperty("dimensions")]
-        public Dimensions Dimensions { get; private set; }
+        public Dimensions Dimensions { get; set; }
         [JsonProperty("weight")]
-        public int Weight { get; private set; }
+        public int Weight { get; set; }
         [JsonProperty("category")]
-        public Category Category { get; private set; }
+        public Category Category { get; set; }
         [JsonProperty("thumb_photo")]
-        public string ThumbPhoto { get; private set; }
+        public string ThumbPhoto { get; set; }
         [JsonProperty("date")]
-        public int Date { get; private set; }
+        public int Date { get; set; }
         [JsonProperty("availability")]
-        public MarketAvailability Availability { get; private set; }
+        public MarketAvailability Availability { get; set; }
         [JsonProperty("is_favorite")]
-        public bool IsFavorite { get; private set; }
+        public bool IsFavorite { get; set; }
         [JsonProperty("sku")]
-        public string Sku { get; private set; }
+        public string Sku { get; set; }
         [JsonProperty("photos")]
-        public Photo[] Photos { get; private set; }
+        public Photo[] Photos { get; set; }
         [JsonProperty("can_comment")]
-        public bool CanComment { get; private set; }
+        public bool CanComment { get; set; }
         [JsonProperty("can_repost")]
-        public bool CanRepost { get; private set; }
+        public bool CanRepost { get; set; }
         [JsonProperty("likes")]
-        public Likes Likes { get; private set; }
+        public Likes Likes { get; set; }
         [JsonProperty("url")]
-        public string Url { get; private set; }
+        public string Url { get; set; }
         [JsonProperty("button_title")]
-        public string ButtonTitle { get; private set; }
-
-        private Market()
-        {
-        }
+        public string ButtonTitle { get; set; }
     }
 }

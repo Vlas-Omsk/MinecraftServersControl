@@ -6,16 +6,12 @@ namespace VkApi.Models
     public sealed class VideoImage
     {
         [JsonProperty("height")]
-        public int Height { get; private set; }
+        public int Height { get; set; }
         [JsonProperty("url")]
-        public string Url { get; private set; }
+        public string Url { get; set; }
         [JsonProperty("width")]
-        public int Width { get; private set; }
+        public int Width { get; set; }
         [JsonProperty("with_padding")]
-        public bool WithPadding { get; private set; }
-
-        private VideoImage()
-        {
-        }
+        public bool WithPadding { get; set; }
     }
 }

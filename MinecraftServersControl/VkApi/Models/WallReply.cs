@@ -6,32 +6,28 @@ namespace VkApi.Models
     public sealed class WallReply
     {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("from_id")]
-        public int FromId { get; private set; }
+        public int FromId { get; set; }
         [JsonProperty("date")]
-        public int Date { get; private set; }
+        public int Date { get; set; }
         [JsonProperty("text")]
-        public string Text { get; private set; }
+        public string Text { get; set; }
         [JsonProperty("donut")]
-        public WallReplyDonut Donut { get; private set; }
+        public WallReplyDonut Donut { get; set; }
         [JsonProperty("reply_to_user")]
-        public int ReplyToUser { get; private set; }
+        public int ReplyToUser { get; set; }
         [JsonProperty("reply_to_comment")]
-        public int ReplyToComment { get; private set; }
+        public int ReplyToComment { get; set; }
         [JsonProperty("attachments")]
-        public Attachment[] Attachments { get; private set; }
+        public Attachment[] Attachments { get; set; }
         [JsonProperty("parents_stack")]
-        public int[] ParentsStack { get; private set; }
+        public int[] ParentsStack { get; set; }
         [JsonProperty("thread")]
-        public VkThread Thread { get; private set; }
+        public VkThread Thread { get; set; }
         [JsonProperty("post_id")]
-        public int PostId { get; private set; }
+        public int PostId { get; set; }
         [JsonProperty("owner_id")]
-        public int OwnerId { get; private set; }
-
-        private WallReply()
-        {
-        }
+        public int OwnerId { get; set; }
     }
 }

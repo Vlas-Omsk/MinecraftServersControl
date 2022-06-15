@@ -7,21 +7,17 @@ namespace VkApi.Models
     public sealed class LongPollUpdate : IJsonDeserializable
     {
         [JsonProperty("type")]
-        public LongPollUpdateType Type { get; private set; }
+        public LongPollUpdateType Type { get; set; }
         [JsonProperty("event_id")]
-        public string EventId { get; private set; }
+        public string EventId { get; set; }
         [JsonProperty("v")]
-        public string Version { get; private set; }
+        public string Version { get; set; }
         [JsonProperty("object", DeserializerIgnore = true)]
-        public object Object { get; private set; }
+        public object Object { get; set; }
         [JsonProperty("group_id")]
-        public int GroupId { get; private set; }
+        public int GroupId { get; set; }
 
-        private LongPollUpdate()
-        {
-        }
-
-        public void Deserialize(IDeserializer deserializer, IJson json)
+        void IJsonDeserializable.Deserialize(IDeserializer deserializer, IJson json)
         {
             deserializer.Deserialize(json, this, false);
 

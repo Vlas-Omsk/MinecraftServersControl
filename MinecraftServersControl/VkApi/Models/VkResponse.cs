@@ -6,9 +6,9 @@ namespace VkApi.Models
     public class VkResponse
     {
         [JsonProperty("error")]
-        public VkResponseError Error { get; protected set; }
+        public VkResponseError Error { get; set; }
 
-        protected VkResponse()
+        public VkResponse()
         {
         }
     }
@@ -16,9 +16,9 @@ namespace VkApi.Models
     public class VkResponse<T> : VkResponse
     {
         [JsonProperty("response")]
-        public T Response { get; protected set; }
+        public T Response { get; set; }
 
-        protected VkResponse()
+        public VkResponse()
         {
         }
     }

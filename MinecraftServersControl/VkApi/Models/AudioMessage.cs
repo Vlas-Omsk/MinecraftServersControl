@@ -6,16 +6,12 @@ namespace VkApi.Models
     public sealed class AudioMessage
     {
         [JsonProperty("duration")]
-        public int Duration { get; private set; }
+        public int Duration { get; set; }
         [JsonProperty("waveform")]
-        public int[] Waveform { get; private set; }
+        public int[] Waveform { get; set; }
         [JsonProperty("link_ogg")]
-        public string LinkOgg { get; private set; }
+        public string LinkOgg { get; set; }
         [JsonProperty("link_mp3")]
-        public string LinkMp3 { get; private set; }
-
-        private AudioMessage()
-        {
-        }
+        public string LinkMp3 { get; set; }
     }
 }

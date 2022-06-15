@@ -6,32 +6,28 @@ namespace VkApi.Models
     public sealed class Attachment
     {
         [JsonProperty("type")]
-        public AttachmentType Type { get; private set; }
+        public AttachmentType Type { get; set; }
         [JsonProperty("photo")]
-        public Photo Photo { get; private set; }
+        public Photo Photo { get; set; }
         [JsonProperty("video")]
-        public Video Video { get; private set; }
+        public Video Video { get; set; }
         [JsonProperty("audio")]
-        public Audio Audio { get; private set; }
+        public Audio Audio { get; set; }
         [JsonProperty("doc")]
-        public Doc Doc { get; private set; }
+        public Doc Doc { get; set; }
         [JsonProperty("link")]
-        public Link Link { get; private set; }
+        public Link Link { get; set; }
         [JsonProperty("market")]
-        public Market Market { get; private set; }
+        public Market Market { get; set; }
         [JsonProperty("market_album")]
-        public MarketAlbum MarketAlbum { get; private set; }
+        public MarketAlbum MarketAlbum { get; set; }
         [JsonProperty("wall")]
-        public Wall Wall { get; private set; }
+        public Wall Wall { get; set; }
         [JsonProperty("wall_reply")]
-        public WallReply WallReply { get; private set; }
+        public WallReply WallReply { get; set; }
         [JsonProperty("sticker")]
-        public Sticker Sticker { get; private set; }
+        public Sticker Sticker { get; set; }
         [JsonProperty("gift")]
-        public Gift Gift { get; private set; }
-
-        private Attachment()
-        {
-        }
+        public Gift Gift { get; set; }
     }
 }

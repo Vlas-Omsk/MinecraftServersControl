@@ -6,16 +6,12 @@ namespace VkApi.Models
     public sealed class Copyright
     {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("link")]
-        public string Link { get; private set; }
+        public string Link { get; set; }
         [JsonProperty("name")]
-        public string Name { get; private set; }
+        public string Name { get; set; }
         [JsonProperty("type")]
-        public string Type { get; private set; }
-
-        private Copyright()
-        {
-        }
+        public string Type { get; set; }
     }
 }

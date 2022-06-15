@@ -6,18 +6,14 @@ namespace VkApi.Models
     public sealed class Donut
     {
         [JsonProperty("is_donut")]
-        public bool IsDonut { get; private set; }
+        public bool IsDonut { get; set; }
         [JsonProperty("paid_duration")]
-        public int PaidDuration { get; private set; }
+        public int PaidDuration { get; set; }
         [JsonProperty("placeholder")]
-        public IJson Placeholder { get; private set; }
+        public IJson Placeholder { get; set; }
         [JsonProperty("can_publish_free_copy")]
-        public bool CanPublishFreeCopy { get; private set; }
+        public bool CanPublishFreeCopy { get; set; }
         [JsonProperty("edit_mode")]
-        public DonutEditMode EditMode { get; private set; }
-
-        private Donut()
-        {
-        }
+        public DonutEditMode EditMode { get; set; }
     }
 }

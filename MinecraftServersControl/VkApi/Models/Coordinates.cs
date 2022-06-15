@@ -6,12 +6,8 @@ namespace VkApi.Models
     public sealed class Coordinates
     {
         [JsonProperty("latitude")]
-        public double Latitude { get; private set; }
+        public double Latitude { get; set; }
         [JsonProperty("longitude")]
-        public double Longitude { get; private set; }
-
-        private Coordinates()
-        {
-        }
+        public double Longitude { get; set; }
     }
 }

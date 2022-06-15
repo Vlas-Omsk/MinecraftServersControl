@@ -6,14 +6,10 @@ namespace VkApi.Models
     public sealed class WallGeo
     {
         [JsonProperty("type")]
-        public string Type { get; private set; }
+        public string Type { get; set; }
         [JsonProperty("coordinates")]
-        public string Coordinates { get; private set; }
+        public string Coordinates { get; set; }
         [JsonProperty("place")]
-        public Place Place { get; private set; }
-
-        private WallGeo()
-        {
-        }
+        public Place Place { get; set; }
     }
 }

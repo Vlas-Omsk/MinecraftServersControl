@@ -6,16 +6,12 @@ namespace VkApi.Models
     public sealed class Geo
     {
         [JsonProperty("type")]
-        public string Type { get; private set; }
+        public string Type { get; set; }
         [JsonProperty("coordinates")]
-        public Coordinates Coordinates { get; private set; }
+        public Coordinates Coordinates { get; set; }
         [JsonProperty("place")]
-        public Place Place { get; private set; }
+        public Place Place { get; set; }
         [JsonProperty("showmap")]
-        public bool ShowMap { get; private set; }
-
-        private Geo()
-        {
-        }
+        public bool ShowMap { get; set; }
     }
 }
