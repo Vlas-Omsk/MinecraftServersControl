@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinecraftServersControl.Common;
 using MinecraftServersControl.Core.DTO;
+using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Core.Interface.Services;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.DAL.Entities;
@@ -18,14 +19,14 @@ namespace MinecraftServersControl.Core.Services
         {
         }
 
-        public async Task<Result> SignIn(int vkUserId, string login, string password)
+        public async Task SignIn(int vkUserId, string login, string password)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {
                 var user = await databaseContext.Users
                     .FirstOrDefaultAsync(x => x.Login == login);
                 if (user == null)
-                    return ResultCode.UserNotFound;
+                    throw new CoreException(ErrorCode.UserNotFound);
 
                 var passwordBytes = password.ToSha256HashBytes();
 
@@ -34,30 +35,28 @@ namespace MinecraftServersControl.Core.Services
                     await databaseContext.VkUsers.AddAsync(new VkUser() { Id = vkUserId, User = user });
                     await databaseContext.SaveChangesAsync();
 
-                    return ResultCode.Success;
+                    return;
                 }
             }
 
-            return ResultCode.UserNotFound;
+            throw new CoreException(ErrorCode.UserNotFound);
         }
 
-        public async Task<Result> SignOut(int vkUserId)
+        public async Task SignOut(int vkUserId)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {
                 var vkUser = await databaseContext.VkUsers
                     .FirstOrDefaultAsync(x => x.Id == vkUserId);
                 if (vkUser == null)
-                    return ResultCode.UserNotFound;
+                    throw new CoreException(ErrorCode.UserNotFound);
 
                 databaseContext.VkUsers.Remove(vkUser);
                 await databaseContext.SaveChangesAsync();
-
-                return ResultCode.Success;
             }
         }
 
-        public async Task<Result<UserInfoDTO>> GetUserInfo(int vkUserId)
+        public async Task<UserInfoDTO> GetUserInfo(int vkUserId)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {
@@ -65,13 +64,13 @@ namespace MinecraftServersControl.Core.Services
                     .FirstOrDefaultAsync(x => x.Id == vkUserId);
 
                 if (vkUser == null)
-                    return ResultCode.UserNotFound;
+                    throw new CoreException(ErrorCode.UserNotFound);
 
                 return new UserInfoDTO(vkUser.UserLogin);
             }
         }
 
-        public async Task<Result<bool>> IsAuthorized(int vkUserId)
+        public async Task<bool> IsAuthorized(int vkUserId)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {

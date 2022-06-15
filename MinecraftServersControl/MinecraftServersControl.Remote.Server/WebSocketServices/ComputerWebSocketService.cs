@@ -34,7 +34,7 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
 
             var result = await Application.ComputerService.VerifyComputer(response.Result.Data);
 
-            if (result.HasErrors() ||
+            if (!result ||
                 Sessions.Sessions.Any(x =>
                     x.ConnectionState == WebSocketSharp.WebSocketState.Open &&
                     ((ComputerWebSocketService)x).ComputerKey == response.Result.Data

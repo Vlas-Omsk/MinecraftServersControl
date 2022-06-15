@@ -10,17 +10,11 @@ namespace MinecraftServersControl.API.Vk.VkServices
         [AuthorizedOnly]
         public async Task Info()
         {
-            var result = await Handler.Application.ServerService.GetServers();
-
-            if (result.HasErrors())
-            {
-                await Handler.MessageResponse.SendResultCode(result.Code);
-                return;
-            }
+            var computers = await Handler.Application.ServerService.GetServers();
 
             var str = string.Empty;
 
-            foreach (var computer in result.Data)
+            foreach (var computer in computers)
             {
                 str += $"Компьютер {computer.Alias} ({computer.Name}): {FormatHelper.ToStringOnOff(computer.Running)}\r\n" +
                     $"Сервера:\r\n";

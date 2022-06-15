@@ -1,5 +1,4 @@
-﻿using MinecraftServersControl.Core.DTO;
-using MinecraftServersControl.Core.Interface;
+﻿using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
 using System;
 using WebSocketSharp.Net;
@@ -24,7 +23,7 @@ namespace MinecraftServersControl.API.HttpServices
             _requestHandler = requestHandler;
         }
 
-        public void SendSuccess<T>(Result<T> data)
+        public void SendSuccess<T>(T data)
         {
             _requestHandler.SendSuccess(data);
         }

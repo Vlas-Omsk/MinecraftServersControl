@@ -8,7 +8,7 @@ namespace MinecraftServersControl.API.Schema
         DataError = 1,
         InternalServerError = 2,
         InvalidCode = 3,
-
         InvalidState = 4,
+        CoreError = 5,
     }
 }

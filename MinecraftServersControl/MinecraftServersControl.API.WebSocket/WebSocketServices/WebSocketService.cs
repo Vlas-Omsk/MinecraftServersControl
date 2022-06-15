@@ -1,6 +1,5 @@
 ﻿using MinecraftServersControl.API.Schema;
 using MinecraftServersControl.Common;
-using MinecraftServersControl.Core.DTO;
 using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
 using PinkJson2;
@@ -29,14 +28,24 @@ namespace MinecraftServersControl.API.WebSocketServices
 
         protected override async void OnMessage(MessageEventArgs e)
         {
-            if (!e.Data.TryParseJson(out IJson json, out Exception ex))
+            IJson json;
+            try
+            {
+                json = Json.Parse(e.Data);
+            }
+            catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
                 SendError(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.DataError, ex.Message);
                 return;
             }
 
-            if (!json.TryDeserialize(out WebSocketRequest request, out ex))
+            WebSocketRequest request;
+            try
+            {
+                request = json.DeserializeCustom<WebSocketRequest>();
+            }
+            catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
                 SendError(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.DataError, ex.Message);
@@ -65,7 +74,12 @@ namespace MinecraftServersControl.API.WebSocketServices
                 return;
             }
 
-            if (!json.TryDeserialize(methodParameter.ParameterType, out object requestGeneric, out ex))
+            object requestGeneric;
+            try
+            {
+                requestGeneric = json.DeserializeCustom(methodParameter.ParameterType);
+            }
+            catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
                 SendError(request.Id, WebSocketResponseCode.DataError, ex.Message);
@@ -79,9 +93,13 @@ namespace MinecraftServersControl.API.WebSocketServices
                 if (methodResult is Task task)
                     await task.ConfigureAwait(false);
             }
-            catch (Exception exx)
+            catch (CoreException ex)
             {
-                Logger.Error(exx.ToString());
+                SendResponse(new WebSocketResponse(request.Id, WebSocketResponseCode.CoreError, ex.ErrorCode, ex.ErrorMessage));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.ToString());
                 SendError(request.Id, WebSocketResponseCode.InternalServerError, null);
                 return;
             }
@@ -92,14 +110,19 @@ namespace MinecraftServersControl.API.WebSocketServices
             SendResponse(new WebSocketResponse(requestId, code, message));
         }
 
-        protected void SendSuccess(int requestId, Result result)
+        protected void SendSuccess<T>(int requestId, T data)
         {
-            SendResponse(new WebSocketResponse<Result>(requestId, WebSocketResponseCode.Success, null, result));
+            SendResponse(new WebSocketResponse<T>(requestId, WebSocketResponseCode.Success, null, data));
         }
 
-        protected void SendSuccess<T>(int requestId, Result<T> result)
+        protected void SendSuccess<T>(int requestId, WebSocketResponseCode code, T data)
         {
-            SendResponse(new WebSocketResponse<Result<T>>(requestId, WebSocketResponseCode.Success, null, result));
+            SendResponse(new WebSocketResponse<T>(requestId, code, null, data));
+        }
+
+        protected void SendSuccess(int requestId, WebSocketResponseCode code)
+        {
+            SendResponse(new WebSocketResponse(requestId, code, null));
         }
 
         private void SendResponse(WebSocketResponse response)

@@ -2,6 +2,7 @@
 using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using VkApi;
@@ -96,6 +97,10 @@ namespace MinecraftServersControl.API.Vk
                 if (methodResult is Task task)
                     await task;
             }
+            catch (CoreException ex)
+            {
+                await MessageResponse.SendErrorCode(ex.ErrorCode);
+            }
             catch (Exception ex)
             {
                 Logger.Error(ex.ToString());
@@ -126,11 +131,16 @@ namespace MinecraftServersControl.API.Vk
 
             if (possibleMatches.Length > 0)
             {
-                result += "\r\nВозможные совпадения:";
+                var flag = false;
 
                 foreach (var method in possibleMatches)
                     if (await CommandAccessVerifier.Verify(method) == null)
+                    {
+                        if (!flag)
+                            result += "\r\nВозможные совпадения:";
+
                         result += "\r\n" + FormatHelper.ToStringCommandShort(method);
+                    }
             }
 
             result += "\r\nДля отображения всех команд - 'команды'";
@@ -140,7 +150,7 @@ namespace MinecraftServersControl.API.Vk
 
         private async Task Send(string message)
         {
-            await VkClient.Messages.Send(peerId: Message.PeerId, message: message, randomId: 0);
+            await MessageResponse.Send(message);
         }
     }
 }

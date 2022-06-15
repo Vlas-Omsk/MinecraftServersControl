@@ -6,10 +6,10 @@ namespace MinecraftServersControl.Core.Interface.Services
 {
     public interface IUserService
     {
-        Task<Result<SessionDTO>> SignIn(UserDTO userSchema);
-        Task<Result<SessionDTO>> Restore(Guid sessionId);
-        Task<Result> VerifySession(Guid sessionId);
+        Task<SessionDTO> SignIn(UserDTO userSchema);
+        Task<SessionDTO> Restore(Guid sessionId);
+        Task VerifySession(Guid sessionId);
 
-        event ResultEventHandler<Guid> SessionRemoved;
+        event EventHandler<Guid> SessionRemoved;
     }
 }

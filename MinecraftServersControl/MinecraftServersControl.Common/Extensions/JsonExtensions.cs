@@ -6,46 +6,17 @@ namespace MinecraftServersControl.Common
 {
     public static class JsonExtensions
     {
-        public static bool TryParseJson(this string self, out IJson json, out Exception exception)
+        public static T DeserializeCustom<T>(this IJson self)
         {
-            try
-            {
-                json = Json.Parse(self);
-                exception = null;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
-                json = null;
-                return false;
-            }
+            return (T)DeserializeCustom(self, typeof(T));
         }
 
-        public static bool TryDeserialize<T>(this IJson self, out T obj, out Exception exception)
+        public static object DeserializeCustom(this IJson self, Type type)
         {
-            var result = TryDeserialize(self, typeof(T), out object objSource, out exception);
-            obj = (T)objSource;
-            return result;
-        }
-
-        public static bool TryDeserialize(this IJson self, Type type, out object obj, out Exception exception)
-        {
-            try
+            return self.Deserialize(type, new ObjectSerializerOptions()
             {
-                obj = self.Deserialize(type, new ObjectSerializerOptions()
-                {
-                    IgnoreMissingProperties = false
-                });
-                exception = null;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
-                obj = null;
-                return false;
-            }
+                IgnoreMissingProperties = false
+            });
         }
     }
 }

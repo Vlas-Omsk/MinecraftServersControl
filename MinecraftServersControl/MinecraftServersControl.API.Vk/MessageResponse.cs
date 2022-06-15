@@ -23,9 +23,14 @@ namespace MinecraftServersControl.API.Vk
             await Send("Команда доступна только в личных сообщениях");
         }
 
-        public async Task SendResultCode(ResultCode code)
+        public async Task SendErrorCode(ErrorCode code)
         {
             await Send(Description.GetEnumValueDescription(code) ?? code.ToString());
+        }
+
+        public async Task SendSuccess()
+        {
+            await Send("Успешно");
         }
 
         public async Task Send(string message)

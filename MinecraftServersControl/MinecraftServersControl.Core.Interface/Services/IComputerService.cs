@@ -6,9 +6,9 @@ namespace MinecraftServersControl.Core.Interface.Services
 {
     public interface IComputerService
     {
-        Task<Result> VerifyComputer(Guid computerKey);
+        Task<bool> VerifyComputer(Guid computerKey);
 
-        event ResultEventHandler<ComputerStateDTO> ComputerStarted;
-        event ResultEventHandler<ComputerStateDTO> ComputerStopped;
+        event EventHandler<ComputerStateDTO> ComputerStarted;
+        event EventHandler<ComputerStateDTO> ComputerStopped;
     }
 }

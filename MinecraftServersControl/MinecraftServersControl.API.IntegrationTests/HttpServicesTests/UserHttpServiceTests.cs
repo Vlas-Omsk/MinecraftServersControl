@@ -26,11 +26,11 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client = _fixture.CreateHttpClient();
             var response = await client.GetResponse<Result<SessionDTO>>("/user/signin", new UserDTO("Admin", "Admin".ToSha256Hash()));
 
-            Assert.Equal(ResultCode.Success, response.Result.Code);
+            Assert.Equal(ErrorCode.Success, response.Data.Code);
             using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
                 Assert.Contains(
                     databaseContext.Sessions.AsEnumerable(),
-                    x => new Guid(x.Id) == response.Result.Data.SessionId &&
+                    x => new Guid(x.Id) == response.Data.Data.SessionId &&
                     x.UserLogin == "Admin"
                 );
         }
@@ -41,7 +41,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client = _fixture.CreateHttpClient();
             var response = await client.GetResponse<Result<SessionDTO>>("/user/signin", new UserDTO("test", "test".ToSha256Hash()));
 
-            Assert.Equal(ResultCode.UserNotFound, response.Result.Code);
+            Assert.Equal(ErrorCode.UserNotFound, response.Data.Code);
         }
 
         [Fact]
@@ -49,14 +49,14 @@ namespace MinecraftServersControl.API.IntegrationTests
         {
             var client = _fixture.CreateHttpClient();
             var response = await client.GetResponse<Result<SessionDTO>>("/user/signin", new UserDTO("Admin", "Admin".ToSha256Hash()));
-            var response2 = await client.GetResponse<Result<SessionDTO>>("/user/restore", null, response.Result.Data.SessionId);
+            var response2 = await client.GetResponse<Result<SessionDTO>>("/user/restore", null, response.Data.Data.SessionId);
 
-            Assert.Equal(ResultCode.Success, response2.Result.Code);
+            Assert.Equal(ErrorCode.Success, response2.Result.Code);
             using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
             {
                 Assert.DoesNotContain(
                     databaseContext.Sessions.AsEnumerable(),
-                    x => new Guid(x.Id) == response.Result.Data.SessionId &&
+                    x => new Guid(x.Id) == response.Data.Data.SessionId &&
                     x.UserLogin == "Admin"
                 );
                 Assert.Contains(
@@ -73,7 +73,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client = _fixture.CreateHttpClient();
             var response = await client.GetResponse<Result<SessionDTO>>("/user/restore", null, Guid.NewGuid());
 
-            Assert.Equal(ResultCode.SessionExpired, response.Result.Code);
+            Assert.Equal(ErrorCode.SessionExpired, response.Data.Code);
         }
 
         [Fact]
@@ -84,15 +84,15 @@ namespace MinecraftServersControl.API.IntegrationTests
 
             using (var databaseContext = _fixture.DatabaseContextFactory.CreateDbContext())
             {
-                var session = await databaseContext.Sessions.FindAsync(response.Result.Data.SessionId.ToByteArray());
+                var session = await databaseContext.Sessions.FindAsync(response.Data.Data.SessionId.ToByteArray());
                 session.ExpiresAt = (int)(DateTime.Now - TimeSpan.FromMinutes(1)).ToUnixTime();
                 databaseContext.Sessions.Update(session);
                 await databaseContext.SaveChangesAsync();
             }
 
-            var response2 = await client.GetResponse<Result<SessionDTO>>("/user/restore", null, response.Result.Data.SessionId);
+            var response2 = await client.GetResponse<Result<SessionDTO>>("/user/restore", null, response.Data.Data.SessionId);
 
-            Assert.Equal(ResultCode.SessionExpired, response2.Result.Code);
+            Assert.Equal(ErrorCode.SessionExpired, response2.Result.Code);
         }
     }
 }

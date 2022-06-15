@@ -8,8 +8,8 @@
     <ProjectReference Include="..\..\..\websocket-sharp\websocket-sharp\websocket-sharp.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Common\MinecraftServersControl.Common.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Schema.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote\MinecraftServersControl.Remote.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Server.Schema.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote\MinecraftServersControl.Remote.Core.csproj" />
   </ItemGroup>
 
 </Project>

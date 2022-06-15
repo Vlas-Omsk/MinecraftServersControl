@@ -5,7 +5,6 @@ using MinecraftServersControl.Core.Interface.Services;
 using MinecraftServersControl.Core.Models;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
-using MinecraftServersControl.Remote.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,33 +17,24 @@ namespace MinecraftServersControl.Core.Services
         internal ServerService(Application application, DatabaseContextFactoryBase databaseContextFactory, Logger logger, IRemoteServer remoteServer) :
             base(application, databaseContextFactory, logger, remoteServer)
         {
-            remoteServer.ServerStarted += OnRemoteServerServerStarted;
-            remoteServer.ServerStopped += OnRemoteServerServerStopped;
-            remoteServer.ServerOutput += OnRemoteServerServerOutput;
+            remoteServer.ServerStarted += async (sender, e) =>
+            {
+                var computerServerAliases = await GetComputerServerAliases(e.ComputerId, e.ServerId);
+                ServerStarted?.Invoke(this, new TargetServerDTO(computerServerAliases.ComputerAlias, computerServerAliases.ServerAlias));
+            };
+            remoteServer.ServerStopped += async (sender, e) =>
+            {
+                var computerServerAliases = await GetComputerServerAliases(e.ComputerId, e.ServerId);
+                ServerStopped?.Invoke(this, new TargetServerDTO(computerServerAliases.ComputerAlias, computerServerAliases.ServerAlias));
+            };
+            remoteServer.ServerOutput += async (sender, e) =>
+            {
+                var computerServerAliases = await GetComputerServerAliases(e.ComputerId, e.ServerId);
+                ServerOutput?.Invoke(this, new DTO.ServerOutputDTO(computerServerAliases.ComputerAlias, computerServerAliases.ServerAlias, e.Output));
+            };
         }
 
-        private async void OnRemoteServerServerStarted(object sender, Remote.Server.ServerStateChangedEventArgs e)
-        {
-            var computerServerAliases = await GetComputerServerAliases(e.ComputerId, e.ServerId);
-
-            ServerStarted?.Invoke(this, new Result<TargetServerDTO>(new TargetServerDTO(computerServerAliases.ComputerAlias, computerServerAliases.ServerAlias), ResultCode.ServerStarted));
-        }
-
-        private async void OnRemoteServerServerStopped(object sender, Remote.Server.ServerStateChangedEventArgs e)
-        {
-            var computerServerAliases = await GetComputerServerAliases(e.ComputerId, e.ServerId);
-
-            ServerStopped?.Invoke(this, new Result<TargetServerDTO>(new TargetServerDTO(computerServerAliases.ComputerAlias, computerServerAliases.ServerAlias), ResultCode.ServerStopped));
-        }
-
-        private async void OnRemoteServerServerOutput(object sender, Remote.Server.Interface.ServerOutputEventArgs e)
-        {
-            var computerServerAliases = await GetComputerServerAliases(e.ComputerId, e.ServerId);
-
-            ServerOutput?.Invoke(this, new Result<DTO.ServerOutputDTO>(new DTO.ServerOutputDTO(computerServerAliases.ComputerAlias, computerServerAliases.ServerAlias, e.Output), ResultCode.ServerOutput));
-        }
-
-        public async Task<Result<IEnumerable<ComputerDTO>>> GetServers()
+        public async Task<ComputerDTO[]> GetServers()
         {
             using var databaseContext = DatabaseContextFactory.CreateDbContext();
             var computers = await databaseContext.Computers.ToArrayAsync();
@@ -67,78 +57,59 @@ namespace MinecraftServersControl.Core.Services
                 computersDto.Add(new ComputerDTO(computer.Name, computer.Alias, remoteComputer != null, serversDto.ToArray()));
             }
 
-            return new Result<IEnumerable<ComputerDTO>>(computersDto.ToArray());
+            return computersDto.ToArray();
         }
 
-        public async Task<Result<string>> GetOutput(TargetServerDTO targetServer)
+        public async Task<string> GetOutput(TargetServerDTO targetServer)
         {
             var computerServerId = await GetComputerServerId(targetServer.ComputerAlias, targetServer.ServerAlias);
-            if (computerServerId.HasErrors())
-                return computerServerId.ToResult<string>();
+            var result = await computerServerId.Computer.GetOutput(computerServerId.ServerId);
 
-            var result = await computerServerId.Data.Computer.GetOutput(computerServerId.Data.ServerId);
+            result.ThrowOnError();
 
-            return result.FromRemoteResult(RemoteResultCode.ServerNotFound, RemoteResultCode.Success);
+            return result.Data;
         }
 
-        public async Task<Result> Input(DTO.ServerInputDTO serverInput)
+        public async Task Input(DTO.ServerInputDTO serverInput)
         {
             var computerServerId = await GetComputerServerId(serverInput.ComputerAlias, serverInput.ServerAlias);
-            if (computerServerId.HasErrors())
-                return computerServerId.ToResult();
+            var result = await computerServerId.Computer.Input(new Remote.DTO.ServerInputDTO(computerServerId.ServerId, serverInput.Message));
 
-            var result = await computerServerId.Data.Computer.Input(new Remote.DTO.ServerInputDTO(computerServerId.Data.ServerId, serverInput.Message));
-
-            return result.FromRemoteResult(RemoteResultCode.ServerNotFound, RemoteResultCode.Success);
+            result.ThrowOnError();
         }
 
-        public async Task<Result> Start(TargetServerDTO targetServer)
+        public async Task Start(TargetServerDTO targetServer)
         {
             var computerServerId = await GetComputerServerId(targetServer.ComputerAlias, targetServer.ServerAlias);
-            if (computerServerId.HasErrors())
-                return computerServerId.ToResult();
+            var result = await computerServerId.Computer.Start(computerServerId.ServerId);
 
-            var result = await computerServerId.Data.Computer.Start(computerServerId.Data.ServerId);
-
-            return result.FromRemoteResult(
-                RemoteResultCode.ServerNotFound,
-                RemoteResultCode.ServerStarted,
-                RemoteResultCode.Success,
-                RemoteResultCode.CantStartServer
-            );
+            result.ThrowOnError();
         }
 
-        public async Task<Result> Terminate(TargetServerDTO targetServer)
+        public async Task Terminate(TargetServerDTO targetServer)
         {
             var computerServerId = await GetComputerServerId(targetServer.ComputerAlias, targetServer.ServerAlias);
-            if (computerServerId.HasErrors())
-                return computerServerId.ToResult();
+            var result = await computerServerId.Computer.Terminate(computerServerId.ServerId);
 
-            var result = await computerServerId.Data.Computer.Terminate(computerServerId.Data.ServerId);
-
-            return result.FromRemoteResult(
-                RemoteResultCode.ServerNotFound,
-                RemoteResultCode.ServerStopped,
-                RemoteResultCode.Success
-            );
+            result.ThrowOnError();
         }
 
-        private async Task<Result<ComputerServerIdPair>> GetComputerServerId(string computerAlias, string serverAlias)
+        private async Task<ComputerServerIdPair> GetComputerServerId(string computerAlias, string serverAlias)
         {
             using var databaseContext = DatabaseContextFactory.CreateDbContext();
             var computer = await databaseContext.Computers.FirstOrDefaultAsync(x => x.Alias == computerAlias);
 
             if (computer == null)
-                return ResultCode.ComputerNotFound;
+                throw new CoreException(ErrorCode.ComputerNotFound);
 
             var server = await databaseContext.Servers.FirstOrDefaultAsync(x => x.Alias == serverAlias);
             if (server == null)
-                return ResultCode.ServerNotFound;
+                throw new CoreException(ErrorCode.ServerNotFound);
 
             var remoteComputer = RemoteServer.GetComputer(new Guid(computer.Id));
 
             if (remoteComputer == null)
-                return ResultCode.ComputerStopped;
+                throw new CoreException(ErrorCode.ComputerStopped);
 
             return new ComputerServerIdPair(remoteComputer, new Guid(server.Id));
         }
@@ -153,8 +124,8 @@ namespace MinecraftServersControl.Core.Services
             );
         }
 
-        public event ResultEventHandler<TargetServerDTO> ServerStarted;
-        public event ResultEventHandler<TargetServerDTO> ServerStopped;
-        public event ResultEventHandler<DTO.ServerOutputDTO> ServerOutput;
+        public event EventHandler<TargetServerDTO> ServerStarted;
+        public event EventHandler<TargetServerDTO> ServerStopped;
+        public event EventHandler<DTO.ServerOutputDTO> ServerOutput;
     }
 }

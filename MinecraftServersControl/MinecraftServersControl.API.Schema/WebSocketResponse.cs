@@ -4,23 +4,23 @@ using System;
 namespace MinecraftServersControl.API.Schema
 {
     [Serializable]
-    public class WebSocketResponse<T> : WebSocketResponse where T : Result
+    public class WebSocketResponse<T> : WebSocketResponse
     {
-        public T Result { get; protected set; }
+        public T Data { get; protected set; }
 
         protected WebSocketResponse()
         {
         }
 
-        public WebSocketResponse(int requestId, WebSocketResponseCode code, string errorMessage, T result) :
+        public WebSocketResponse(int requestId, WebSocketResponseCode code, string errorMessage, T data) :
             base(requestId, code, errorMessage)
         {
-            Result = result;
+            Data = data;
         }
 
         public override string ToString()
         {
-            return $"(RequestId: {RequestId}, Code: {Code}, Result: {Result})";
+            return $"(RequestId: {RequestId}, Code: {Code}, Data: {Data})";
         }
     }
 
@@ -29,6 +29,7 @@ namespace MinecraftServersControl.API.Schema
     {
         public int RequestId { get; protected set; }
         public WebSocketResponseCode Code { get; protected set; }
+        public ErrorCode ErrorCode { get; protected set; }
         public string ErrorMessage { get; protected set; }
 
         public const int BroadcastRequestId = -1;
@@ -41,6 +42,14 @@ namespace MinecraftServersControl.API.Schema
         {
             RequestId = requestId;
             Code = code;
+            ErrorMessage = errorMessage;
+        }
+
+        public WebSocketResponse(int requestId, WebSocketResponseCode code, ErrorCode errorCode, string errorMessage)
+        {
+            RequestId = requestId;
+            Code = code;
+            ErrorCode = errorCode;
             ErrorMessage = errorMessage;
         }
 

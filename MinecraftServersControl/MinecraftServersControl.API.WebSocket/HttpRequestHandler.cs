@@ -34,9 +34,9 @@ namespace MinecraftServersControl.API
             _httpServices = httpServices;
         }
 
-        public void SendSuccess<T>(Result<T> data)
+        public void SendSuccess<T>(T data)
         {
-            Send(HttpStatusCode.OK, new HttpResponse<Result<T>>(data));
+            Send(HttpStatusCode.OK, new HttpResponse<T>(data));
         }
 
         public void SendError(HttpStatusCode statusCode)
@@ -47,6 +47,11 @@ namespace MinecraftServersControl.API
         public void SendError(HttpStatusCode statusCode, string errorMessage)
         {
             Send(statusCode, new HttpResponse(errorMessage));
+        }
+
+        public void SendError(HttpStatusCode statusCode, string errorMessage, ErrorCode errorCode)
+        {
+            Send(statusCode, new HttpResponse(errorMessage, errorCode));
         }
 
         private void Send(HttpStatusCode statusCode, HttpResponse response)
@@ -114,10 +119,14 @@ namespace MinecraftServersControl.API
                 if (methodResult is Task task)
                     task.ConfigureAwait(false).GetAwaiter().GetResult();
             }
+            catch (CoreException ex)
+            {
+                SendError(HttpStatusCode.BadRequest, ex.ErrorMessage, ex.ErrorCode);
+            }
             catch (Exception ex)
             {
                 _logger.Error(ex.ToString());
-                SendError(HttpStatusCode.InternalServerError, ex.Message);
+                SendError(HttpStatusCode.InternalServerError, null);
                 return;
             }
 

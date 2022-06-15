@@ -29,7 +29,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client2 = _fixture.CreateWebSocketClient();
             var response2 = await client2.GetResponse(WebSocketRequestCode.Auth, response.Result.Data.SessionId);
 
-            var task = client2.GetBroadcastResult<Result<Guid>>(ResultCode.AuthorizationFromAnotherPlace);
+            var task = client2.GetBroadcastResult<Result<Guid>>(ErrorCode.AuthorizationFromAnotherPlace);
 
             var client3 = _fixture.CreateHttpClient();
             var response3 = await client3.GetResponse<Result<SessionDTO>>("/user/restore", null, response.Result.Data.SessionId);
@@ -37,7 +37,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             await task;
 
             Assert.True(client2.Closed);
-            Assert.Equal(ResultCode.AuthorizationFromAnotherPlace, task.Result.Result.Code);
+            Assert.Equal(ErrorCode.AuthorizationFromAnotherPlace, task.Result.Data.Code);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client2 = _fixture.CreateWebSocketClient();
             var result2 = await client2.GetResponse(WebSocketRequestCode.Auth, response.Result.Data.SessionId);
 
-            Assert.Equal(ResultCode.Success, result2.Result.Code);
+            Assert.Equal(ErrorCode.Success, result2.Result.Code);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace MinecraftServersControl.API.IntegrationTests
             var client2 = _fixture.CreateWebSocketClient();
             var response2 = await client2.GetResponse(WebSocketRequestCode.Auth, response.Result.Data.SessionId);
 
-            Assert.Equal(ResultCode.SessionExpired, response2.Result.Code);
+            Assert.Equal(ErrorCode.SessionExpired, response2.Result.Code);
         }
 
         [Fact]
@@ -92,8 +92,8 @@ namespace MinecraftServersControl.API.IntegrationTests
             var response2 = await client2.GetResponse(WebSocketRequestCode.Auth, response.Result.Data.SessionId);
             var response3 = await client2.GetResponse<Result<IEnumerable<ComputerDTO>>>(WebSocketRequestCode.GetServers);
 
-            Assert.Equal(ResultCode.Success, response3.Result.Code);
-            Assert.NotNull(response3.Result.Data);
+            Assert.Equal(ErrorCode.Success, response3.Data.Code);
+            Assert.NotNull(response3.Data.Data);
         }
     }
 }

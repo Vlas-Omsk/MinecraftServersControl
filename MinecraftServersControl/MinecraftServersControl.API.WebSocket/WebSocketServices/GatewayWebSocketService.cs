@@ -29,12 +29,9 @@ namespace MinecraftServersControl.API.WebSocketServices
             if (!VerifyState(request, AuthState.Unauthorized))
                 return;
 
-            var result = await Application.UserService.VerifySession(request.Data);
+            await Application.UserService.VerifySession(request.Data);
 
-            SendSuccess(request.Id, result);
-
-            if (result.HasErrors())
-                return;
+            SendSuccess(request.Id, WebSocketResponseCode.Success);
 
             _sessionId = request.Data;
             _state = AuthState.Success;
@@ -47,11 +44,11 @@ namespace MinecraftServersControl.API.WebSocketServices
             Application.ServerService.ServerOutput += OnServerOutput;
         }
 
-        private async void OnSessionRemoved(object sender, Result<Guid> e)
+        private async void OnSessionRemoved(object sender, Guid e)
         {
             await Task.Run(() =>
             {
-                if (_sessionId != e.Data)
+                if (_sessionId != e)
                     return;
 
                 SendSuccess(WebSocketResponse.BroadcastRequestId, e);
@@ -87,9 +84,9 @@ namespace MinecraftServersControl.API.WebSocketServices
             if (!VerifyState(request, AuthState.Success))
                 return;
 
-            var result = await Application.ServerService.Input(request.Data);
+            await Application.ServerService.Input(request.Data);
 
-            SendSuccess(request.Id, result);
+            SendSuccess(request.Id, WebSocketResponseCode.Success);
         }
 
         [WebSocketRequest(WebSocketRequestCode.StartServer)]
@@ -98,9 +95,9 @@ namespace MinecraftServersControl.API.WebSocketServices
             if (!VerifyState(request, AuthState.Success))
                 return;
 
-            var result = await Application.ServerService.Start(request.Data);
+            await Application.ServerService.Start(request.Data);
 
-            SendSuccess(request.Id, result);
+            SendSuccess(request.Id, WebSocketResponseCode.Success);
         }
 
         [WebSocketRequest(WebSocketRequestCode.TerminateServer)]
@@ -109,9 +106,9 @@ namespace MinecraftServersControl.API.WebSocketServices
             if (!VerifyState(request, AuthState.Success))
                 return;
 
-            var result = await Application.ServerService.Terminate(request.Data);
+            await Application.ServerService.Terminate(request.Data);
 
-            SendSuccess(request.Id, result);
+            SendSuccess(request.Id, WebSocketResponseCode.Success);
         }
 
         private bool VerifyState(WebSocketRequest request, AuthState authState)
@@ -125,27 +122,27 @@ namespace MinecraftServersControl.API.WebSocketServices
             return true;
         }
 
-        private async void OnComputerStarted(object sender, Result<ComputerStateDTO> e)
+        private async void OnComputerStarted(object sender, ComputerStateDTO e)
         {
             await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
         }
 
-        private async void OnComputerStopped(object sender, Result<ComputerStateDTO> e)
+        private async void OnComputerStopped(object sender, ComputerStateDTO e)
         {
             await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
         }
 
-        private async void OnServerStarted(object sender, Result<TargetServerDTO> e)
+        private async void OnServerStarted(object sender, TargetServerDTO e)
         {
             await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
         }
 
-        private async void OnServerStopped(object sender, Result<TargetServerDTO> e)
+        private async void OnServerStopped(object sender, TargetServerDTO e)
         {
             await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
         }
 
-        private async void OnServerOutput(object sender, Result<ServerOutputDTO> e)
+        private async void OnServerOutput(object sender, ServerOutputDTO e)
         {
             await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
         }

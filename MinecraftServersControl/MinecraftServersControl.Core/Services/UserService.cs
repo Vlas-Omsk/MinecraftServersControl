@@ -21,14 +21,14 @@ namespace MinecraftServersControl.Core.Services
         {
         }
 
-        public async Task<Result<SessionDTO>> SignIn(UserDTO userSchema)
+        public async Task<SessionDTO> SignIn(UserDTO userSchema)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {
                 var user = await databaseContext.Users
                     .FirstOrDefaultAsync(x => x.Login == userSchema.Login);
                 if (user == null)
-                    return ResultCode.UserNotFound;
+                    throw new CoreException(ErrorCode.UserNotFound);
 
                 var passwordBytes = userSchema.PasswordHash.ToByteArray();
 
@@ -36,15 +36,15 @@ namespace MinecraftServersControl.Core.Services
                     return await CreateSession(userSchema.Login);
             }
 
-            return ResultCode.UserNotFound;
+            throw new CoreException(ErrorCode.UserNotFound);
         }
 
-        public async Task<Result<SessionDTO>> Restore(Guid sessionId)
+        public async Task<SessionDTO> Restore(Guid sessionId)
         {
             var session = await GetSessionById(sessionId);
 
             if (!VerifySession(session))
-                return ResultCode.SessionExpired;
+                throw new CoreException(ErrorCode.SessionExpired);
 
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {
@@ -57,14 +57,11 @@ namespace MinecraftServersControl.Core.Services
             return await CreateSession(session.UserLogin);
         }
 
-        public async Task<Result> VerifySession(Guid sessionId)
+        public async Task VerifySession(Guid sessionId)
         {
             var session = await GetSessionById(sessionId);
-
             if (!VerifySession(session))
-                return ResultCode.SessionExpired;
-
-            return ResultCode.Success;
+                throw new CoreException(ErrorCode.SessionExpired);
         }
 
         private static bool VerifySession(Session session)
@@ -81,7 +78,7 @@ namespace MinecraftServersControl.Core.Services
                     );
         }
 
-        private async Task<Result<SessionDTO>> CreateSession(string login)
+        private async Task<SessionDTO> CreateSession(string login)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
             {
@@ -99,9 +96,9 @@ namespace MinecraftServersControl.Core.Services
 
         private void RaiseSessionRemoved(Guid sessionId)
         {
-            SessionRemoved?.Invoke(this, new Result<Guid>(sessionId, ResultCode.AuthorizationFromAnotherPlace));
+            SessionRemoved?.Invoke(this, sessionId);
         }
 
-        public event ResultEventHandler<Guid> SessionRemoved;
+        public event EventHandler<Guid> SessionRemoved;
     }
 }

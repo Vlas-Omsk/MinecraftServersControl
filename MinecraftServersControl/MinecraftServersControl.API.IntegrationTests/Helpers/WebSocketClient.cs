@@ -96,7 +96,7 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
             return taskCompletionSource.Task;
         }
 
-        public Task<WebSocketResponse<TResult>> GetBroadcastResult<TResult>(ResultCode code)
+        public Task<WebSocketResponse<TResult>> GetBroadcastResult<TResult>(ErrorCode code)
             where TResult : Result
         {
             var taskCompletionSource = new TaskCompletionSource<WebSocketResponse<TResult>>();
@@ -110,7 +110,7 @@ namespace MinecraftServersControl.API.IntegrationTests.Helpers
                     {
                         var responseGeneric = json.Deserialize<WebSocketResponse<TResult>>();
 
-                        if (responseGeneric.Result.Code == code)
+                        if (responseGeneric.Data.Code == code)
                         {
                             taskCompletionSource.SetResult(responseGeneric);
                             _listeners -= handler;

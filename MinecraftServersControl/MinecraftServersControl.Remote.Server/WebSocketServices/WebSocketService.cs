@@ -32,13 +32,23 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
 
         protected override async void OnMessage(MessageEventArgs e)
         {
-            if (!e.Data.TryParseJson(out IJson json, out Exception ex))
+            IJson json;
+            try
+            {
+                json = Json.Parse(e.Data);
+            }
+            catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
                 return;
             }
 
-            if (!json.TryDeserialize(out RemoteWebSocketResponse<RemoteResult> response, out ex))
+            RemoteWebSocketResponse<RemoteResult> response;
+            try
+            {
+                response = json.DeserializeCustom<RemoteWebSocketResponse<RemoteResult>>();
+            }
+            catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
                 return;
@@ -56,7 +66,11 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
 
                 if (listener != default)
                 {
-                    if (!json.TryDeserialize(listener.responseType, out responseGeneric, out ex))
+                    try
+                    {
+                        responseGeneric = json.DeserializeCustom(listener.responseType);
+                    }
+                    catch (Exception ex)
                     {
                         Logger.Warn(ex.ToString());
                         return;
@@ -87,7 +101,11 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
                 return;
             }
 
-            if (!json.TryDeserialize(methodParameter.ParameterType, out responseGeneric, out ex))
+            try
+            {
+                responseGeneric = json.DeserializeCustom(methodParameter.ParameterType);
+            }
+            catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
                 return;
@@ -100,9 +118,9 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
                 if (methodResult is Task task)
                     await task.ConfigureAwait(false);
             }
-            catch (Exception exx)
+            catch (Exception ex)
             {
-                Logger.Error(exx.ToString());
+                Logger.Error(ex.ToString());
                 return;
             }
         }

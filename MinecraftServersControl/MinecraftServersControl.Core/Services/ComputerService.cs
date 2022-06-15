@@ -1,5 +1,4 @@
 ﻿using MinecraftServersControl.Core.DTO;
-using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Core.Interface.Services;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
@@ -13,30 +12,20 @@ namespace MinecraftServersControl.Core.Services
         internal ComputerService(Application application, DatabaseContextFactoryBase databaseContextFactory, Logger logger, IRemoteServer remoteServer) :
             base(application, databaseContextFactory, logger, remoteServer)
         {
-            remoteServer.ComputerStarted += OnRemoteServerComputerStarted;
-            remoteServer.ComputerStopped += OnRemoteServerComputerStopped;
+            remoteServer.ComputerStarted += (sender, e) => ComputerStarted?.Invoke(this, new ComputerStateDTO(e.ComputerId));
+            remoteServer.ComputerStopped += (sender, e) => ComputerStopped?.Invoke(this, new ComputerStateDTO(e.ComputerId));
         }
 
-        private void OnRemoteServerComputerStarted(object sender, Remote.Server.ComputerStateChangedEventArgs e)
-        {
-            ComputerStarted?.Invoke(this, new Result<ComputerStateDTO>(new ComputerStateDTO(e.ComputerId), ResultCode.ComputerStarted));
-        }
-
-        private void OnRemoteServerComputerStopped(object sender, Remote.Server.ComputerStateChangedEventArgs e)
-        {
-            ComputerStopped?.Invoke(this, new Result<ComputerStateDTO>(new ComputerStateDTO(e.ComputerId), ResultCode.ComputerStopped));
-        }
-
-        public async Task<Result> VerifyComputer(Guid computerKey)
+        public async Task<bool> VerifyComputer(Guid computerKey)
         {
             using (var databaseContext = DatabaseContextFactory.CreateDbContext())
                 if (await databaseContext.Computers.FindAsync(computerKey.ToByteArray()) != null)
-                    return ResultCode.Success;
+                    return true;
 
-            return ResultCode.ComputerNotFound;
+            return false;
         }
 
-        public event ResultEventHandler<ComputerStateDTO> ComputerStarted;
-        public event ResultEventHandler<ComputerStateDTO> ComputerStopped;
+        public event EventHandler<ComputerStateDTO> ComputerStarted;
+        public event EventHandler<ComputerStateDTO> ComputerStopped;
     }
 }

@@ -15,9 +15,8 @@ namespace MinecraftServersControl.API.Vk.VkServices
             [CommandParameter("сервер")] string serverAlias
         )
         {
-            var result2 = await Handler.Application.ServerService.Start(new TargetServerDTO(computerAlias, serverAlias));
-
-            await Handler.MessageResponse.SendResultCode(result2.Code);
+            await Handler.Application.ServerService.Start(new TargetServerDTO(computerAlias, serverAlias));
+            await Handler.MessageResponse.SendSuccess();
         }
 
         [Command("остановить")]
@@ -27,9 +26,8 @@ namespace MinecraftServersControl.API.Vk.VkServices
             [CommandParameter("сервер")] string serverAlias
         )
         {
-            var result2 = await Handler.Application.ServerService.Terminate(new TargetServerDTO(computerAlias, serverAlias));
-
-            await Handler.MessageResponse.SendResultCode(result2.Code);
+            await Handler.Application.ServerService.Terminate(new TargetServerDTO(computerAlias, serverAlias));
+            await Handler.MessageResponse.SendSuccess();
         }
 
         [Command("команда")]
@@ -40,9 +38,8 @@ namespace MinecraftServersControl.API.Vk.VkServices
             [CommandParameter("команда")] params string[] command
         )
         {
-            var result2 = await Handler.Application.ServerService.Input(new ServerInputDTO(computerAlias, serverAlias, string.Join(' ', command)));
-
-            await Handler.MessageResponse.SendResultCode(result2.Code);
+            await Handler.Application.ServerService.Input(new ServerInputDTO(computerAlias, serverAlias, string.Join(' ', command)));
+            await Handler.MessageResponse.SendSuccess();
         }
 
         [Command("лог")]
@@ -52,9 +49,8 @@ namespace MinecraftServersControl.API.Vk.VkServices
             [CommandParameter("сервер")] string serverAlias
         )
         {
-            var result2 = await Handler.Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
-
-            await Handler.MessageResponse.Send(result2.Data);
+            await Handler.Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
+            await Handler.MessageResponse.SendSuccess();
         }
 
         [Command("консоль")]
@@ -65,17 +61,17 @@ namespace MinecraftServersControl.API.Vk.VkServices
             [CommandParameter("сервер")] string serverAlias
         )
         {
-            var result2 = await Handler.Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
+            var output = await Handler.Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
 
-            await Handler.MessageResponse.Send("Для выходя используйте '&выход'\r\n\r\n" + result2.Data);
+            await Handler.MessageResponse.Send("Для выходя используйте '&выход'\r\n\r\n" + output);
 
-            ResultEventHandler<ServerOutputDTO> handler = async (sender, result) =>
+            EventHandler<ServerOutputDTO> handler = async (sender, e) =>
             {
-                if (result.Data.ComputerAlias != computerAlias &&
-                    result.Data.ServerAlias != serverAlias)
+                if (e.ComputerAlias != computerAlias &&
+                    e.ServerAlias != serverAlias)
                     return;
 
-                await Handler.MessageResponse.Send(result.Data.Output);
+                await Handler.MessageResponse.Send(e.Output);
             };
 
             Handler.Application.ServerService.ServerOutput += handler;

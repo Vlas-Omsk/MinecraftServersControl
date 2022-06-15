@@ -12,29 +12,24 @@ namespace MinecraftServersControl.API.Vk.VkServices
             [CommandParameter("пароль")] string password
         )
         {
-            await Handler.MessageResponse.SendResultCode((await Handler.Application.VkUserService.SignIn(Handler.Message.FromId, login, password)).Code);
+            await Handler.Application.VkUserService.SignIn(Handler.Message.FromId, login, password);
+            await Handler.MessageResponse.SendSuccess();
         }
 
         [Command("выйти")]
         [AuthorizedOnly]
         public async Task SignOut()
         {
-            await Handler.MessageResponse.SendResultCode((await Handler.Application.VkUserService.SignOut(Handler.Message.FromId)).Code);
+            await Handler.Application.VkUserService.SignOut(Handler.Message.FromId);
+            await Handler.MessageResponse.SendSuccess();
         }
 
         [Command("инфо")]
         [AuthorizedOnly]
         public async Task Info()
         {
-            var result = await Handler.Application.VkUserService.GetUserInfo(Handler.Message.FromId);
-
-            if (result.HasErrors())
-            {
-                await Handler.MessageResponse.SendResultCode(result.Code);
-                return;
-            }
-
-            await Handler.MessageResponse.Send($"Логин: {result.Data.Login}");
+            var userInfo = await Handler.Application.VkUserService.GetUserInfo(Handler.Message.FromId);
+            await Handler.MessageResponse.Send($"Логин: {userInfo.Login}");
         }
     }
 }

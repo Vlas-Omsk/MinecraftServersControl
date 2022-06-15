@@ -24,9 +24,9 @@ namespace MinecraftServersControl.API.Vk
             if (_isAuthprized.HasValue)
                 return _isAuthprized.Value;
 
-            var result = await _application.VkUserService.IsAuthorized(_message.FromId);
-
-            return (_isAuthprized = result.Data).Value;
+            return (
+                _isAuthprized = await _application.VkUserService.IsAuthorized(_message.FromId)
+            ).Value;
         }
 
         public async Task<VerifyResult> Verify(MethodInfo method)

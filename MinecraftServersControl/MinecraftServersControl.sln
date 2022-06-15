@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLib", "..\..\WebLib\WebL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API.Schema", "MinecraftServersControl.API.Schema\MinecraftServersControl.API.Schema.csproj", "{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote", "MinecraftServersControl.Remote\MinecraftServersControl.Remote.csproj", "{1D9C9E1A-413B-4FA9-B615-198A4215D846}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Core", "MinecraftServersControl.Remote\MinecraftServersControl.Remote.Core.csproj", "{1D9C9E1A-413B-4FA9-B615-198A4215D846}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Common", "MinecraftServersControl.Common\MinecraftServersControl.Common.csproj", "{CD12E855-78A2-4A1D-894C-56E77E436B74}"
 EndProject
@@ -39,19 +39,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Rem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Client", "MinecraftServersControl.Remote.Network\MinecraftServersControl.Remote.Client.csproj", "{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.DTO", "MinecraftServersControl.Remote.DTO\MinecraftServersControl.Remote.DTO.csproj", "{7331C735-013F-4ADA-9605-44AA436B3822}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Core.DTO", "MinecraftServersControl.Remote.DTO\MinecraftServersControl.Remote.Core.DTO.csproj", "{7331C735-013F-4ADA-9605-44AA436B3822}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Schema", "MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Schema.csproj", "{661D667A-377B-4322-9425-14A510C8118A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server.Schema", "MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Server.Schema.csproj", "{661D667A-377B-4322-9425-14A510C8118A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server", "MinecraftServersControl.Remote.Server\MinecraftServersControl.Remote.Server.csproj", "{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server.Interface", "MinecraftServersControl.Remote.Server.Interface\MinecraftServersControl.Remote.Server.Interface.csproj", "{37B71797-01C6-4DF9-9BFE-1B5DDEB249C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server.Abstractions", "MinecraftServersControl.Remote.Server.Interface\MinecraftServersControl.Remote.Server.Abstractions.csproj", "{37B71797-01C6-4DF9-9BFE-1B5DDEB249C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.Interface", "MinecraftServersControl.Core.Interface\MinecraftServersControl.Core.Interface.csproj", "{AE771C76-25BF-4F3C-AADC-9535FC33B776}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.Abstractions", "MinecraftServersControl.Core.Interface\MinecraftServersControl.Core.Abstractions.csproj", "{AE771C76-25BF-4F3C-AADC-9535FC33B776}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServersControl.API.Vk", "MinecraftServersControl.API.Vk\MinecraftServersControl.API.Vk.csproj", "{C61D019D-4107-4262-AF83-53B41A1CF7C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API.Vk", "MinecraftServersControl.API.Vk\MinecraftServersControl.API.Vk.csproj", "{C61D019D-4107-4262-AF83-53B41A1CF7C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VkApi", "VkApi\VkApi.csproj", "{D84E28B6-3307-4C23-95B1-BE72DF57106B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VkApi", "VkApi\VkApi.csproj", "{D84E28B6-3307-4C23-95B1-BE72DF57106B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

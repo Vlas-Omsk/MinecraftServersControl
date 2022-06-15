@@ -4,9 +4,9 @@ using System;
 namespace MinecraftServersControl.API.Schema
 {
     [Serializable]
-    public class HttpResponse<T> : HttpResponse where T : Result
+    public class HttpResponse<T> : HttpResponse
     {
-        public T Result { get; protected set; }
+        public T Data { get; protected set; }
 
         protected HttpResponse()
         {
@@ -16,14 +16,18 @@ namespace MinecraftServersControl.API.Schema
         {
         }
 
-        public HttpResponse(T result)
+        public HttpResponse(string errorMessage, ErrorCode errorCode) : base(errorMessage, errorCode)
         {
-            Result = result;
+        }
+
+        public HttpResponse(T data)
+        {
+            Data = data;
         }
 
         public override string ToString()
         {
-            return $"(HasErrors: {HasErrors}, Result: {Result})";
+            return $"(HasErrors: {HasErrors}, Data: {Data})";
         }
     }
 
@@ -31,6 +35,7 @@ namespace MinecraftServersControl.API.Schema
     public class HttpResponse
     {
         public bool HasErrors { get; protected set; }
+        public ErrorCode ErrorCode { get; protected set; }
         public string ErrorMessage { get; protected set; }
 
         protected HttpResponse()
@@ -41,6 +46,13 @@ namespace MinecraftServersControl.API.Schema
         {
             HasErrors = true;
             ErrorMessage = errorMessage;
+        }
+
+        public HttpResponse(string errorMessage, ErrorCode errorCode)
+        {
+            HasErrors = true;
+            ErrorMessage = errorMessage;
+            ErrorCode = errorCode;
         }
 
         public override string ToString()
