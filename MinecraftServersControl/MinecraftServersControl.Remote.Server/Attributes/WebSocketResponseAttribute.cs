@@ -1,4 +1,4 @@
-﻿using MinecraftServersControl.Remote.DTO;
+﻿using MinecraftServersControl.Remote.Server.Schema;
 using System;
 
 namespace MinecraftServersControl.Remote.Server
@@ -6,9 +6,9 @@ namespace MinecraftServersControl.Remote.Server
     [AttributeUsage(AttributeTargets.Method)]
     internal sealed class WebSocketResponseAttribute : Attribute
     {
-        public RemoteResultCode Code { get; }
+        public RemoteWebSocketResponseCode Code { get; }
 
-        public WebSocketResponseAttribute(RemoteResultCode code)
+        public WebSocketResponseAttribute(RemoteWebSocketResponseCode code)
         {
             Code = code;
         }

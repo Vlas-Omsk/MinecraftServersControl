@@ -51,7 +51,7 @@ namespace MinecraftServersControl.API.WebSocketServices
                 if (_sessionId != e)
                     return;
 
-                SendSuccess(WebSocketResponse.BroadcastRequestId, e);
+                SendSuccess(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.SessionRemoved, e);
                 Close();
             });
         }
@@ -64,7 +64,7 @@ namespace MinecraftServersControl.API.WebSocketServices
 
             var result = await Application.ServerService.GetServers();
 
-            SendSuccess(request.Id, result);
+            SendSuccess(request.Id, WebSocketResponseCode.Success, result);
         }
 
         [WebSocketRequest(WebSocketRequestCode.GetOutput)]
@@ -75,7 +75,7 @@ namespace MinecraftServersControl.API.WebSocketServices
 
             var result = await Application.ServerService.GetOutput(request.Data);
 
-            SendSuccess(request.Id, result);
+            SendSuccess(request.Id, WebSocketResponseCode.Success, result);
         }
 
         [WebSocketRequest(WebSocketRequestCode.Input)]
@@ -124,27 +124,27 @@ namespace MinecraftServersControl.API.WebSocketServices
 
         private async void OnComputerStarted(object sender, ComputerStateDTO e)
         {
-            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
+            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.ComputerStarted, e));
         }
 
         private async void OnComputerStopped(object sender, ComputerStateDTO e)
         {
-            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
+            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.ComputerStopped, e));
         }
 
         private async void OnServerStarted(object sender, TargetServerDTO e)
         {
-            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
+            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.ServerStarted, e));
         }
 
         private async void OnServerStopped(object sender, TargetServerDTO e)
         {
-            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
+            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.ServerStopped, e));
         }
 
         private async void OnServerOutput(object sender, ServerOutputDTO e)
         {
-            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, e));
+            await Task.Run(() => SendSuccess(WebSocketResponse.BroadcastRequestId, WebSocketResponseCode.ServerOutput, e));
         }
     }
 }

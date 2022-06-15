@@ -1,25 +1,26 @@
 ﻿using MinecraftServersControl.Remote.DTO;
+using MinecraftServersControl.Remote.Server.Schema;
 using System;
 
 namespace MinecraftServersControl.Remote.Schema
 {
     [Serializable]
-    public class RemoteWebSocketResponse<T> : RemoteWebSocketResponse where T : RemoteResult
+    public class RemoteWebSocketResponse<T> : RemoteWebSocketResponse
     {
-        public T Result { get; protected set; }
+        public T Data { get; protected set; }
 
         protected RemoteWebSocketResponse()
         {
         }
 
-        public RemoteWebSocketResponse(int requestId, T result) : base(requestId)
+        public RemoteWebSocketResponse(int requestId, RemoteWebSocketResponseCode code, RemoteErrorCode errorCode, T data) : base(requestId, code, errorCode)
         {
-            Result = result;
+            Data = data;
         }
 
         public override string ToString()
         {
-            return $"(RequestId: {RequestId}, Result: {Result})";
+            return $"(RequestId: {RequestId}, Data: {Data})";
         }
     }
 
@@ -27,19 +28,43 @@ namespace MinecraftServersControl.Remote.Schema
     public class RemoteWebSocketResponse
     {
         public int RequestId { get; protected set; }
+        public RemoteWebSocketResponseCode Code { get; protected set; }
+        public RemoteErrorCode ErrorCode { get; protected set; }
 
         protected RemoteWebSocketResponse()
         {
         }
 
-        public RemoteWebSocketResponse(int requestId)
+        public RemoteWebSocketResponse(int requestId, RemoteWebSocketResponseCode code, RemoteErrorCode errorCode)
         {
             RequestId = requestId;
+            Code = code;
+            ErrorCode = errorCode;
         }
 
         public override string ToString()
         {
             return $"(RequestId: {RequestId})";
+        }
+
+        public static RemoteWebSocketResponse<T> CreateBroadcast<T>(RemoteWebSocketResponseCode code, T data)
+        {
+            return new RemoteWebSocketResponse<T>(-1, code, RemoteErrorCode.None, data);
+        }
+
+        public static RemoteWebSocketResponse CreateBroadcast(RemoteWebSocketResponseCode code)
+        {
+            return new RemoteWebSocketResponse(-1, code, RemoteErrorCode.None);
+        }
+
+        public static RemoteWebSocketResponse<T> CreateSuccess<T>(int requestId, T data)
+        {
+            return new RemoteWebSocketResponse<T>(requestId, RemoteWebSocketResponseCode.Success, RemoteErrorCode.None, data);
+        }
+
+        public static RemoteWebSocketResponse CreateSuccess(int requestId)
+        {
+            return new RemoteWebSocketResponse(requestId, RemoteWebSocketResponseCode.Success, RemoteErrorCode.None);
         }
     }
 }

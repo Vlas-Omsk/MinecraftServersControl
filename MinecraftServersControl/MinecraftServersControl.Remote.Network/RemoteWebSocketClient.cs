@@ -1,6 +1,7 @@
 ﻿using MinecraftServersControl.Common;
 using MinecraftServersControl.Remote.DTO;
 using MinecraftServersControl.Remote.Schema;
+using MinecraftServersControl.Remote.Server.Schema;
 using System;
 using System.Threading.Tasks;
 
@@ -26,57 +27,57 @@ namespace MinecraftServersControl.Remote.Client
             base.OnOpenOverride(sender, e);
 
             var result = await Application.ServerService.Verify();
-            SendResponse(-1, result);
+            SendResponse(RemoteWebSocketResponse.CreateBroadcast(RemoteWebSocketResponseCode.Verify, result));
         }
 
         [WebSocketRequest(RemoteWebSocketRequestCode.GetInfo)]
         public async Task GetInfoAsync(RemoteWebSocketRequest request)
         {
             var result = await Application.ServerService.GetInfo();
-            SendResponse(request.Id, result);
+            SendResponse(RemoteWebSocketResponse.CreateSuccess(request.Id, result));
         }
 
         [WebSocketRequest(RemoteWebSocketRequestCode.GetOutput)]
         public async Task GetOutputAsync(RemoteWebSocketRequest<Guid> request)
         {
             var result = await Application.ServerService.GetOutput(request.Data);
-            SendResponse(request.Id, result);
+            SendResponse(RemoteWebSocketResponse.CreateSuccess(request.Id, result));
         }
 
         [WebSocketRequest(RemoteWebSocketRequestCode.Input)]
         public async Task GetOutputAsync(RemoteWebSocketRequest<ServerInputDTO> request)
         {
-            var result = await Application.ServerService.Input(request.Data);
-            SendResponse(request.Id, result);
+            await Application.ServerService.Input(request.Data);
+            SendResponse(RemoteWebSocketResponse.CreateSuccess(request.Id));
         }
 
         [WebSocketRequest(RemoteWebSocketRequestCode.Start)]
         public async Task StartAsync(RemoteWebSocketRequest<Guid> request)
         {
-            var result = await Application.ServerService.Start(request.Data);
-            SendResponse(request.Id, result);
+            await Application.ServerService.Start(request.Data);
+            SendResponse(RemoteWebSocketResponse.CreateSuccess(request.Id));
         }
 
         [WebSocketRequest(RemoteWebSocketRequestCode.Terminate)]
         public async Task TerminateAsync(RemoteWebSocketRequest<Guid> request)
         {
-            var result = await Application.ServerService.Terminate(request.Data);
-            SendResponse(request.Id, result);
+            await Application.ServerService.Terminate(request.Data);
+            SendResponse(RemoteWebSocketResponse.CreateSuccess(request.Id));
         }
 
-        private async void OnServerOutput(object sender, DTO.RemoteResult<DTO.ServerOutputDTO> e)
+        private async void OnServerOutput(object sender, ServerOutputDTO e)
         {
-            await Task.Run(() => SendResponse(-1, e));
+            await Task.Run(() => SendResponse(RemoteWebSocketResponse.CreateBroadcast(RemoteWebSocketResponseCode.ServerOutput, e)));
         }
 
-        private async void OnServerStarted(object sender, DTO.RemoteResult<Guid> e)
+        private async void OnServerStarted(object sender, Guid e)
         {
-            await Task.Run(() => SendResponse(-1, e));
+            await Task.Run(() => SendResponse(RemoteWebSocketResponse.CreateBroadcast(RemoteWebSocketResponseCode.ServerStarted, e)));
         }
 
-        private async void OnServerStopped(object sender, DTO.RemoteResult<Guid> e)
+        private async void OnServerStopped(object sender, Guid e)
         {
-            await Task.Run(() => SendResponse(-1, e));
+            await Task.Run(() => SendResponse(RemoteWebSocketResponse.CreateBroadcast(RemoteWebSocketResponseCode.ServerStopped, e)));
         }
     }
 }

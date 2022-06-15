@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinecraftServersControl.Remote.DTO\MinecraftServersControl.Remote.Core.DTO.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Server.Schema.csproj" />
   </ItemGroup>
 
 </Project>

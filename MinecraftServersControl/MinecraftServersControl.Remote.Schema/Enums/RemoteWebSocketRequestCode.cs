@@ -2,7 +2,7 @@
 
 namespace MinecraftServersControl.Remote.Schema
 {
-    public enum RemoteWebSocketRequestCode
+    public enum RemoteWebSocketRequestCode : int
     {
         GetInfo = 1,
         GetOutput = 2,

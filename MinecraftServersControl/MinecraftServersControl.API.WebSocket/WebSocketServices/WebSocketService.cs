@@ -110,11 +110,6 @@ namespace MinecraftServersControl.API.WebSocketServices
             SendResponse(new WebSocketResponse(requestId, code, message));
         }
 
-        protected void SendSuccess<T>(int requestId, T data)
-        {
-            SendResponse(new WebSocketResponse<T>(requestId, WebSocketResponseCode.Success, null, data));
-        }
-
         protected void SendSuccess<T>(int requestId, WebSocketResponseCode code, T data)
         {
             SendResponse(new WebSocketResponse<T>(requestId, code, null, data));

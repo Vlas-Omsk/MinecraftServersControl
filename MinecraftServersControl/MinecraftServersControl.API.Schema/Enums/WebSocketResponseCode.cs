@@ -10,5 +10,11 @@ namespace MinecraftServersControl.API.Schema
         InvalidCode = 3,
         InvalidState = 4,
         CoreError = 5,
+        ComputerStarted = 6,
+        ComputerStopped = 7,
+        ServerStarted = 8,
+        ServerStopped = 9,
+        ServerOutput = 10,
+        SessionRemoved = 11
     }
 }

@@ -1,16 +1,16 @@
 ﻿using MinecraftServersControl.Remote.DTO;
+using MinecraftServersControl.Remote.Schema;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MinecraftServersControl.Core
 {
     public interface IRemoteComputer
     {
-        Task<RemoteResult<IEnumerable<ServerInfoDTO>>> GetInfo();
-        Task<RemoteResult<string>> GetOutput(Guid serverId);
-        Task<RemoteResult> Input(ServerInputDTO serverInput);
-        Task<RemoteResult> Start(Guid serverId);
-        Task<RemoteResult> Terminate(Guid serverId);
+        Task<RemoteWebSocketResponse<ServerInfoDTO[]>> GetInfo();
+        Task<RemoteWebSocketResponse<string>> GetOutput(Guid serverKey);
+        Task<RemoteWebSocketResponse> Input(ServerInputDTO serverInput);
+        Task<RemoteWebSocketResponse> Start(Guid serverId);
+        Task<RemoteWebSocketResponse> Terminate(Guid serverId);
     }
 }

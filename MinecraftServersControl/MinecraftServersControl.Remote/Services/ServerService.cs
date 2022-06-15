@@ -1,7 +1,7 @@
 ﻿using MinecraftServersControl.Logging;
+using MinecraftServersControl.Remote.Core;
 using MinecraftServersControl.Remote.DTO;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,116 +18,96 @@ namespace MinecraftServersControl.Remote.Services
             _serverHosts = config.Servers.Select(x =>
             {
                 var server = new ServerHost(x);
-                server.DataReceived += (sender, e) => RaiseServerOutput(server.ServerInfo.Id, e.Data);
-                server.Started += (sender, e) => RaiseServerStarted(server.ServerInfo.Id);
-                server.Stopped += (sender, e) => RaiseServerStopped(server.ServerInfo.Id);
+                server.DataReceived += (sender, e) => ServerOutput?.Invoke(this, new ServerOutputDTO(server.ServerInfo.Id, e.Data));
+                server.Started += (sender, e) => ServerStarted?.Invoke(this, server.ServerInfo.Id);
+                server.Stopped += (sender, e) => ServerStopped?.Invoke(this, server.ServerInfo.Id);
                 return server;
             }).ToArray();
         }
 
-        public Task<RemoteResult<Guid>> Verify()
+        public Task<Guid> Verify()
         {
             return Task.Run(() =>
-                new RemoteResult<Guid>(_config.Id, RemoteResultCode.Verify)
+                _config.Id
             );
         }
 
-        public Task<RemoteResult<IEnumerable<ServerInfoDTO>>> GetInfo()
+        public Task<ServerInfoDTO[]> GetInfo()
         {
             return Task.Run(() => 
-                new RemoteResult<IEnumerable<ServerInfoDTO>>(
-                    _serverHosts.Select(x => 
-                        new ServerInfoDTO(x.ServerInfo.Id, x.Running)
-                    ).ToArray()
-                )
+                _serverHosts.Select(x => 
+                    new ServerInfoDTO(x.ServerInfo.Id, x.Running)
+                ).ToArray()
             );
         }
 
-        public Task<RemoteResult<string>> GetOutput(Guid serverId)
+        public Task<string> GetOutput(Guid serverId)
         {
-            return Task.Run<RemoteResult<string>>(() =>
+            return Task.Run<string>(() =>
             {
                 var server = _serverHosts.FirstOrDefault(x => x.ServerInfo.Id == serverId);
 
                 if (server == null)
-                    return RemoteResultCode.ServerNotFound;
+                    throw new RemoteCoreException(RemoteErrorCode.ServerNotFound);
 
                 return server.Buffer;
             });
         }
 
-        public Task<RemoteResult> Input(ServerInputDTO serverInput)
+        public Task Input(ServerInputDTO serverInput)
         {
-            return Task.Run<RemoteResult>(() =>
+            return Task.Run(() =>
             {
                 var server = _serverHosts.FirstOrDefault(x => x.ServerInfo.Id == serverInput.ServerId);
 
                 if (server == null)
-                    return RemoteResultCode.ServerNotFound;
+                    throw new RemoteCoreException(RemoteErrorCode.ServerNotFound);
 
                 server.Input(serverInput.Message);
-                return RemoteResultCode.Success;
             });
         }
 
-        public Task<RemoteResult> Start(Guid serverId)
+        public Task Start(Guid serverId)
         {
-            return Task.Run<RemoteResult>(() =>
+            return Task.Run(() =>
             {
                 var server = _serverHosts.FirstOrDefault(x => x.ServerInfo.Id == serverId);
 
                 if (server == null)
-                    return RemoteResultCode.ServerNotFound;
+                    throw new RemoteCoreException(RemoteErrorCode.ServerNotFound);
 
                 if (server.Running)
-                    return RemoteResultCode.ServerStarted;
+                    throw new RemoteCoreException(RemoteErrorCode.ServerStarted);
 
                 try
                 {
                     server.Start();
-                    return RemoteResultCode.Success;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    return new RemoteResult(RemoteResultCode.CantStartServer, ex.Message);
+                    throw new RemoteCoreException(RemoteErrorCode.CantStartServer);
                 }
             });
         }
 
-        public Task<RemoteResult> Terminate(Guid serverId)
+        public Task Terminate(Guid serverId)
         {
-            return Task.Run<RemoteResult>(() =>
+            return Task.Run(() =>
             {
                 var server = _serverHosts.FirstOrDefault(x => x.ServerInfo.Id == serverId);
 
                 if (server == null)
-                    return RemoteResultCode.ServerNotFound;
+                    throw new RemoteCoreException(RemoteErrorCode.ServerNotFound);
 
                 if (!server.Running)
-                    return RemoteResultCode.ServerStopped;
+                    throw new RemoteCoreException(RemoteErrorCode.ServerStopped);
 
                 server.Stop();
-                return RemoteResultCode.Success;
             });
         }
 
-        private void RaiseServerOutput(Guid serverKey, string data)
-        {
-            ServerOutput?.Invoke(this, new RemoteResult<ServerOutputDTO>(new ServerOutputDTO(serverKey, data), RemoteResultCode.ServerOutput));
-        }
-
-        private void RaiseServerStarted(Guid serverKey)
-        {
-            ServerStarted?.Invoke(this, new RemoteResult<Guid>(serverKey, RemoteResultCode.ServerStarted));
-        }
-
-        private void RaiseServerStopped(Guid serverKey)
-        {
-            ServerStopped?.Invoke(this, new RemoteResult<Guid>(serverKey, RemoteResultCode.ServerStopped));
-        }
-
-        public event ResultEventHandler<ServerOutputDTO> ServerOutput;
-        public event ResultEventHandler<Guid> ServerStarted;
-        public event ResultEventHandler<Guid> ServerStopped;
+        public event EventHandler<ServerOutputDTO> ServerOutput;
+        public event EventHandler<Guid> ServerStarted;
+        public event EventHandler<Guid> ServerStopped;
     }
 }

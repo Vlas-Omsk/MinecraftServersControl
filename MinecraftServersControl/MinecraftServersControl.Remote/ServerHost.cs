@@ -12,7 +12,7 @@ namespace MinecraftServersControl.Remote
         {
             ServerInfo = serverInfo;
 
-            _processHost.DataReceived += OnDataReceived; ;
+            _processHost.DataReceived += OnDataReceived;
             _processHost.Started += OnStarted;
             _processHost.Stopped += OnStopped;
         }

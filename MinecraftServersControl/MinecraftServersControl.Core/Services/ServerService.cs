@@ -63,35 +63,35 @@ namespace MinecraftServersControl.Core.Services
         public async Task<string> GetOutput(TargetServerDTO targetServer)
         {
             var computerServerId = await GetComputerServerId(targetServer.ComputerAlias, targetServer.ServerAlias);
-            var result = await computerServerId.Computer.GetOutput(computerServerId.ServerId);
+            var response = await computerServerId.Computer.GetOutput(computerServerId.ServerId);
 
-            result.ThrowOnError();
+            response.ThrowOnError();
 
-            return result.Data;
+            return response.Data;
         }
 
-        public async Task Input(DTO.ServerInputDTO serverInput)
+        public async Task Input(ServerInputDTO serverInput)
         {
             var computerServerId = await GetComputerServerId(serverInput.ComputerAlias, serverInput.ServerAlias);
-            var result = await computerServerId.Computer.Input(new Remote.DTO.ServerInputDTO(computerServerId.ServerId, serverInput.Message));
+            var response = await computerServerId.Computer.Input(new Remote.DTO.ServerInputDTO(computerServerId.ServerId, serverInput.Message));
 
-            result.ThrowOnError();
+            response.ThrowOnError();
         }
 
         public async Task Start(TargetServerDTO targetServer)
         {
             var computerServerId = await GetComputerServerId(targetServer.ComputerAlias, targetServer.ServerAlias);
-            var result = await computerServerId.Computer.Start(computerServerId.ServerId);
+            var response = await computerServerId.Computer.Start(computerServerId.ServerId);
 
-            result.ThrowOnError();
+            response.ThrowOnError();
         }
 
         public async Task Terminate(TargetServerDTO targetServer)
         {
             var computerServerId = await GetComputerServerId(targetServer.ComputerAlias, targetServer.ServerAlias);
-            var result = await computerServerId.Computer.Terminate(computerServerId.ServerId);
+            var response = await computerServerId.Computer.Terminate(computerServerId.ServerId);
 
-            result.ThrowOnError();
+            response.ThrowOnError();
         }
 
         private async Task<ComputerServerIdPair> GetComputerServerId(string computerAlias, string serverAlias)
@@ -126,6 +126,6 @@ namespace MinecraftServersControl.Core.Services
 
         public event EventHandler<TargetServerDTO> ServerStarted;
         public event EventHandler<TargetServerDTO> ServerStopped;
-        public event EventHandler<DTO.ServerOutputDTO> ServerOutput;
+        public event EventHandler<ServerOutputDTO> ServerOutput;
     }
 }

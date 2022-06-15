@@ -49,8 +49,9 @@ namespace MinecraftServersControl.API.Vk.VkServices
             [CommandParameter("сервер")] string serverAlias
         )
         {
-            await Handler.Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias));
-            await Handler.MessageResponse.SendSuccess();
+            await Handler.MessageResponse.Send(
+                await Handler.Application.ServerService.GetOutput(new TargetServerDTO(computerAlias, serverAlias))
+            );
         }
 
         [Command("консоль")]
@@ -65,7 +66,10 @@ namespace MinecraftServersControl.API.Vk.VkServices
 
             await Handler.MessageResponse.Send("Для выходя используйте '&выход'\r\n\r\n" + output);
 
-            EventHandler<ServerOutputDTO> handler = async (sender, e) =>
+            EventHandler<ServerOutputDTO> serverOutputHandler = null;
+            EventHandler<TargetServerDTO> serverStoppedHandler = null;
+
+            serverOutputHandler = async (sender, e) =>
             {
                 if (e.ComputerAlias != computerAlias &&
                     e.ServerAlias != serverAlias)
@@ -74,14 +78,30 @@ namespace MinecraftServersControl.API.Vk.VkServices
                 await Handler.MessageResponse.Send(e.Output);
             };
 
-            Handler.Application.ServerService.ServerOutput += handler;
+            serverStoppedHandler = async (sender, e) =>
+            {
+                if (e.ComputerAlias != computerAlias &&
+                    e.ServerAlias != serverAlias)
+                    return;
+
+                Handler.Application.ServerService.ServerOutput -= serverOutputHandler;
+                Handler.Application.ServerService.ServerStopped -= serverStoppedHandler;
+                Handler.Session.HandlerOverride = null;
+
+                await Handler.MessageResponse.Send("Сервер остановлен");
+            };
+
+            Handler.Application.ServerService.ServerOutput += serverOutputHandler;
+            Handler.Application.ServerService.ServerStopped += serverStoppedHandler;
 
             Handler.Session.HandlerOverride = async (message) =>
             {
                 if (message.Text.Equals("&выход"))
                 {
-                    Handler.Application.ServerService.ServerOutput -= handler;
+                    Handler.Application.ServerService.ServerOutput -= serverOutputHandler;
+                    Handler.Application.ServerService.ServerStopped -= serverStoppedHandler;
                     Handler.Session.HandlerOverride = null;
+
                     await Handler.MessageResponse.Send("Успешно");
                     return;
                 }

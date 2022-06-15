@@ -1,7 +1,6 @@
 ﻿using MinecraftServersControl.Common;
 using MinecraftServersControl.Core.Interface;
 using MinecraftServersControl.Logging;
-using MinecraftServersControl.Remote.DTO;
 using MinecraftServersControl.Remote.Schema;
 using PinkJson2;
 using System;
@@ -43,10 +42,10 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
                 return;
             }
 
-            RemoteWebSocketResponse<RemoteResult> response;
+            RemoteWebSocketResponse response;
             try
             {
-                response = json.DeserializeCustom<RemoteWebSocketResponse<RemoteResult>>();
+                response = json.DeserializeCustom<RemoteWebSocketResponse>();
             }
             catch (Exception ex)
             {
@@ -84,7 +83,7 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
 
             var method = GetType()
                 .GetMethodsWithAttribute<WebSocketResponseAttribute>()
-                .FirstOrDefault(x => x.Attribute.Code == response.Result.Code)?
+                .FirstOrDefault(x => x.Attribute.Code == response.Code)?
                 .Method;
 
             if (method == null)

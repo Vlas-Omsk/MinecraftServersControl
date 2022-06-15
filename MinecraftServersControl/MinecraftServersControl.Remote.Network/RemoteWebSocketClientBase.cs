@@ -1,8 +1,9 @@
 ﻿using MinecraftServersControl.Common;
 using MinecraftServersControl.Logging;
 using MinecraftServersControl.Logging.Adapters;
-using MinecraftServersControl.Remote.DTO;
+using MinecraftServersControl.Remote.Core;
 using MinecraftServersControl.Remote.Schema;
+using MinecraftServersControl.Remote.Server.Schema;
 using PinkJson2;
 using System;
 using System.Linq;
@@ -61,13 +62,14 @@ namespace MinecraftServersControl.Remote.Client
 
         private async void OnMessageInternal(object sender, MessageEventArgs e)
         {
-            if (!e.Data.TryParseJson(out IJson json, out Exception ex))
+            IJson json;
+            RemoteWebSocketRequest request;
+            try
             {
-                Logger.Error(ex.ToString());
-                return;
+                json = Json.Parse(e.Data);
+                request = json.DeserializeCustom<RemoteWebSocketRequest>();
             }
-
-            if (!json.TryDeserialize(out RemoteWebSocketRequest request, out ex))
+            catch (Exception ex)
             {
                 Logger.Error(ex.ToString());
                 return;
@@ -94,7 +96,12 @@ namespace MinecraftServersControl.Remote.Client
                 return;
             }
 
-            if (!json.TryDeserialize(methodParameter.ParameterType, out object requestGeneric, out ex))
+            object requestGeneric;
+            try
+            {
+                requestGeneric = json.DeserializeCustom(methodParameter.ParameterType);
+            }
+            catch (Exception ex)
             {
                 Logger.Warn(ex.ToString());
                 return;
@@ -107,24 +114,19 @@ namespace MinecraftServersControl.Remote.Client
                 if (methodResult is Task task)
                     await task.ConfigureAwait(false);
             }
-            catch (Exception exx)
+            catch (RemoteCoreException ex)
             {
-                Logger.Error(exx.ToString());
+                SendResponse(new RemoteWebSocketResponse(request.Id, RemoteWebSocketResponseCode.CoreError, ex.ErrorCode));
+                return;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.ToString());
                 return;
             }
         }
 
-        protected void SendResponse(int requestId, RemoteResult result)
-        {
-            SendResponse(new RemoteWebSocketResponse<RemoteResult>(requestId, result));
-        }
-
-        protected void SendResponse<T>(int requestId, RemoteResult<T> result)
-        {
-            SendResponse(new RemoteWebSocketResponse<RemoteResult<T>>(requestId, result));
-        }
-
-        private void SendResponse(RemoteWebSocketResponse response)
+        protected void SendResponse(RemoteWebSocketResponse response)
         {
             Logger.Info($"Response: {response}");
 

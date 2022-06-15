@@ -1,8 +1,8 @@
 ﻿using MinecraftServersControl.Core;
 using MinecraftServersControl.Remote.DTO;
 using MinecraftServersControl.Remote.Schema;
+using MinecraftServersControl.Remote.Server.Schema;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebSocketSharp;
@@ -26,88 +26,88 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
             RemoteServer.RaiseComputerStopped(ComputerKey);
         }
 
-        [WebSocketResponse(RemoteResultCode.Verify)]
-        public async Task VerifyAsync(RemoteWebSocketResponse<RemoteResult<Guid>> response)
+        [WebSocketResponse(RemoteWebSocketResponseCode.Verify)]
+        public async Task VerifyAsync(RemoteWebSocketResponse<Guid> response)
         {
             if (IsAuthorized)
                 return;
 
-            var result = await Application.ComputerService.VerifyComputer(response.Result.Data);
+            var result = await Application.ComputerService.VerifyComputer(response.Data);
 
             if (!result ||
                 Sessions.Sessions.Any(x =>
-                    x.ConnectionState == WebSocketSharp.WebSocketState.Open &&
-                    ((ComputerWebSocketService)x).ComputerKey == response.Result.Data
+                    x.ConnectionState == WebSocketState.Open &&
+                    ((ComputerWebSocketService)x).ComputerKey == response.Data
                ))
             {
                 CloseAsync();
                 return;
             }
 
-            ComputerKey = response.Result.Data;
+            ComputerKey = response.Data;
             RemoteServer.RaiseComputerStarted(ComputerKey);
         }
 
-        [WebSocketResponse(RemoteResultCode.ServerStarted)]
-        public async Task ServerStartedAsync(RemoteWebSocketResponse<RemoteResult<Guid>> response)
+        [WebSocketResponse(RemoteWebSocketResponseCode.ServerStarted)]
+        public async Task ServerStartedAsync(RemoteWebSocketResponse<Guid> response)
         {
             if (!IsAuthorized)
                 return;
 
-            await Task.Run(() => RemoteServer.RaiseServerStarted(ComputerKey, response.Result.Data));
+            await Task.Run(() => RemoteServer.RaiseServerStarted(ComputerKey, response.Data));
         }
 
-        [WebSocketResponse(RemoteResultCode.ServerStopped)]
-        public async Task ServerStoppedAsync(RemoteWebSocketResponse<RemoteResult<Guid>> response)
+        [WebSocketResponse(RemoteWebSocketResponseCode.ServerStopped)]
+        public async Task ServerStoppedAsync(RemoteWebSocketResponse<Guid> response)
         {
             if (!IsAuthorized)
                 return;
 
-            await Task.Run(() => RemoteServer.RaiseServerStopped(ComputerKey, response.Result.Data));
+            await Task.Run(() => RemoteServer.RaiseServerStopped(ComputerKey, response.Data));
         }
 
-        [WebSocketResponse(RemoteResultCode.ServerOutput)]
-        public async Task ServerOutputAsync(RemoteWebSocketResponse<RemoteResult<ServerOutputDTO>> response)
+        [WebSocketResponse(RemoteWebSocketResponseCode.ServerOutput)]
+        public async Task ServerOutputAsync(RemoteWebSocketResponse<ServerOutputDTO> response)
         {
             if (!IsAuthorized)
                 return;
 
-            await Task.Run(() => RemoteServer.RaiseServerOutput(ComputerKey, response.Result.Data.ServerId, response.Result.Data.Output));
+            await Task.Run(() => RemoteServer.RaiseServerOutput(ComputerKey, response.Data.ServerId, response.Data.Output));
         }
 
-        public async Task<RemoteResult<IEnumerable<ServerInfoDTO>>> GetInfo()
+        public Task<RemoteWebSocketResponse<ServerInfoDTO[]>> GetInfo()
         {
-            return (await GetResponse<RemoteWebSocketResponse<RemoteResult<IEnumerable<ServerInfoDTO>>>, RemoteWebSocketRequest>(
+            return GetResponse<RemoteWebSocketResponse<ServerInfoDTO[]>, RemoteWebSocketRequest>(
                 new RemoteWebSocketRequest(_counter++, RemoteWebSocketRequestCode.GetInfo)
-            )).Result;
+            );
         }
 
-        public async Task<RemoteResult<string>> GetOutput(Guid serverKey)
+        public Task<RemoteWebSocketResponse<string>> GetOutput(Guid serverKey)
         {
-            return (await GetResponse<RemoteWebSocketResponse<RemoteResult<string>>, RemoteWebSocketRequest>(
+            return GetResponse<RemoteWebSocketResponse<string>, RemoteWebSocketRequest>(
                 new RemoteWebSocketRequest<Guid>(_counter++, RemoteWebSocketRequestCode.GetOutput, serverKey)
-            )).Result;
+            );
         }
 
-        public async Task<RemoteResult> Input(ServerInputDTO serverInput)
+        public Task<RemoteWebSocketResponse> Input(ServerInputDTO serverInput)
         {
-            return (await GetResponse<RemoteWebSocketResponse<RemoteResult>, RemoteWebSocketRequest>(
+            return GetResponse<RemoteWebSocketResponse, RemoteWebSocketRequest>(
                new RemoteWebSocketRequest<ServerInputDTO>(_counter++, RemoteWebSocketRequestCode.Input, serverInput)
-           )).Result;
+            );
         }
 
-        public async Task<RemoteResult> Start(Guid serverKey)
+        public Task<RemoteWebSocketResponse> Start(Guid serverId)
         {
-            return (await GetResponse<RemoteWebSocketResponse<RemoteResult>, RemoteWebSocketRequest>(
-                new RemoteWebSocketRequest<Guid>(_counter++, RemoteWebSocketRequestCode.Start, serverKey)
-            )).Result;
+            return GetResponse<RemoteWebSocketResponse, RemoteWebSocketRequest>(
+                new RemoteWebSocketRequest<Guid>(_counter++, RemoteWebSocketRequestCode.Start, serverId)
+            );
         }
 
-        public async Task<RemoteResult> Terminate(Guid serverKey)
+        public Task<RemoteWebSocketResponse> Terminate(Guid serverId)
         {
-            return (await GetResponse<RemoteWebSocketResponse<RemoteResult>, RemoteWebSocketRequest>(
-                new RemoteWebSocketRequest<Guid>(_counter++, RemoteWebSocketRequestCode.Terminate, serverKey)
-            )).Result;
+            return GetResponse<RemoteWebSocketResponse, RemoteWebSocketRequest>(
+                new RemoteWebSocketRequest<Guid>(_counter++, RemoteWebSocketRequestCode.Terminate, serverId)
+            );
         }
     }
 }
