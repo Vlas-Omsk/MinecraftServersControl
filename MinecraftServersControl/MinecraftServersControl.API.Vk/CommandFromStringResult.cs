@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace MinecraftServersControl.API.Vk
 {
-    public sealed class CommandFromStringResult
+    internal sealed class CommandFromStringResult
     {
         public MethodInfo Method { get; }
         public string[] ParametersSegments { get; }

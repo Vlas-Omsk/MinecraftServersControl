@@ -1,5 +1,5 @@
-﻿using MinecraftServersControl.API.Vk.VkServices;
-using MinecraftServersControl.Core.Interface;
+﻿using MinecraftServersControl.API.Vk.Services;
+using MinecraftServersControl.Core.Abstractions;
 using MinecraftServersControl.Logging;
 using System;
 using VkApi;

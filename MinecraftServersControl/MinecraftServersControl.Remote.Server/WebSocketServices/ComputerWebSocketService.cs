@@ -1,6 +1,5 @@
-﻿using MinecraftServersControl.Core;
-using MinecraftServersControl.Remote.DTO;
-using MinecraftServersControl.Remote.Schema;
+﻿using MinecraftServersControl.Remote.Core.DTO;
+using MinecraftServersControl.Remote.Server.Abstractions;
 using MinecraftServersControl.Remote.Server.Schema;
 using System;
 using System.Linq;

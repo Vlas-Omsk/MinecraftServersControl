@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace MinecraftServersControl.API.Vk
 {
-    public static class ServiceHelper
+    internal static class ServiceHelper
     {
         public static object[] MapParameters(MethodInfo method, string[] segments)
         {

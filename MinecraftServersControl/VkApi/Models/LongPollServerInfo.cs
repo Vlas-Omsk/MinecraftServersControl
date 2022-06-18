@@ -3,7 +3,6 @@ using System;
 
 namespace VkApi.Models
 {
-    [Serializable]
     public sealed class LongPollServerInfo
     {
         [JsonProperty("key")]

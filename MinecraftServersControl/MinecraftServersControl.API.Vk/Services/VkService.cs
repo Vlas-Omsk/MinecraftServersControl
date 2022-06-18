@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace MinecraftServersControl.API.Vk.VkServices
+namespace MinecraftServersControl.API.Vk.Services
 {
     public abstract class VkService
     {
         protected VkMessageHandler Handler { get; private set; }
 
-        protected VkService()
+        internal VkService()
         {
         }
 

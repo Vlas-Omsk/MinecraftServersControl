@@ -1,6 +1,6 @@
 ﻿using MinecraftServersControl.Common;
-using MinecraftServersControl.Remote.DTO;
-using MinecraftServersControl.Remote.Schema;
+using MinecraftServersControl.Remote.Core;
+using MinecraftServersControl.Remote.Core.DTO;
 using MinecraftServersControl.Remote.Server.Schema;
 using System;
 using System.Threading.Tasks;

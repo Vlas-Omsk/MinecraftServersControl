@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace MinecraftServersControl.API.Vk
 {
-    public sealed class ParameterException : Exception
+    internal sealed class ParameterException : Exception
     {
         public ParameterInfo Parameter { get; }
 

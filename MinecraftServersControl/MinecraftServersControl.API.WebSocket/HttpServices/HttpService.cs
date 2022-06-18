@@ -1,4 +1,4 @@
-﻿using MinecraftServersControl.Core.Interface;
+﻿using MinecraftServersControl.Core.Abstractions;
 using MinecraftServersControl.Logging;
 using System;
 using WebSocketSharp.Net;

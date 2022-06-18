@@ -1,10 +1,8 @@
-﻿using MinecraftServersControl.Remote.DTO;
-using MinecraftServersControl.Remote.Server.Schema;
+﻿using MinecraftServersControl.Remote.Core.DTO;
 using System;
 
-namespace MinecraftServersControl.Remote.Schema
+namespace MinecraftServersControl.Remote.Server.Schema
 {
-    [Serializable]
     public class RemoteWebSocketResponse<T> : RemoteWebSocketResponse
     {
         public T Data { get; protected set; }
@@ -24,7 +22,6 @@ namespace MinecraftServersControl.Remote.Schema
         }
     }
 
-    [Serializable]
     public class RemoteWebSocketResponse
     {
         public int RequestId { get; protected set; }

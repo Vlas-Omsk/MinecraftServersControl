@@ -1,9 +1,10 @@
-﻿using MinecraftServersControl.Core.IO;
+﻿using MinecraftServersControl.Remote.Core;
+using MinecraftServersControl.Remote.Core.IO;
 using System;
 
 namespace MinecraftServersControl.Tests
 {
-    public sealed class ProcessHostTest
+    internal sealed class ProcessHostTest
     {
         public void Start()
         {

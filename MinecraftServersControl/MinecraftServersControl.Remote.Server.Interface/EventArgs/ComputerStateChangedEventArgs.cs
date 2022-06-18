@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Remote.Server
+namespace MinecraftServersControl.Remote.Server.Abstractions
 {
     public sealed class ComputerStateChangedEventArgs : EventArgs
     {

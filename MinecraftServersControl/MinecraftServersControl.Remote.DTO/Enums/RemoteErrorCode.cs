@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Remote.DTO
+namespace MinecraftServersControl.Remote.Core.DTO
 {
     public enum RemoteErrorCode
     {
         None = 0,
 
-        ServerStarted = 2,
-        ServerStopped = 3,
+        ServerAlredyStarted = 2,
+        ServerAlredyStopped = 3,
         ServerNotFound = 4,
         CantStartServer = 5
     }

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace MinecraftServersControl.API.Vk
 {
-    public static class FormatHelper
+    internal static class FormatHelper
     {
         public static string ToStringYesNo(bool value)
         {

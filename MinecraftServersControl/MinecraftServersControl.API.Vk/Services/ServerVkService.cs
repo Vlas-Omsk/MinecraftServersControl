@@ -1,9 +1,8 @@
 ﻿using MinecraftServersControl.Core.DTO;
-using MinecraftServersControl.Core.Interface;
 using System;
 using System.Threading.Tasks;
 
-namespace MinecraftServersControl.API.Vk.VkServices
+namespace MinecraftServersControl.API.Vk.Services
 {
     [Service("сервер")]
     public sealed class ServerVkService : VkService
@@ -96,17 +95,18 @@ namespace MinecraftServersControl.API.Vk.VkServices
 
             Handler.Session.HandlerOverride = async (message) =>
             {
-                if (message.Text.Equals("&выход"))
+                if (message.Text.Equals("&выход", StringComparison.OrdinalIgnoreCase))
                 {
                     Handler.Application.ServerService.ServerOutput -= serverOutputHandler;
                     Handler.Application.ServerService.ServerStopped -= serverStoppedHandler;
                     Handler.Session.HandlerOverride = null;
 
                     await Handler.MessageResponse.Send("Успешно");
-                    return;
                 }
-
-                await Handler.Application.ServerService.Input(new ServerInputDTO(computerAlias, serverAlias, message.Text));
+                else
+                {
+                    await Handler.Application.ServerService.Input(new ServerInputDTO(computerAlias, serverAlias, message.Text));
+                }
             };
         }
     }

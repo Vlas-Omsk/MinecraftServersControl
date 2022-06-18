@@ -1,9 +1,8 @@
 ﻿using MinecraftServersControl.Common;
-using MinecraftServersControl.Core;
-using MinecraftServersControl.Core.Interface;
+using MinecraftServersControl.Core.Abstractions;
 using MinecraftServersControl.Logging;
 using MinecraftServersControl.Logging.Adapters;
-using MinecraftServersControl.Remote.Server.Interface;
+using MinecraftServersControl.Remote.Server.Abstractions;
 using MinecraftServersControl.Remote.Server.WebSocketServices;
 using System;
 using WebSocketSharp.Server;

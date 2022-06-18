@@ -2,7 +2,7 @@
 
 namespace MinecraftServersControl.Core.Models
 {
-    public sealed class ComputerServerAliasesPair
+    internal sealed class ComputerServerAliasesPair
     {
         public string ComputerAlias { get; }
         public string ServerAlias { get; }

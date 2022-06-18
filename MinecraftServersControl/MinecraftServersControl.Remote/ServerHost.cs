@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MinecraftServersControl.Remote.Core.IO;
+using System;
 
-namespace MinecraftServersControl.Remote
+namespace MinecraftServersControl.Remote.Core
 {
-    public sealed class ServerHost
+    internal sealed class ServerHost
     {
         public ServerInfo ServerInfo { get; }
 

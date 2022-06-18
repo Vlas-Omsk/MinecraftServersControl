@@ -1,8 +1,8 @@
 ﻿using MinecraftServersControl.Logging;
-using MinecraftServersControl.Remote.Services;
+using MinecraftServersControl.Remote.Core.Services;
 using System;
 
-namespace MinecraftServersControl.Remote
+namespace MinecraftServersControl.Remote.Core
 {
     public sealed class Application
     {

@@ -1,7 +1,7 @@
 ﻿using MinecraftServersControl.API.HttpServices;
 using MinecraftServersControl.API.Schema;
 using MinecraftServersControl.Core.DTO;
-using MinecraftServersControl.Core.Interface;
+using MinecraftServersControl.Core.Abstractions;
 using MinecraftServersControl.Logging;
 using PinkJson2;
 using PinkJson2.Serializers;
@@ -16,7 +16,7 @@ using WebSocketSharp.Net;
 
 namespace MinecraftServersControl.API
 {
-    public sealed class HttpRequestHandler
+    internal sealed class HttpRequestHandler
     {
         private HttpListenerRequest _httpRequest;
         private HttpListenerResponse _httpResponse;

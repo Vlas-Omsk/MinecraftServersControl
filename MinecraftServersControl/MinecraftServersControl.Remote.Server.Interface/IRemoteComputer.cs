@@ -1,9 +1,9 @@
-﻿using MinecraftServersControl.Remote.DTO;
-using MinecraftServersControl.Remote.Schema;
+﻿using MinecraftServersControl.Remote.Core.DTO;
+using MinecraftServersControl.Remote.Server.Schema;
 using System;
 using System.Threading.Tasks;
 
-namespace MinecraftServersControl.Core
+namespace MinecraftServersControl.Remote.Server.Abstractions
 {
     public interface IRemoteComputer
     {

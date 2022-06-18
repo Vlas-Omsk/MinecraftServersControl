@@ -1,7 +1,7 @@
 ﻿using MinecraftServersControl.Core.DTO;
 using System;
 
-namespace MinecraftServersControl.Core.Interface
+namespace MinecraftServersControl.Core.Abstractions
 {
     public sealed class CoreException : Exception
     {

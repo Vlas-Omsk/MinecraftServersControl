@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Remote.DTO
+namespace MinecraftServersControl.Remote.Core.DTO
 {
     public sealed class ServerOutputDTO
     {

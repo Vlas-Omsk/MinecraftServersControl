@@ -1,6 +1,6 @@
 ﻿using MinecraftServersControl.API.IntegrationTests.Helpers;
 using MinecraftServersControl.Core;
-using MinecraftServersControl.Core.Interface;
+using MinecraftServersControl.Core.Abstractions;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
 using System;

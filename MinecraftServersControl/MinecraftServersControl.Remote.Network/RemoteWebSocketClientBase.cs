@@ -2,7 +2,6 @@
 using MinecraftServersControl.Logging;
 using MinecraftServersControl.Logging.Adapters;
 using MinecraftServersControl.Remote.Core;
-using MinecraftServersControl.Remote.Schema;
 using MinecraftServersControl.Remote.Server.Schema;
 using PinkJson2;
 using System;

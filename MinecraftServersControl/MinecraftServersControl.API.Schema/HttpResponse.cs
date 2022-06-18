@@ -3,7 +3,6 @@ using System;
 
 namespace MinecraftServersControl.API.Schema
 {
-    [Serializable]
     public class HttpResponse<T> : HttpResponse
     {
         public T Data { get; protected set; }
@@ -31,7 +30,6 @@ namespace MinecraftServersControl.API.Schema
         }
     }
 
-    [Serializable]
     public class HttpResponse
     {
         public bool HasErrors { get; protected set; }

@@ -1,7 +1,7 @@
 ﻿using MinecraftServersControl.API.HttpServices;
 using MinecraftServersControl.API.WebSocketServices;
 using MinecraftServersControl.Common;
-using MinecraftServersControl.Core.Interface;
+using MinecraftServersControl.Core.Abstractions;
 using MinecraftServersControl.Logging;
 using MinecraftServersControl.Logging.Adapters;
 using System;

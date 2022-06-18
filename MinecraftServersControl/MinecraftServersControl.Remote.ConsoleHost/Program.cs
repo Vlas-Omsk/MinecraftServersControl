@@ -1,5 +1,6 @@
 ﻿using MinecraftServersControl.Logging;
 using MinecraftServersControl.Remote.Client;
+using MinecraftServersControl.Remote.Core;
 using System;
 
 namespace MinecraftServersControl.Remote.ConsoleHost

@@ -1,7 +1,7 @@
-﻿using MinecraftServersControl.Core.Interface.Services;
+﻿using MinecraftServersControl.Core.Abstractions.Services;
 using System;
 
-namespace MinecraftServersControl.Core.Interface
+namespace MinecraftServersControl.Core.Abstractions
 {
     public interface IApplication
     {

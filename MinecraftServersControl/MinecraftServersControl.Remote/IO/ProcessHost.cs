@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Timers;
 
-namespace MinecraftServersControl.Remote
+namespace MinecraftServersControl.Remote.Core.IO
 {
     public sealed class ProcessHost
     {
@@ -46,6 +46,7 @@ namespace MinecraftServersControl.Remote
                     FileName = command
                 }
             };
+            _process.Exited += (sender, e) => OnStop();
 
             try
             {
@@ -127,20 +128,24 @@ namespace MinecraftServersControl.Remote
             }
         }
 
-        private async void ReadDataHandler(object obj)
+        private void ReadDataHandler(object obj)
         {
             var cancellationToken = (CancellationToken)obj;
-            var buffer = new char[1];
 
-            while (!cancellationToken.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested && !_process.HasExited)
             {
-                var count = await _process.StandardOutput.ReadAsync(buffer, cancellationToken);
+                if (_process.StandardOutput.Peek() == -1)
+                {
 
-                if (count > 0)
+                }
+
+                var read = _process.StandardOutput.Read();
+
+                if (read > -1)
                 {
                     lock (_readBuffer)
                     {
-                        _readBuffer += buffer[0];
+                        _readBuffer += (char)read;
                         _readBufferChanged = true;
                     }
                 }

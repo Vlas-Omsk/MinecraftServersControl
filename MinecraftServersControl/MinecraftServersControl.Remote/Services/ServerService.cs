@@ -1,18 +1,17 @@
 ﻿using MinecraftServersControl.Logging;
-using MinecraftServersControl.Remote.Core;
-using MinecraftServersControl.Remote.DTO;
+using MinecraftServersControl.Remote.Core.DTO;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MinecraftServersControl.Remote.Services
+namespace MinecraftServersControl.Remote.Core.Services
 {
     public sealed class ServerService : Service
     {
         private ServerHost[] _serverHosts;
         private Config _config;
 
-        public ServerService(Config config, Logger logger) : base(logger)
+        internal ServerService(Config config, Logger logger) : base(logger)
         {
             _config = config;
             _serverHosts = config.Servers.Select(x =>
@@ -77,7 +76,7 @@ namespace MinecraftServersControl.Remote.Services
                     throw new RemoteCoreException(RemoteErrorCode.ServerNotFound);
 
                 if (server.Running)
-                    throw new RemoteCoreException(RemoteErrorCode.ServerStarted);
+                    throw new RemoteCoreException(RemoteErrorCode.ServerAlredyStarted);
 
                 try
                 {
@@ -100,7 +99,7 @@ namespace MinecraftServersControl.Remote.Services
                     throw new RemoteCoreException(RemoteErrorCode.ServerNotFound);
 
                 if (!server.Running)
-                    throw new RemoteCoreException(RemoteErrorCode.ServerStopped);
+                    throw new RemoteCoreException(RemoteErrorCode.ServerAlredyStopped);
 
                 server.Stop();
             });

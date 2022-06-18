@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinecraftServersControl.Core.DTO;
-using MinecraftServersControl.Core.Interface;
-using MinecraftServersControl.Core.Interface.Services;
+using MinecraftServersControl.Core.Abstractions;
+using MinecraftServersControl.Core.Abstractions.Services;
 using MinecraftServersControl.Core.Models;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MinecraftServersControl.Remote.Server.Abstractions;
 
 namespace MinecraftServersControl.Core.Services
 {
@@ -73,7 +74,7 @@ namespace MinecraftServersControl.Core.Services
         public async Task Input(ServerInputDTO serverInput)
         {
             var computerServerId = await GetComputerServerId(serverInput.ComputerAlias, serverInput.ServerAlias);
-            var response = await computerServerId.Computer.Input(new Remote.DTO.ServerInputDTO(computerServerId.ServerId, serverInput.Message));
+            var response = await computerServerId.Computer.Input(new Remote.Core.DTO.ServerInputDTO(computerServerId.ServerId, serverInput.Message));
 
             response.ThrowOnError();
         }
@@ -109,7 +110,7 @@ namespace MinecraftServersControl.Core.Services
             var remoteComputer = RemoteServer.GetComputer(new Guid(computer.Id));
 
             if (remoteComputer == null)
-                throw new CoreException(ErrorCode.ComputerStopped);
+                throw new CoreException(ErrorCode.ComputerAlredyStopped);
 
             return new ComputerServerIdPair(remoteComputer, new Guid(server.Id));
         }

@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace MinecraftServersControl.Core.Interface.Services
+namespace MinecraftServersControl.Core.Abstractions.Services
 {
     public interface IUserService
     {

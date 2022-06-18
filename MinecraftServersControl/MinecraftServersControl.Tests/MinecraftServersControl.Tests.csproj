@@ -6,15 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ProcessHostTest.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ProcessHostTest.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\MinecraftApi\MinecraftApi.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.API.Vk\MinecraftServersControl.API.Vk.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote\MinecraftServersControl.Remote.Core.csproj" />
     <ProjectReference Include="..\VkApi\VkApi.csproj" />
   </ItemGroup>
 

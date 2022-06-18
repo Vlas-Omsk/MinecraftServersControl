@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace MinecraftServersControl.API.Vk.VkServices
+namespace MinecraftServersControl.API.Vk.Services
 {
     public sealed class CommonVkService : VkService
     {

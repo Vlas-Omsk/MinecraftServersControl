@@ -1,9 +1,10 @@
 ﻿using MinecraftServersControl.Core.DTO;
-using MinecraftServersControl.Core.Interface.Services;
+using MinecraftServersControl.Core.Abstractions.Services;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
 using System;
 using System.Threading.Tasks;
+using MinecraftServersControl.Remote.Server.Abstractions;
 
 namespace MinecraftServersControl.Core.Services
 {

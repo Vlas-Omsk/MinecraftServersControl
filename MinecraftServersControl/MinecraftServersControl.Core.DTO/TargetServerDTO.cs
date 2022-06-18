@@ -2,7 +2,6 @@
 
 namespace MinecraftServersControl.Core.DTO
 {
-    [Serializable]
     public sealed class TargetServerDTO
     {
         public string ComputerAlias { get; private set; }

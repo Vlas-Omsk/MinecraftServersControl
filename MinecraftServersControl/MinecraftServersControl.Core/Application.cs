@@ -1,8 +1,9 @@
-﻿using MinecraftServersControl.Core.Interface;
-using MinecraftServersControl.Core.Interface.Services;
+﻿using MinecraftServersControl.Core.Abstractions;
+using MinecraftServersControl.Core.Abstractions.Services;
 using MinecraftServersControl.Core.Services;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
+using MinecraftServersControl.Remote.Server.Abstractions;
 using System;
 
 namespace MinecraftServersControl.Core

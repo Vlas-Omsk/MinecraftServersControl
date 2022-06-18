@@ -1,4 +1,4 @@
-﻿using MinecraftServersControl.Remote.Schema;
+﻿using MinecraftServersControl.Remote.Server.Schema;
 using System;
 
 namespace MinecraftServersControl.Remote.Client

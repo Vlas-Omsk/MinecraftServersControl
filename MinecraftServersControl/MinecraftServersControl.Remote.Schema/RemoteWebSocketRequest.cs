@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Remote.Schema
+namespace MinecraftServersControl.Remote.Server.Schema
 {
-    [Serializable]
     public class RemoteWebSocketRequest<T> : RemoteWebSocketRequest
     {
         public T Data { get; protected set; }
@@ -22,7 +21,6 @@ namespace MinecraftServersControl.Remote.Schema
         }
     }
 
-    [Serializable]
     public class RemoteWebSocketRequest
     {
         public int Id { get; protected set; }

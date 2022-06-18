@@ -2,7 +2,6 @@
 
 namespace MinecraftServersControl.API.Schema
 {
-    [Serializable]
     public class WebSocketRequest<T> : WebSocketRequest
     {
         public T Data { get; protected set; }
@@ -22,7 +21,6 @@ namespace MinecraftServersControl.API.Schema
         }
     }
 
-    [Serializable]
     public class WebSocketRequest
     {
         public int Id { get; protected set; }

@@ -1,8 +1,6 @@
-﻿using MinecraftServersControl.Remote.Server;
-using MinecraftServersControl.Remote.Server.Interface;
-using System;
+﻿using System;
 
-namespace MinecraftServersControl.Core
+namespace MinecraftServersControl.Remote.Server.Abstractions
 {
     public interface IRemoteServer
     {

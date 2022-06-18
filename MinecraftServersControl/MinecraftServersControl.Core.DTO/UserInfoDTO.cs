@@ -2,7 +2,6 @@
 
 namespace MinecraftServersControl.Core.DTO
 {
-    [Serializable]
     public sealed class UserInfoDTO
     {
         public string Login { get; private set; }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace MinecraftServersControl.API.Vk.VkServices
+namespace MinecraftServersControl.API.Vk.Services
 {
     [Service("пк")]
     public sealed class ComputerVkService : VkService

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Remote.Schema
+namespace MinecraftServersControl.Remote.Server.Schema
 {
     public enum RemoteWebSocketRequestCode : int
     {

@@ -2,7 +2,6 @@
 
 namespace MinecraftServersControl.Core.DTO
 {
-    [Serializable]
     public sealed class ServerDTO
     {
         public string Alias { get; private set; }

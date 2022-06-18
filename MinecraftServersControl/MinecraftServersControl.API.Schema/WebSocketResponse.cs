@@ -3,7 +3,6 @@ using System;
 
 namespace MinecraftServersControl.API.Schema
 {
-    [Serializable]
     public class WebSocketResponse<T> : WebSocketResponse
     {
         public T Data { get; protected set; }
@@ -24,7 +23,6 @@ namespace MinecraftServersControl.API.Schema
         }
     }
 
-    [Serializable]
     public class WebSocketResponse
     {
         public int RequestId { get; protected set; }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace MinecraftServersControl.Core.DTO
 {
-    [Serializable]
     public sealed class ComputerDTO
     {
         public string Name { get; private set; }

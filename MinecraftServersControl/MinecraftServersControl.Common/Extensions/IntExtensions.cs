@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Core
+namespace MinecraftServersControl.Common
 {
     public static class IntExtensions
     {

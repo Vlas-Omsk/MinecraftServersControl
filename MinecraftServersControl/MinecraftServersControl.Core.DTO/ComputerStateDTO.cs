@@ -2,7 +2,6 @@
 
 namespace MinecraftServersControl.Core.DTO
 {
-    [Serializable]
     public sealed class ComputerStateDTO
     {
         public Guid ComputerId { get; private set; }

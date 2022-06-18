@@ -2,7 +2,7 @@
 
 namespace MinecraftServersControl.API
 {
-    public static class ContentTypeNames
+    internal static class ContentTypeNames
     {
         public const string ApplicationJson = "application/json";
     }

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MinecraftServersControl.Remote
+namespace MinecraftServersControl.Remote.Core
 {
     public sealed class Config
     {

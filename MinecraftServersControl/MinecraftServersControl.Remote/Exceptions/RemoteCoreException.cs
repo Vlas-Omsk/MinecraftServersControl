@@ -1,4 +1,4 @@
-﻿using MinecraftServersControl.Remote.DTO;
+﻿using MinecraftServersControl.Remote.Core.DTO;
 using System;
 
 namespace MinecraftServersControl.Remote.Core

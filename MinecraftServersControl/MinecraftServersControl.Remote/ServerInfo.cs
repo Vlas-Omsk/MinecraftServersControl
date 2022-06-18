@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Remote
+namespace MinecraftServersControl.Remote.Core
 {
     public sealed class ServerInfo
     {

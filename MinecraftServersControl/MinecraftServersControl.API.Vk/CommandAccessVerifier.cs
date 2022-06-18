@@ -1,4 +1,4 @@
-﻿using MinecraftServersControl.Core.Interface;
+﻿using MinecraftServersControl.Core.Abstractions;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;

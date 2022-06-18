@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServersControl.Remote.Server.Interface
+namespace MinecraftServersControl.Remote.Server.Abstractions
 {
     public sealed class ServerOutputEventArgs : EventArgs
     {

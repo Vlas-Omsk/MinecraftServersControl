@@ -1,5 +1,6 @@
 ﻿using MinecraftServersControl.DAL;
 using MinecraftServersControl.Logging;
+using MinecraftServersControl.Remote.Server.Abstractions;
 using System;
 
 namespace MinecraftServersControl.Core.Services
@@ -11,7 +12,7 @@ namespace MinecraftServersControl.Core.Services
         protected DatabaseContextFactoryBase DatabaseContextFactory { get; }
         protected IRemoteServer RemoteServer { get; }
 
-        protected Service(Application application, DatabaseContextFactoryBase databaseContextFactory, Logger logger, IRemoteServer remoteServer)
+        internal Service(Application application, DatabaseContextFactoryBase databaseContextFactory, Logger logger, IRemoteServer remoteServer)
         {
             Application = application;
             Logger = logger;

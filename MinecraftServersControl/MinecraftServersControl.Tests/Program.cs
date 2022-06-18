@@ -1,7 +1,6 @@
-﻿using PinkJson2;
-using PinkJson2.Formatters;
+﻿using MinecraftApi;
 using System;
-using VkApi;
+using System.IO;
 
 namespace MinecraftServersControl.Tests
 {
@@ -9,13 +8,7 @@ namespace MinecraftServersControl.Tests
     {
         static void Main(string[] args)
         {
-            //var vkServer = new VkServer(null, new ConsoleLogger());
-            //vkServer.Process("пользователь войти");
-
-            var client = new VkClient("b4c3172aa829a9d7b2ea0cc83710637a4bdc34207bc13736b802ef0db6c438becf80c7cf6970942a2b15c");
-            var longPollServer = new GroupsLongPollServer(client, 213893484);
-            longPollServer.Update += OnLongPollServerUpdate;
-            longPollServer.Start();
+            Start();
 
             while (true)
             {
@@ -23,9 +16,25 @@ namespace MinecraftServersControl.Tests
             }
         }
 
-        private static void OnLongPollServerUpdate(object sender, LongPollUpdateEventArgs e)
+        async static void Start()
         {
-            Console.WriteLine(e.Updates.Serialize(VkClient.ObjectSerializerOptions).ToString(new PrettyFormatter()));
+            var legacyProtocol = new Protocol78();
+
+            legacyProtocol.Connect();
+
+            await legacyProtocol.ServerListPing();
+
+            //using (var memoryStream = new MemoryStream())
+            //using (var streamWriter = new LegacyStreamWriter(memoryStream))
+            //{
+            //    await streamWriter.WriteByte(0x49);
+            //    await streamWriter.WriteString("localhost");
+            //    await streamWriter.WriteInt(25565);
+
+            //    await legacyProtocol.PluginMessage("MC|PingHost", memoryStream.ToArray());
+            //}
+
+            var bytes = await legacyProtocol.Get(1000);
         }
     }
 }

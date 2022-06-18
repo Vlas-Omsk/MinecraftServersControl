@@ -1,5 +1,5 @@
 ﻿using MinecraftServersControl.API.HttpServices;
-using MinecraftServersControl.Core.Interface;
+using MinecraftServersControl.Core.Abstractions;
 using MinecraftServersControl.Logging;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using WebSocketSharp.Server;
 
 namespace MinecraftServersControl.API
 {
-    public sealed class ApiHttpServer : HttpServer
+    internal sealed class ApiHttpServer : HttpServer
     {
         private readonly IApplication _application;
         private readonly Logger _logger;

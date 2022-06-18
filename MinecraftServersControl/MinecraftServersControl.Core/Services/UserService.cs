@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinecraftServersControl.Common;
 using MinecraftServersControl.Core.DTO;
-using MinecraftServersControl.Core.Interface;
-using MinecraftServersControl.Core.Interface.Services;
+using MinecraftServersControl.Core.Abstractions;
+using MinecraftServersControl.Core.Abstractions.Services;
 using MinecraftServersControl.DAL;
 using MinecraftServersControl.DAL.Entities;
 using MinecraftServersControl.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MinecraftServersControl.Remote.Server.Abstractions;
 
 namespace MinecraftServersControl.Core.Services
 {

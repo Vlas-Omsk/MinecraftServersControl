@@ -1,6 +1,6 @@
 ﻿using MinecraftServersControl.API.Schema;
 using MinecraftServersControl.Common;
-using MinecraftServersControl.Core.Interface;
+using MinecraftServersControl.Core.Abstractions;
 using MinecraftServersControl.Logging;
 using PinkJson2;
 using System;
