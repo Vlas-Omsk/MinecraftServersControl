@@ -18,7 +18,7 @@ namespace VkApi.Models
         [JsonProperty("product")]
         public Product Product { get; set; }
         [JsonProperty("button")]
-        public Button Button { get; set; }
+        public LinkButton Button { get; set; }
         [JsonProperty("preview_page")]
         public string PreviewPage { get; set; }
         [JsonProperty("preview_url")]

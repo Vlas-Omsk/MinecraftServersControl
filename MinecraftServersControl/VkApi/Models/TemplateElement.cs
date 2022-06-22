@@ -10,17 +10,17 @@ namespace VkApi.Models
         [JsonProperty("description")]
         public string Description { get; set; }
         [JsonProperty("photo_id")]
-        public int PhotoId { get; set; }
+        public string PhotoId { get; set; }
         [JsonProperty("buttons")]
         public Button[] Buttons { get; set; }
         [JsonProperty("action")]
-        public ButtonAction Action { get; set; }
+        public TemplateElementAction Action { get; set; }
 
         public TemplateElement()
         {
         }
 
-        public TemplateElement(string title, string description, int photoId, Button[] buttons, ButtonAction action)
+        public TemplateElement(string title, string description, string photoId, Button[] buttons, TemplateElementAction action)
         {
             Title = title;
             Description = description;

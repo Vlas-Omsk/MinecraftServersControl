@@ -26,7 +26,7 @@ namespace VkApi
             SetParameter(key, value.ToString());
         }
 
-        public void SetParameter(string key, Array value)
+        public void SetParameter<T>(string key, IEnumerable<T> value)
         {
             if (value == null)
                 return;
@@ -58,7 +58,17 @@ namespace VkApi
             _collection[key] = value;
         }
 
-        public async Task<T> GetReponse<T>()
+        public async Task<T> GetResponse<T>()
+        {
+            return (await GetResponseInternal<VkResponse<T>>()).Response;
+        }
+
+        public Task GetResponse()
+        {
+            return GetResponseInternal<VkResponse>();
+        }
+
+        private async Task<T> GetResponseInternal<T>()
             where T : VkResponse
         {
             var httpRequest = HttpRequest.GET;

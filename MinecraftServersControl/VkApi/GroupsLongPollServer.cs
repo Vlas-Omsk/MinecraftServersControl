@@ -93,7 +93,7 @@ namespace VkApi
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _running = false;
                 RaiseClosed(ex);
@@ -107,7 +107,7 @@ namespace VkApi
         {
             var request = _client.CreateRequest("groups", "getLongPollServer");
             request.SetParameter("group_id", _groupId);
-            return request.GetReponse<VkResponse<LongPollServerInfo>>().ConfigureAwait(false).GetAwaiter().GetResult().Response;
+            return request.GetResponse<LongPollServerInfo>().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         private void RaiseUpdate(LongPollUpdate[] updates)

@@ -10,11 +10,11 @@ namespace VkApi.Services
         {
         }
 
-        public async Task Send(
-            int? userId = null, int? randomId = null, int? peerId = null, 
-            int[] peerIds = null, string domain = null, int? chatId = null, 
-            int[] userIds = null, string message = null, int? guid = null, 
-            int? latitude = null, int? longitude = null, OutputAttachment[] attachments = null, 
+        public async Task<MessagesSendResult[]> Send(
+            int? userId = null, int? randomId = null, int? peerId = null,
+            int[] peerIds = null, string domain = null, int? chatId = null,
+            int[] userIds = null, string message = null, int? guid = null,
+            int? latitude = null, int? longitude = null, OutputAttachment[] attachments = null,
             int? replyTo = null, int[] forwardMessages = null, OutputMessageForward forward = null,
             int? stickerId = null, int? groupId = null, Keyboard keyboard = null, Template template = null,
             string payload = null, ContentSource contentSource = null, bool? dontParseLinks = null,
@@ -47,7 +47,17 @@ namespace VkApi.Services
             request.SetParameter("disable_mentions", disableMentions);
             request.SetParameter("intent", intent);
             request.SetParameter("subscribe_id", subscribeId);
-            await request.GetReponse<VkResponse>();
+
+            if (peerIds == null)
+                return new MessagesSendResult[]
+                {
+                    new MessagesSendResult()
+                    {
+                        MessageId = await request.GetResponse<int>()
+                    }
+                };
+            else
+                return await request.GetResponse<MessagesSendResult[]>();
         }
     }
 }
