@@ -32,19 +32,10 @@ namespace MinecraftServersControl.Remote.Server.WebSocketServices
         protected override async void OnMessage(MessageEventArgs e)
         {
             IJson json;
-            try
-            {
-                json = Json.Parse(e.Data);
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(ex.ToString());
-                return;
-            }
-
             RemoteWebSocketResponse response;
             try
             {
+                json = Json.Parse(e.Data);
                 response = json.DeserializeCustom<RemoteWebSocketResponse>();
             }
             catch (Exception ex)
