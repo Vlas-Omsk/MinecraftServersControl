@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MinecraftServersControl.Remote.DTO\MinecraftServersControl.Remote.Core.DTO.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Core.DTO\MinecraftServersControl.Remote.Core.DTO.csproj" />
   </ItemGroup>
 
 </Project>

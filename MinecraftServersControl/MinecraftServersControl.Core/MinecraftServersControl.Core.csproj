@@ -6,11 +6,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinecraftServersControl.Common\MinecraftServersControl.Common.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Core.Abstractions\MinecraftServersControl.Core.Abstractions.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Core.DTO\MinecraftServersControl.Core.DTO.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Core.Interface\MinecraftServersControl.Core.Abstractions.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.DAL\MinecraftServersControl.DAL.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote.Server.Interface\MinecraftServersControl.Remote.Server.Abstractions.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Server.Abstractions\MinecraftServersControl.Remote.Server.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

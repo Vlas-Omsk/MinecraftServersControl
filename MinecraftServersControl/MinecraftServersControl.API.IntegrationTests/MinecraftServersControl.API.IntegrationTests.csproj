@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\WebLib\WebLib.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.API.WebSocket\MinecraftServersControl.API.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.DAL\MinecraftServersControl.DAL.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
   </ItemGroup>

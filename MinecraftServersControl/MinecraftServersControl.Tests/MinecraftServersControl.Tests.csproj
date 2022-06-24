@@ -8,7 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MinecraftApi\MinecraftApi.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.API.Vk\MinecraftServersControl.API.Vk.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote\MinecraftServersControl.Remote.Core.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Core\MinecraftServersControl.Remote.Core.csproj" />
     <ProjectReference Include="..\VkApi\VkApi.csproj" />
   </ItemGroup>
 

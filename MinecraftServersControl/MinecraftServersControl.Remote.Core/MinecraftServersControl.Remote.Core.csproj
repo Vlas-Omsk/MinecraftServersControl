@@ -7,7 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\PinkJson\PinkJson2\PinkJson2\PinkJson2.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote.DTO\MinecraftServersControl.Remote.Core.DTO.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Core.DTO\MinecraftServersControl.Remote.Core.DTO.csproj" />
   </ItemGroup>
 
 </Project>

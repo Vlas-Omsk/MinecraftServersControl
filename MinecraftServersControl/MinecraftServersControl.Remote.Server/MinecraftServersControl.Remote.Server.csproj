@@ -7,10 +7,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\websocket-sharp\websocket-sharp\websocket-sharp.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Common\MinecraftServersControl.Common.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Core.Interface\MinecraftServersControl.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Core.Abstractions\MinecraftServersControl.Core.Abstractions.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Server.Schema.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote.Server.Interface\MinecraftServersControl.Remote.Server.Abstractions.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Server.Abstractions\MinecraftServersControl.Remote.Server.Abstractions.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Server.Schema\MinecraftServersControl.Remote.Server.Schema.csproj" />
   </ItemGroup>
 
 </Project>

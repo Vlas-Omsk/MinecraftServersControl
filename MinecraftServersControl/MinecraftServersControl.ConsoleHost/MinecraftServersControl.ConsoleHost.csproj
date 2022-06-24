@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinecraftServersControl.API.Vk\MinecraftServersControl.API.Vk.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.API.WebSocket\MinecraftServersControl.API.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.API\MinecraftServersControl.API.csproj" />
     <ProjectReference Include="..\MinecraftServersControl.Remote.Server\MinecraftServersControl.Remote.Server.csproj" />
   </ItemGroup>
 

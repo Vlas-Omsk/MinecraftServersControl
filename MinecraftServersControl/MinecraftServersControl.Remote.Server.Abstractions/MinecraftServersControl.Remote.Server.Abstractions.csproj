@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Core.DTO\MinecraftServersControl.Remote.Core.DTO.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Server.Schema\MinecraftServersControl.Remote.Server.Schema.csproj" />
+  </ItemGroup>
+
+</Project>

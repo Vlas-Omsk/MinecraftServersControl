@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32407.337
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Tests", "MinecraftServersControl.Tests\MinecraftServersControl.Tests.csproj", "{9A294C87-62F3-4C77-9B91-83BE0E047374}"
 EndProject
@@ -21,15 +21,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Con
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API.IntegrationTests", "MinecraftServersControl.API.IntegrationTests\MinecraftServersControl.API.IntegrationTests.csproj", "{7BD0FF57-801E-44A7-834E-479A551F4441}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API", "MinecraftServersControl.API.WebSocket\MinecraftServersControl.API.csproj", "{28D02EDE-8897-487E-98B3-89B198F2CD25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API", "MinecraftServersControl.API\MinecraftServersControl.API.csproj", "{28D02EDE-8897-487E-98B3-89B198F2CD25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.DTO", "MinecraftServersControl.Core.DTO\MinecraftServersControl.Core.DTO.csproj", "{E7A0B8F6-741C-4768-B2D0-DBA04D0FD016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLib", "..\..\WebLib\WebLib.csproj", "{C104D4FA-0949-4D74-95FE-BB98E14B1655}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebLib", "..\..\WebLib\WebLib.csproj", "{C104D4FA-0949-4D74-95FE-BB98E14B1655}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API.Schema", "MinecraftServersControl.API.Schema\MinecraftServersControl.API.Schema.csproj", "{E22F9040-DC86-4B37-985F-0C6CFCF1F5B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Core", "MinecraftServersControl.Remote\MinecraftServersControl.Remote.Core.csproj", "{1D9C9E1A-413B-4FA9-B615-198A4215D846}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Core", "MinecraftServersControl.Remote.Core\MinecraftServersControl.Remote.Core.csproj", "{1D9C9E1A-413B-4FA9-B615-198A4215D846}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Common", "MinecraftServersControl.Common\MinecraftServersControl.Common.csproj", "{CD12E855-78A2-4A1D-894C-56E77E436B74}"
 EndProject
@@ -37,23 +37,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Remote", "Remote", "{5ADAF5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.ConsoleHost", "MinecraftServersControl.Remote.ConsoleHost\MinecraftServersControl.Remote.ConsoleHost.csproj", "{913F587A-1D4C-4405-8376-CC845095940D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Client", "MinecraftServersControl.Remote.Network\MinecraftServersControl.Remote.Client.csproj", "{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Client", "MinecraftServersControl.Remote.Client\MinecraftServersControl.Remote.Client.csproj", "{2DBBD944-0DBC-4AB5-9EE6-9974074756D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Core.DTO", "MinecraftServersControl.Remote.DTO\MinecraftServersControl.Remote.Core.DTO.csproj", "{7331C735-013F-4ADA-9605-44AA436B3822}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Core.DTO", "MinecraftServersControl.Remote.Core.DTO\MinecraftServersControl.Remote.Core.DTO.csproj", "{7331C735-013F-4ADA-9605-44AA436B3822}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server.Schema", "MinecraftServersControl.Remote.Schema\MinecraftServersControl.Remote.Server.Schema.csproj", "{661D667A-377B-4322-9425-14A510C8118A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server.Schema", "MinecraftServersControl.Remote.Server.Schema\MinecraftServersControl.Remote.Server.Schema.csproj", "{661D667A-377B-4322-9425-14A510C8118A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server", "MinecraftServersControl.Remote.Server\MinecraftServersControl.Remote.Server.csproj", "{E7E856B0-3CED-4030-BBC5-3B5457F18ADE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server.Abstractions", "MinecraftServersControl.Remote.Server.Interface\MinecraftServersControl.Remote.Server.Abstractions.csproj", "{37B71797-01C6-4DF9-9BFE-1B5DDEB249C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Remote.Server.Abstractions", "MinecraftServersControl.Remote.Server.Abstractions\MinecraftServersControl.Remote.Server.Abstractions.csproj", "{37B71797-01C6-4DF9-9BFE-1B5DDEB249C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.Abstractions", "MinecraftServersControl.Core.Interface\MinecraftServersControl.Core.Abstractions.csproj", "{AE771C76-25BF-4F3C-AADC-9535FC33B776}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.Core.Abstractions", "MinecraftServersControl.Core.Abstractions\MinecraftServersControl.Core.Abstractions.csproj", "{AE771C76-25BF-4F3C-AADC-9535FC33B776}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftServersControl.API.Vk", "MinecraftServersControl.API.Vk\MinecraftServersControl.API.Vk.csproj", "{C61D019D-4107-4262-AF83-53B41A1CF7C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VkApi", "VkApi\VkApi.csproj", "{D84E28B6-3307-4C23-95B1-BE72DF57106B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftApi", "MinecraftApi\MinecraftApi.csproj", "{8B492B68-6DF1-4EC7-8E1B-5A9FB9E6F4D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftApi", "MinecraftApi\MinecraftApi.csproj", "{8B492B68-6DF1-4EC7-8E1B-5A9FB9E6F4D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

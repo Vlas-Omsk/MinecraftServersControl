@@ -7,8 +7,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinecraftServersControl.Logging\MinecraftServersControl.Logging.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote.Network\MinecraftServersControl.Remote.Client.csproj" />
-    <ProjectReference Include="..\MinecraftServersControl.Remote\MinecraftServersControl.Remote.Core.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Client\MinecraftServersControl.Remote.Client.csproj" />
+    <ProjectReference Include="..\MinecraftServersControl.Remote.Core\MinecraftServersControl.Remote.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

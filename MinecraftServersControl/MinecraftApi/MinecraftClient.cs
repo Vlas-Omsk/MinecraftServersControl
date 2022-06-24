@@ -8,8 +8,6 @@ namespace MinecraftApi
     {
         private Socket _socket;
 
-        public MinecraftClient
-
         public void Connect()
         {
             var endPoint = new DnsEndPoint("192.168.1.100", 25565, AddressFamily.InterNetwork);
