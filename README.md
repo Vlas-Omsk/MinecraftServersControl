@@ -4,7 +4,7 @@
 
 <div align="center">
 
-<img src="./ProjectRelationships.drawio.png" alt="drawing" width="400"/>
+<img src="./ProjectRelationships.drawio.png" alt="drawing"/>
     
 </div>
 
