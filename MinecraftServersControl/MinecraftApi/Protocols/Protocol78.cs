@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace MinecraftApi
+namespace MinecraftApi.Protocols
 {
     public sealed class Protocol78
     {
